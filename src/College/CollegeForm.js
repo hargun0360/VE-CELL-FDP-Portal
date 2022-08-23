@@ -15,6 +15,7 @@ function CollegeForm() {
   const [remarks, setRemarks] = useState(null);
   const [flag1, setFlag1] = useState(true);
   const [flag2, setFlag2] = useState(true);
+  
 
   useEffect(() => {
     if (ftype === "Online") {
