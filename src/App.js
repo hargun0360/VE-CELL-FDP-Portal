@@ -6,10 +6,12 @@ import OTP from './Authentication/OTP';
 import Forgot from './Authentication/Forgot';
 import Reset from './Authentication/ResetPass';
 import RecoverPass from './Authentication/RecoverPass';
+import ViewDetail from './College/ViewDetail';
 function App() {
   return (
     <div className="App">
-      <RecoverPass />
+      {/* <CollegeForm /> */}
+      <ViewDetail />
     </div>
   );
 }

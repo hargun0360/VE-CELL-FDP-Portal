@@ -87,7 +87,7 @@ function CollegeForm() {
               <Col xs={12} md={6}>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                   <Form.Label>College mail id</Form.Label>
-                  <Form.Control type="email" placeholder="name@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
+                  <Form.Control type="email" placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
                 </Form.Group>
               </Col>
               <Col xs={12} md={6}>
@@ -107,7 +107,7 @@ function CollegeForm() {
             </Row>
             <Row className='mb-3 mt-3'>
               <Card.Title>
-                FDP type
+                FDP Type
               </Card.Title>
             </Row>
             <Row>
@@ -210,7 +210,7 @@ function CollegeForm() {
             <Row className="mb-3">
               <Col xs={12} md={6}>
               <Form.Group className="mb-3">
-                <Form.Label>Incentive Details</Form.Label>
+                <Form.Label>Incentive Detail</Form.Label>
                 <Form.Select className='mb-3' aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
                   <option>Select the Incentive Details</option>
                   <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
