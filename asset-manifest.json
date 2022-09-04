@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/college-form/static/css/main.06bb3193.css",
-    "main.js": "/college-form/static/js/main.09c3c31d.js",
+    "main.js": "/college-form/static/js/main.d2aef0f7.js",
     "static/js/787.2a25c2bc.chunk.js": "/college-form/static/js/787.2a25c2bc.chunk.js",
     "static/media/profile-img.png": "/college-form/static/media/profile-img.43b59e598ba15abe6eab.png",
     "index.html": "/college-form/index.html",
     "main.06bb3193.css.map": "/college-form/static/css/main.06bb3193.css.map",
-    "main.09c3c31d.js.map": "/college-form/static/js/main.09c3c31d.js.map",
+    "main.d2aef0f7.js.map": "/college-form/static/js/main.d2aef0f7.js.map",
     "787.2a25c2bc.chunk.js.map": "/college-form/static/js/787.2a25c2bc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.06bb3193.css",
-    "static/js/main.09c3c31d.js"
+    "static/js/main.d2aef0f7.js"
   ]
 }
