@@ -7,11 +7,20 @@ import Forgot from './Authentication/Forgot';
 import Reset from './Authentication/ResetPass';
 import RecoverPass from './Authentication/RecoverPass';
 import ViewDetail from './College/ViewDetail';
+import { Routes, Route } from 'react-router-dom'
 function App() {
   return (
     <div className="App">
-      {/* <CollegeForm /> */}
-      <ViewDetail />
+       <Routes>
+       <Route exact path="/" element={<Login />} />
+       <Route exact path="/view" element={<ViewDetail />} />
+       <Route exact path="/form" element={<CollegeForm />} />
+       <Route exact path="/signup" element={<Signup />} />
+       <Route exact path="/forgot" element={<Forgot />} />
+       <Route exact path="/otp" element={<OTP />} />
+       <Route exact path="/reset" element={<Reset />} />
+       <Route exact path="/recoverpass" element={<RecoverPass />} />
+       </Routes>
     </div>
   );
 }

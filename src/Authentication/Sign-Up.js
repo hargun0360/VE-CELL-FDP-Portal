@@ -16,6 +16,7 @@ import {
 
 // import images
 import profile from "../Assets/images/profile-img.png";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
 
   const validation = useFormik({
@@ -32,6 +33,11 @@ const Signup = () => {
       console.log(values);
     }
   });
+  
+  const navigate = useNavigate();
+  const handleLogin = () => {
+      navigate("/")
+  }
 
   return (
     <React.Fragment>
@@ -102,7 +108,7 @@ const Signup = () => {
                 </CardBody>
                 <div className="mt-2 text-center">
                 <p>
-                   Already have an account? <span className=" text-primary" style={{cursor:"pointer"}}>Login</span>
+                   Already have an account? <span className=" text-primary" style={{cursor:"pointer"}} onClick={handleLogin}>Login</span>
                 </p>
               </div>
               </Card>

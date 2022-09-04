@@ -16,8 +16,9 @@ import {
 
 // import images
 import profile from "../Assets/images/profile-img.png";
+import { useNavigate } from "react-router-dom";
 const Forgot = () => {
-
+  const navigate = useNavigate();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -30,9 +31,17 @@ const Forgot = () => {
     }),
     onSubmit: (values) => {
       console.log(values);
+      navigate("/otp")
     }
   });
 
+  const handleSignup = () => {
+    navigate("/signup")
+  }
+  const handleLogin = () => {
+    navigate("/")
+  }
+ 
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-sm-5">
@@ -101,9 +110,9 @@ const Forgot = () => {
                   </div>
                 </CardBody>
                 <div className="mb-4 text-center">
-                         <span  style={{cursor:"pointer"}} className="text-primary">Sign Up</span>
+                         <span  style={{cursor:"pointer"}} className="text-primary" onClick={handleSignup}>Sign Up</span>
                          <span className="p-2">|</span>
-                          <span style={{cursor:"pointer"}} className="text-primary" >Login</span>
+                          <span style={{cursor:"pointer"}} className="text-primary" onClick={handleLogin}>Login</span>
                       </div>
               </Card>
             </Col>

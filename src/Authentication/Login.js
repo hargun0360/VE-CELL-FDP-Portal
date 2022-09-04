@@ -7,8 +7,11 @@ import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, 
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import profile from "../Assets/images/profile-img.png";
+import { useNavigate } from "react-router-dom";
 
 const Login = props => {
+
+  const navigate = useNavigate();
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -26,6 +29,13 @@ const Login = props => {
       console.log(values);
     }
   });
+
+  const handleSignup = () => {
+      navigate('/signup')
+  }
+  const handleForgot = () => {
+      navigate('/forgot')
+  }
 
 
   // handleValidSubmit
@@ -122,9 +132,9 @@ const Login = props => {
                         </button>
                       </div>
                       <div className="mt-4 text-center">
-                         <span  style={{cursor:"pointer"}} className="text-primary">Sign Up</span>
+                         <span  style={{cursor:"pointer"}} className="text-primary" onClick={handleSignup}>Sign Up</span>
                          <span className="p-2">|</span>
-                          <span style={{cursor:"pointer"}} className="text-primary" >Forgot password </span>
+                          <span style={{cursor:"pointer"}} className="text-primary" onClick={handleForgot} >Forgot password </span>
                       </div>
                     </Form>
                   </div>
