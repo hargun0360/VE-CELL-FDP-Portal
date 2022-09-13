@@ -9,3 +9,7 @@
   display: grid;
   place-content: center;
 }
+.headline {
+  z-index: 100;
+ 
+}

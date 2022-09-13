@@ -33,7 +33,7 @@ const ViewFDP = () => {
     // //delete order
     const [deleteModal, setDeleteModal] = useState(false)
 
-    const [id,setId] = useState(null)
+    const [id, setId] = useState(null)
 
     const [details, setDetails] = useState([
         { id: "1", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
@@ -56,16 +56,16 @@ const ViewFDP = () => {
             <DeleteModal
                 show={deleteModal} setShow={setDeleteModal} id={id}
             />
-            <div className="page-content">
+            <div className="w-100 h-100 pb-3">
                 <Container fluid>
                     {/* Render Breadcrumbs */}
                     <CardTitle className="py-2">
-                        <h4 className="font-size-20">View FDP</h4>
+                        <h4 className="font-size-20 mx-3">View FDP</h4>
                     </CardTitle>
                     <Card>
                         <CardBody>
-                            <div className="table-responsive py-3 px-5">
-                                <Table className="table table-hover">
+                            <div className="table-responsive">
+                                <Table className="table" style={{ height: "90vh" }}>
                                     <thead className="table-light">
                                         <tr>
                                             <th className="text-center">#</th>
@@ -96,32 +96,33 @@ const ViewFDP = () => {
                                                             <UncontrolledDropdown>
                                                                 <DropdownToggle href="#" className="card-drop" tag="i">
                                                                     <div className="align-middle me-1">
-                                                                    <MoreVertIcon /> 
-                                                                    </div>  
+                                                                        <MoreVertIcon />
+                                                                    </div>
                                                                 </DropdownToggle>
-                                                                <DropdownMenu className="dropdown">
-                                                                    <Link to={`/view`} style={{textDecoration:"none"}} >
+                                                                <DropdownMenu className="dropdown-menu-end">
+                                                                    <Link to={`/view`} style={{ textDecoration: "none" }} >
                                                                         <DropdownItem>
                                                                             {" "}
                                                                             <div className="align-middle me-1">
-                                                                            <RemoveRedEyeSharpIcon color="success"/>{" "}&ensp; {("View")}{" "}
-                                                                    </div> 
+                                                                                <RemoveRedEyeSharpIcon color="success" />{" "}&ensp; {("View")}{" "}
+                                                                            </div>
                                                                         </DropdownItem>
                                                                     </Link>
                                                                     <DropdownItem divider />
-                                                                    <Link to={`/view`} style={{textDecoration:"none"}} >
+                                                                    <Link to={`/view`} style={{ textDecoration: "none" }} >
                                                                         <DropdownItem>
                                                                             {" "}
-                                                                            <ModeSharpIcon sx={{ color:"blue" }} />{" "}&ensp;
+                                                                            <ModeSharpIcon sx={{ color: "blue" }} />{" "}&ensp;
                                                                             {("Edit")}{" "}
                                                                         </DropdownItem>
                                                                     </Link>
                                                                     <DropdownItem divider />
                                                                     <DropdownItem tag="button" onClick={() => {
                                                                         setDeleteModal(true);
-                                                                        setId(item.id)}}>
+                                                                        setId(item.id)
+                                                                    }}>
                                                                         {" "}
-                                                                        <DeleteIcon sx={{ color:"red" }}/>{" "}&ensp;
+                                                                        <DeleteIcon sx={{ color: "red" }} />{" "}&ensp;
                                                                         {("Delete")}{" "}
                                                                     </DropdownItem>
                                                                 </DropdownMenu>
