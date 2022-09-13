@@ -18,7 +18,7 @@ import ModeSharpIcon from '@mui/icons-material/ModeSharp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal'
 
-import DeleteModal from "./DeleteModal";
+
 
 const ViewFDP = () => {
     const [project, setProject] = useState(null)
