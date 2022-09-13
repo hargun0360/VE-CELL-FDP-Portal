@@ -16,7 +16,7 @@ const Breadcrumb = props => {
             <ol className="breadcrumb m-0">
               {breadcrumbItems.map((item, key) => (
                 <BreadcrumbItem key={key} active={key + 1 === itemLength}>
-                  <Link to={(item.href)?item.href:"#"}>{item.title}</Link>
+                  <Link style={{textDecoration:"none",color:"black",fontWeight:"500"}} to={(item.href)?item.href:"/"}>{item.title}</Link>
                 </BreadcrumbItem>
               ))}
             </ol>
