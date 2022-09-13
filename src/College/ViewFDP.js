@@ -29,44 +29,9 @@ const ViewFDP = () => {
         open: false
     });
 
-    const toggle = () => {
-        if (modal) {
-            setModal(false)
-            setProject(null)
-        } else {
-            setModal(true)
-        }
-    }
-
-    // const handleProjectClick = arg => {
-    //     const project = arg
-
-    //     setProject({
-    //         id: project.id,
-    //         img: project.img,
-    //         name: project.name,
-    //         description: project.description,
-    //         status: project.status,
-    //         color: project.color,
-    //         dueDate: project.dueDate,
-    //         team: project.team,
-    //     })
-
-    //     setIsEdit(true)
-
-    //     toggle()
-    // }
 
     // //delete order
     const [deleteModal, setDeleteModal] = useState(false)
-
-
-    // const handleDeleteOrder = () => {
-
-    //     setDeleteModal(true)
-    //     // api call
-           
-    // }
 
     const [id,setId] = useState(null)
 
@@ -99,7 +64,7 @@ const ViewFDP = () => {
                     </CardTitle>
                     <Card>
                         <CardBody>
-                            <div className="table-responsive">
+                            <div className="table-responsive py-3 px-5">
                                 <Table className="table table-hover">
                                     <thead className="table-light">
                                         <tr>
