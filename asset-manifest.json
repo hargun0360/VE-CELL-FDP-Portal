@@ -1,18 +1,16 @@
 {
   "files": {
     "main.css": "/college-form/static/css/main.2f9a8f11.css",
-    "main.js": "/college-form/static/js/main.21c2d855.js",
-    "static/js/140.c53c31a9.chunk.js": "/college-form/static/js/140.c53c31a9.chunk.js",
+    "main.js": "/college-form/static/js/main.b19972d6.js",
     "static/js/787.2a25c2bc.chunk.js": "/college-form/static/js/787.2a25c2bc.chunk.js",
     "static/media/profile-img.png": "/college-form/static/media/profile-img.43b59e598ba15abe6eab.png",
     "index.html": "/college-form/index.html",
     "main.2f9a8f11.css.map": "/college-form/static/css/main.2f9a8f11.css.map",
-    "main.21c2d855.js.map": "/college-form/static/js/main.21c2d855.js.map",
-    "140.c53c31a9.chunk.js.map": "/college-form/static/js/140.c53c31a9.chunk.js.map",
+    "main.b19972d6.js.map": "/college-form/static/js/main.b19972d6.js.map",
     "787.2a25c2bc.chunk.js.map": "/college-form/static/js/787.2a25c2bc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2f9a8f11.css",
-    "static/js/main.21c2d855.js"
+    "static/js/main.b19972d6.js"
   ]
 }
