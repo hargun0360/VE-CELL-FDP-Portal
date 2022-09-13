@@ -7,6 +7,7 @@ import Forgot from './Authentication/Forgot';
 import Reset from './Authentication/ResetPass';
 import RecoverPass from './Authentication/RecoverPass';
 import ViewDetail from './College/ViewDetail';
+import ViewFDP from './College/ViewFDP';
 import { Routes, Route } from 'react-router-dom'
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
        <Route exact path="/otp" element={<OTP />} />
        <Route exact path="/reset" element={<Reset />} />
        <Route exact path="/recoverpass" element={<RecoverPass />} />
+       <Route exact path="/viewall" element={<ViewFDP />} />
        </Routes>
     </div>
   );

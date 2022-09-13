@@ -32,25 +32,6 @@ const ViewDetail = () => {
         onBeforePrint : () => setState(false),
         onAfterPrint: () => setState(true),
     });
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (name && department && email && mobile && designation && ftype && (online || offline) && incentive) {
-            let obj = {
-                name,
-                department,
-                email,
-                mobile,
-                designation,
-                ftype,
-                online,
-                offline,
-                incentive,
-                remarks
-            }
-            console.log(obj);
-        }
-    }
-
     const handleReset = () =>{
         navigate("/reset");
     }

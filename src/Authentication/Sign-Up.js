@@ -17,7 +17,10 @@ import {
 // import images
 import profile from "../Assets/images/profile-img.png";
 import { useNavigate } from "react-router-dom";
+import { doSignupUser } from "../Services/ApiServices";
 const Signup = () => {
+
+  const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -26,11 +29,25 @@ const Signup = () => {
     initialValues: {
       email: '',
     },
+    validate:values=>{
+      let errors = {};
+     if(!values.email){
+       errors.email= 'Required!'
+      }else if(!regex.test(values.email)){
+     errors.email = 'Invalid email format!'
+     }
+     return errors;
+    },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      doSignupUser(values)
+      .then((res) =>{
+        console.log(res);
+      }).catch((e)=>{
+        console.log(e);
+      })
     }
   });
   

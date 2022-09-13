@@ -3,3 +3,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+.page-content{
+  padding: calc(20px) 0px 60px 0px;
+  width: 95vw;
+  display: grid;
+  place-content: center;
+}

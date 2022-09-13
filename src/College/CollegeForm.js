@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { logDOM } from '@testing-library/react';
+import { Container } from 'reactstrap';
+import "../App.css";
+const Breadcrumb = React.lazy(() => import("./Breadcrumb"));
 function CollegeForm() {
   const [name, setName] = useState(null);
   const [department, setDepartment] = useState(null);
@@ -15,7 +18,7 @@ function CollegeForm() {
   const [remarks, setRemarks] = useState(null);
   const [flag1, setFlag1] = useState(true);
   const [flag2, setFlag2] = useState(true);
-  
+  const [flag, setFlag] = useState(false)
 
   useEffect(() => {
     if (ftype === "Online") {
@@ -49,9 +52,17 @@ function CollegeForm() {
     }
   }
   return (<>
-    <h3 style={{ textAlign: "center", marginTop: "1%" }}>College Form</h3>
-    <div style={{ display: "flex", justifyContent: "center", alignItem: "center", height: "100%", maxWidth: "95vw", padding: "2px" }}>
-      <Card className='w-75 h-100 mt-3'>
+    {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
+    <div className='page-content'>
+    <Container fluid>
+      {flag ? <Breadcrumb
+        title="Update FDP"
+        breadcrumbItems={[{ title: "View",href:"/viewall" }, { title: "Add" }]}
+      /> : <Breadcrumb
+        title="Add FDP"
+        breadcrumbItems={[{ title: "View",href:"/viewall" }, { title: "Add" }]}
+      />}
+      <Card className='w-100 h-100 mt-3'>
         <Card.Body className='w-100'>
           <Form onSubmit={(e) => handleSubmit(e)}>
             <Row className='mb-3 mt-3'>
@@ -209,17 +220,17 @@ function CollegeForm() {
             </Row>
             <Row className="mb-3">
               <Col xs={12} md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Incentive Detail</Form.Label>
-                <Form.Select className='mb-3' aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
-                  <option>Select the Incentive Details</option>
-                  <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
-                  <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
-                  <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
-                  <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
-                  <option value="Not Taken Yet">Not Taken Yet</option>
-                </Form.Select>
-              </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Incentive Detail</Form.Label>
+                  <Form.Select className='mb-3' aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
+                    <option>Select the Incentive Details</option>
+                    <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
+                    <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
+                    <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
+                    <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
+                    <option value="Not Taken Yet">Not Taken Yet</option>
+                  </Form.Select>
+                </Form.Group>
               </Col>
             </Row>
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
@@ -232,6 +243,7 @@ function CollegeForm() {
           </Form>
         </Card.Body>
       </Card>
+    </Container>
     </div>
   </>
   );
