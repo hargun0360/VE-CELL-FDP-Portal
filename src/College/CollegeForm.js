@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { logDOM } from '@testing-library/react';
 import { Container } from 'reactstrap';
 import "../App.css";
-const Breadcrumb = React.lazy(() => import("./Breadcrumb"));
+import Breadcrumb from './Breadcrumb';
 function CollegeForm() {
   const [name, setName] = useState(null);
   const [department, setDepartment] = useState(null);

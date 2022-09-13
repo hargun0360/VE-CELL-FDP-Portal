@@ -32,6 +32,7 @@ export function doGetRefreshToken() {
 export function doLoginUser(credentials) {
     let headers = {
       "Content-Type": "application/json",
+      'Access-Control-Allow-Origin': '*',
     }
     return new Promise((resolve, reject) => {
       return RestAxiosService(LOGIN_URL, "POST", credentials, headers).then(
@@ -49,6 +50,7 @@ export function doLoginUser(credentials) {
 export function doSignupUser(credentials) {
     let headers = {
       "Content-Type": "application/json",
+      'Access-Control-Allow-Origin': '*',
     }
     return new Promise((resolve, reject) => {
       return RestAxiosService(SIGNUP_URL, "POST", credentials, headers).then(
