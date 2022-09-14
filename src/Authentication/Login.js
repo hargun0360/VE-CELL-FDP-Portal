@@ -42,6 +42,9 @@ const Login = props => {
       doLoginUser(values)
       .then((res)=>{
         console.log(res);
+        localStorage.setItem("token",res.data.access);
+        localStorage.setItem("rtoken",res.data.refresh);
+        navigate("/form")
       }).catch((e)=>{
         console.log(e);
       })

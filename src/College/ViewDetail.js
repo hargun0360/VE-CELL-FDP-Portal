@@ -6,7 +6,7 @@ import { Table, Tbody, Tr, Th, Td } from "react-super-responsive-table"
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { useReactToPrint } from 'react-to-print';
 import { useNavigate } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 
 const ViewDetail = () => {
     const [name, setName] = useState(null);
@@ -24,7 +24,7 @@ const ViewDetail = () => {
     const [state,setState] = useState(true);
     const componentRef = useRef();
     const navigate = useNavigate();
-    
+    const {id} = useParams();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         documentTitle: "Detail",
@@ -39,7 +39,7 @@ const ViewDetail = () => {
         
             <div style={{ display: "flex", justifyContent: "center",alignItems:"center" }}  className="w-100 w-sm-50">
                 <h3 style={{ textAlign: "center", marginTop: "1%", }} className="py-1 px-5 mx-5">View Details</h3>
-               { state ? <div style={{ float:"right"}}> <Button variant="primary" type="button"  className=' mt-2 w-sm-100 ' onClick={handlePrint}>
+               { !id ? <div style={{ float:"right"}}> <Button variant="primary" type="button"  className=' mt-2 w-sm-100 ' onClick={handlePrint}>
                     Print
                 </Button>
                 <Button variant="primary" type="button"  className=' mt-2 w-sm-100 mx-4' onClick={handleReset} >
@@ -214,7 +214,7 @@ const ViewDetail = () => {
                             </div>
                         </Row>
                         </Container>
-                        {state ? <Button variant="primary" style={{ float: "right" }} type="submit" className='mt-2  w-sm-100'>
+                        {id ? <Button variant="primary" style={{ float: "right" }} type="submit" className='mt-2  w-sm-100'>
                             Update
                         </Button> : null}
                     </Card.Body>

@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { doSignupUser } from "../Services/ApiServices";
 const Signup = () => {
 
+  const navigate = useNavigate();
   const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
 
   const validation = useFormik({
@@ -45,13 +46,15 @@ const Signup = () => {
       doSignupUser(values)
       .then((res) =>{
         console.log(res);
+        localStorage.setItem("token",res.data.access);
+        localStorage.setItem("rtoken",res.data.refresh);
+        navigate("/otp");
       }).catch((e)=>{
         console.log(e);
       })
     }
   });
-  
-  const navigate = useNavigate();
+
   const handleLogin = () => {
       navigate("/")
   }
