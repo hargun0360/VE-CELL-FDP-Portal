@@ -5,14 +5,17 @@ import { getAuthToken,RestAxiosService } from "./RestApiService"
 export function doGetRefreshToken() {
     let headers = {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + getAuthToken("rtoken"),
+    }
+    let data = {
+      "refresh":getAuthToken("rtoken"),
     }
     return new Promise((resolve, reject) => {
-      return RestAxiosService(REFRESH_TOKEN, "GET", false, headers).then(
+      return RestAxiosService(REFRESH_TOKEN, "POST", data, headers).then(
         res => {
           resolve(res)
           console.log("In Refresh Token", res)
           if (res.status === 200) {
+            console.log(res.data.access);
             localStorage.setItem("token", res.data.access)
           } else if (res.status === 401) {
             window.location.href = "/"

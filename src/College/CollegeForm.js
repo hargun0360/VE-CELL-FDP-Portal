@@ -47,7 +47,7 @@ function CollegeForm() {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (start && end) {
       const date1 = new Date(start);
       const date2 = new Date(end);
@@ -55,11 +55,13 @@ function CollegeForm() {
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       setDays(diffDays);
     }
-  },[start,end])
+  }, [start, end])
 
   const today = new Date();
   const handleSubmit = (e) => {
+
     e.preventDefault();
+    let any = "";
     if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
       if (online) {
         any = online;
@@ -67,6 +69,7 @@ function CollegeForm() {
         any = offline
       }
       const myForm = new FormData();
+
       myForm.set("name", name);
       myForm.set("department", department);
       myForm.set("college_email", email);
@@ -78,19 +81,20 @@ function CollegeForm() {
       myForm.set("mobile", mobile);
       myForm.set("remarks", remarks);
       myForm.set("certificate", certificate);
-      myForm.set("start_date", start);
+      myForm.set("starting_date", start);
       myForm.set("end_date", end);
-      myForm.set("days", days);
+      myForm.set("number_of_days", days);
       myForm.set("venue", venue);
       myForm.set("certificate_number", certificatenumber);
-    }
+      console.log(myForm);
 
-    doAddDetails(myForm)
-      .then((res) => {
-        console.log(res);
-      }).catch((e) => {
-        console.log(e);
-      })
+      doAddDetails(myForm)
+        .then((res) => {
+          console.log(res);
+        }).catch((e) => {
+          console.log(e);
+        })
+    }
 
   }
   return (<>
@@ -231,7 +235,7 @@ function CollegeForm() {
                 <Col xs={12} md={2}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Number of Days</Form.Label>
-                    <Form.Control type="number" placeholder="No. of Days"  value={days} disabled />
+                    <Form.Control type="number" placeholder="No. of Days" value={days} disabled />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>

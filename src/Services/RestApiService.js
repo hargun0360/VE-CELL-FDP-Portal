@@ -6,20 +6,21 @@ export function getAuthToken(key="token") {
     return getValidatedData(localStorage.getItem(key))
   }
 
-export function RestAxiosService(url, method, body, headers, config) {
-    let extraConfig = typeof config === "object" ? config : {}
+export function RestAxiosService(url, method, body, headers) {
+    // let extraConfig = typeof config === "object" ? config : {}
     let options = {
       url: url,
       method: method,
       data: body,
       headers: { ...headers },
     }
+    console.log(options);
     if (method.toLowerCase() === "get") {
       delete options.data
     }
     return new Promise((resolve, reject) => {
       console.log("In Rest Axios")
-      return axios(Object.assign({}, options, extraConfig))
+      return axios(options)
         .then(function (res) {
           if (res.status >= 200 && res.status < 300) {
             resolve({ status: res.status, data: res.data })
@@ -30,16 +31,22 @@ export function RestAxiosService(url, method, body, headers, config) {
         .catch(function (e) {
           console.log(e)
           if (typeof e === "object" && typeof e.response === "object") {
+            console.log("1");
             if (url.indexOf("/token/refresh")===-1) {
-              if (e.response.status === 401) {
+              console.log("2");
+              if (e.response.status == 406 || e.response.status == 405) {
+                console.log("3");
                 doGetRefreshToken().then(
                   res => {
                     console.log("Response in Rest Axios Refresh ", res)
-                    if (res.status === 200) {
+                    if (res.status  >= 200 && res.status < 300 ) {
                       let headers1={...headers,Authorization:"Bearer " + getAuthToken("token")};
-                      RestAxiosService(url, method, body, headers1, config).then((resX)=>{
+                      console.log("headers1 chootiye",headers1);
+                      RestAxiosService(url, method, body, headers1).then((resX)=>{
+                        console.log("resX",resX);   
                         resolve(resX)
                       },(errX)=>{
+                        console.log("4");
                         reject(errX)
                       })
                       console.log("Here! in place of rest axios")
@@ -49,8 +56,9 @@ export function RestAxiosService(url, method, body, headers, config) {
                     } else return
                   },
                   err => {
+                    console.log("5");
                     console.log("Error in Rest Axios Refresh ", JSON.stringify(err))
-                    if (err.status == 401 && (["/"].indexOf(window.location.pathname)===-1)) {
+                    if (err.status == 405 && (["/"].indexOf(window.location.pathname)===-1)) {
                       window.location.href = "/"
                       localStorage.clear()
                     } 
