@@ -17,6 +17,9 @@ import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal'
+import { doGetAllFDP } from "../Services/ApiServices";
+import * as action from "../Redux/action";
+import { useDispatch,useSelector } from 'react-redux'
 
 
 
@@ -28,28 +31,37 @@ const ViewFDP = () => {
         id: null,
         open: false
     });
+    let cnt = 0;
+    const dispatch = useDispatch();
+    const { val } = useSelector((state) => state.toggle);
+    const [details, setDetails] = useState([]);
+     // //delete order
+     const [deleteModal, setDeleteModal] = useState(false)
+     
+    console.log(val);                                                                                                                                                   
+    useEffect(() => {
+        getFDP();
+    }, [val]);
 
 
-    // //delete order
-    const [deleteModal, setDeleteModal] = useState(false)
+    // Get All FDP
+
+    const getFDP = () => {
+        doGetAllFDP().then((res) => {
+            setDetails(res.data);
+        }).catch((e) => {
+            console.log(e);
+        })
+    }
+
+    if (details.length) {
+        console.log(details);
+    }
+
+   
 
     const [id, setId] = useState(null)
 
-    const [details, setDetails] = useState([
-        { id: "1", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "2", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "3", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "4", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "5", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "6", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "7", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "8", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "9", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "10", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "11", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-        { id: "12", name: "Gopal Babu", type: "Online", fdpname: "AKTU Level-1 (UHV-II)", start: "9/12/2022", end: "10/12/2022", certificate: "2000270130065", incentive: "AKTU 15000" },
-
-    ])
 
     return (
         <React.Fragment>
@@ -65,7 +77,7 @@ const ViewFDP = () => {
                     <Card>
                         <CardBody>
                             <div className="table-responsive">
-                                <Table className="table" style={{ height: "90vh" }}>
+                                <Table className="table" style={{ height: "50vh" }}>
                                     <thead className="table-light">
                                         <tr>
                                             <th className="text-center">#</th>
@@ -84,14 +96,14 @@ const ViewFDP = () => {
                                             details.map((item) => (
                                                 <>
                                                     <tr>
-                                                        <td className="text-center">{item.id}</td>
-                                                        <td className="text-center"> {item.name} </td>
-                                                        <td className="text-center"> {item.type} </td>
-                                                        <td className="text-center"> {item.fdpname} </td>
-                                                        <td className="text-center"> {item.start} </td>
-                                                        <td className="text-center"> {item.end} </td>
-                                                        <td className="text-center"> {item.certificate} </td>
-                                                        <td className="text-center"> {item.incentive} </td>
+                                                        <td className="text-center">{++cnt}</td>
+                                                        <td className="text-center"> {item.name === null ? "" : item.name} </td>
+                                                        <td className="text-center"> {item.fdp_type === null ? "" : item.fdp_type} </td>
+                                                        <td className="text-center"> {item.face_to_face_fdp === "" ? item.online_fdp : item.face_to_face_fdp} </td>
+                                                        <td className="text-center"> {item.starting_date === null ? "" : item.starting_date} </td>
+                                                        <td className="text-center"> {item.end_date === null ? "" : item.end_date} </td>
+                                                        <td className="text-center"> {item.certificate_number === null ? "" : item.certificate_number} </td>
+                                                        <td className="text-center"> {item.incentive_detail === null ? "" : item.incentive_detail} </td>
                                                         <td className="text-center">
                                                             <UncontrolledDropdown>
                                                                 <DropdownToggle href="#" className="card-drop" tag="i">
@@ -100,16 +112,7 @@ const ViewFDP = () => {
                                                                     </div>
                                                                 </DropdownToggle>
                                                                 <DropdownMenu className="dropdown-menu-end">
-                                                                    <Link to={`/view`} style={{ textDecoration: "none" }} >
-                                                                        <DropdownItem>
-                                                                            {" "}
-                                                                            <div className="align-middle me-1">
-                                                                                <RemoveRedEyeSharpIcon color="success" />{" "}&ensp; {("View")}{" "}
-                                                                            </div>
-                                                                        </DropdownItem>
-                                                                    </Link>
-                                                                    <DropdownItem divider />
-                                                                    <Link to={`/view`} style={{ textDecoration: "none" }} >
+                                                                    <Link to={`/view/${item.id}`} style={{ textDecoration: "none" }} >
                                                                         <DropdownItem>
                                                                             {" "}
                                                                             <ModeSharpIcon sx={{ color: "blue" }} />{" "}&ensp;
@@ -120,6 +123,7 @@ const ViewFDP = () => {
                                                                     <DropdownItem tag="button" onClick={() => {
                                                                         setDeleteModal(true);
                                                                         setId(item.id)
+                                                                        dispatch(action.flag(false))
                                                                     }}>
                                                                         {" "}
                                                                         <DeleteIcon sx={{ color: "red" }} />{" "}&ensp;

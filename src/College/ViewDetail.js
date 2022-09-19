@@ -7,6 +7,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
 import { useReactToPrint } from 'react-to-print';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { doGetDetailById } from '../Services/ApiServices';
 
 const ViewDetail = () => {
     const [name, setName] = useState(null);
@@ -16,12 +17,18 @@ const ViewDetail = () => {
     const [designation, setDesignation] = useState(null);
     const [ftype, setFtype] = useState(null);
     const [online, setOnline] = useState(null);
+    const [remarks,setRemarks] = useState("");
     const [offline, setOffline] = useState(null);
     const [incentive, setIncentive] = useState(null);
-    const [remarks, setRemarks] = useState(null);
     const [flag1, setFlag1] = useState(true);
     const [flag2, setFlag2] = useState(true);
+    const [start,setStart] = useState("");
+    const [end,setEnd] = useState("");
+    const [venue,setVenue] = useState("");
+    const [cernum,setCernum] = useState("");
     const [state,setState] = useState(true);
+    const [days,setDays] = useState("")
+    const [fdpname,setFdpName] = useState(null);
     const componentRef = useRef();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -35,17 +42,59 @@ const ViewDetail = () => {
     const handleReset = () =>{
         navigate("/reset");
     }
+    
+    useEffect(()=>{
+        getDetailByID();
+    },[id]);
+
+    const getDetailByID = () =>{
+        doGetDetailById(Number(id)).then((res) => {
+           console.log(res);
+           setName(res.data.name);
+           setDepartment(res.data.department);
+           setEmail(res.data.college_email);
+           setMobile(res.data.phone_number);
+           setDesignation(res.data.designation);
+           setFtype(res.data.fdp_type);
+           setOffline(res.data.face_to_face_fdp);
+           setOnline(res.data.online_fdp);
+           setIncentive(res.data.incentive_detail);
+           setStart(res.data.starting_date);
+           setEnd(res.data.end_date);
+           setVenue(res.data.venue);
+           setCernum(res.data.certificate_number);
+           setDays(res.data.number_of_days)
+           setRemarks(res.data.remarks);
+        }).catch((e) => {
+            console.log(e);
+        })
+    }
+
+    useEffect(()=>{
+        if(offline!=""){
+            setFdpName(offline);
+        }else{
+            setFdpName(online);
+        }
+    },[offline,online])
+   
+
+    const handleClick = (e) =>{
+        e.preventDefault();
+        navigate(`/form/${id}`)
+    }
+
     return (<>
         
             <div style={{ display: "flex", justifyContent: "center",alignItems:"center" }}  className="w-100 w-sm-50">
                 <h3 style={{ textAlign: "center", marginTop: "1%", }} className="py-1 px-5 mx-5">View Details</h3>
-               { !id ? <div style={{ float:"right"}}> <Button variant="primary" type="button"  className=' mt-2 w-sm-100 ' onClick={handlePrint}>
+                <div style={{ float:"right"}}> <Button variant="primary" type="button"  className=' mt-2 w-sm-100 ' onClick={handlePrint}>
                     Print
                 </Button>
                 <Button variant="primary" type="button"  className=' mt-2 w-sm-100 mx-4' onClick={handleReset} >
                     Reset Password
                 </Button>
-                 </div>: null}
+                 </div>
                 
             </div>
             <div  style={{ display: "flex", justifyContent: "center", alignItem: "center", height: "100%", maxWidth: "95vw", padding: "2px" }}>
@@ -70,23 +119,23 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>Name</Th>
-                                                <Td>Gopal Babu</Td>
+                                                <Td>{name}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>Department</Th>
-                                                <Td>Electronics and Communication Engineering</Td>
+                                                <Td>{department}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>College mail Id</Th>
-                                                <Td>GopalBabu2022@akgec.ac.in</Td>
+                                                <Td>{email}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>Mobile Number</Th>
-                                                <Td>9956118028</Td>
+                                                <Td>{mobile}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>Designation</Th>
-                                                <Td>HOD</Td>
+                                                <Td>{designation}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -111,11 +160,11 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>FDP type</Th>
-                                                <Td>Face to Face FDP</Td>
+                                                <Td>{ftype}</Td>
                                             </Tr>
                                             <Tr>
-                                                <Th>Face to Face FDP</Th>
-                                                <Td>AKTU 10 days FDP on UHBC (UHV-III)</Td>
+                                                <Th>{ftype}</Th>
+                                                <Td>{fdpname}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -140,23 +189,23 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>Starting Date</Th>
-                                                <Td>10/09/2022</Td>
+                                                <Td>{start}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>End Date</Th>
-                                                <Td>20/09/2022</Td>
+                                                <Td>{end}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>Number of Days</Th>
-                                                <Td>10</Td>
+                                                <Td>{days}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>Venue</Th>
-                                                <Td>27th KM Milestone, Delhi - Meerut Expy, Ghaziabad, Uttar Pradesh 201009</Td>
+                                                <Td>{venue}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>AICTE/AKTU Certificate Number</Th>
-                                                <Td>2000270130065</Td>
+                                                <Td>{cernum}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -181,7 +230,7 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>Incentive Detail</Th>
-                                                <Td>AICTE UHV-IV (15,000)</Td>
+                                                <Td>{incentive}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -206,7 +255,7 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>Remarks</Th>
-                                                <Td>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</Td>
+                                                <Td>{remarks}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
@@ -214,9 +263,9 @@ const ViewDetail = () => {
                             </div>
                         </Row>
                         </Container>
-                        {id ? <Button variant="primary" style={{ float: "right" }} type="submit" className='mt-2  w-sm-100'>
+                         <Button variant="primary" style={{ float: "right" }} type="submit" className='mt-2  w-sm-100' onClick={handleClick}>
                             Update
-                        </Button> : null}
+                        </Button> 
                     </Card.Body>
                 </Card>
             </div>

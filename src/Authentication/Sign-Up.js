@@ -46,9 +46,7 @@ const Signup = () => {
       doSignupUser(values)
       .then((res) =>{
         console.log(res);
-        localStorage.setItem("token",res.data.access);
-        localStorage.setItem("rtoken",res.data.refresh);
-        navigate("/otp");
+        navigate("/otp",{state:values});
       }).catch((e)=>{
         console.log(e);
       })

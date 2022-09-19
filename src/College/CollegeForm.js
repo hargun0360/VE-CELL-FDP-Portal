@@ -5,16 +5,23 @@ import { logDOM } from '@testing-library/react';
 import { Container } from 'reactstrap';
 import "../App.css";
 import Breadcrumb from './Breadcrumb';
-import { doAddDetails } from '../Services/ApiServices';
+import { doAddDetails,doUpdateDetails } from '../Services/ApiServices';
+import { getAuthToken } from '../Services/RestApiService'
+import { useParams } from 'react-router-dom';
+import { doGetDetailById } from '../Services/ApiServices';
+
 function CollegeForm() {
+
+  const { id } = useParams();
+
   const [name, setName] = useState(null);
   const [department, setDepartment] = useState(null);
   const [email, setEmail] = useState(null);
   const [mobile, setMobile] = useState(null);
   const [designation, setDesignation] = useState(null);
   const [ftype, setFtype] = useState(null);
-  const [online, setOnline] = useState(null);
-  const [offline, setOffline] = useState(null);
+  const [online, setOnline] = useState("");
+  const [offline, setOffline] = useState("");
   const [incentive, setIncentive] = useState(null);
   const [remarks, setRemarks] = useState(null);
   const [certificate, setCertificate] = useState(null);
@@ -47,6 +54,37 @@ function CollegeForm() {
     }
   }
 
+
+  useEffect(() => {
+    if (id) {
+      getDetailByID();
+    }
+  }, [id]);
+
+  const getDetailByID = () => {
+    doGetDetailById(Number(id)).then((res) => {
+      console.log(res);
+      setName(res.data.name);
+      setDepartment(res.data.department);
+      setEmail(res.data.college_email);
+      setMobile(res.data.phone_number);
+      setDesignation(res.data.designation);
+      setFtype(res.data.fdp_type);
+      setOffline(res.data.face_to_face_fdp);
+      setOnline(res.data.online_fdp);
+      setIncentive(res.data.incentive_detail);
+      setStart(res.data.starting_date);
+      setEnd(res.data.end_date);
+      setVenue(res.data.venue);
+      setCertificateNumber(res.data.certificate_number);
+      setDays(res.data.number_of_days)
+      setRemarks(res.data.remarks);
+      setCertificate(res.data.certificate)
+    }).catch((e) => {
+      console.log(e);
+    })
+  }
+
   useEffect(() => {
     if (start && end) {
       const date1 = new Date(start);
@@ -61,41 +99,70 @@ function CollegeForm() {
   const handleSubmit = (e) => {
 
     e.preventDefault();
-    let any = "";
-    if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
-      if (online) {
-        any = online;
-      } else {
-        any = offline
+
+    if (id) {
+      if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
+        const myForm = new FormData();
+
+        myForm.set("name", name);
+        myForm.set("department", department);
+        myForm.set("college_email", email);
+        myForm.set("mobile", mobile);
+        myForm.set("designation", designation);
+        myForm.set("fdp_type", ftype);
+        myForm.set("face_to_face_fdp", offline);
+        myForm.set("incentive_detail", incentive);
+        myForm.set("phone_number", mobile);
+        myForm.set("remarks", remarks);
+        myForm.set("certificate", certificate);
+        myForm.set("starting_date", start);
+        myForm.set("end_date", end);
+        myForm.set("number_of_days", days);
+        myForm.set("online_fdp", online);
+        myForm.set("venue", venue);
+        myForm.set("certificate_number", certificatenumber);
+
+        console.log(myForm);
+
+        doUpdateDetails(myForm,id)
+          .then((res) => {
+            console.log(res);
+          }).catch((e) => {
+            console.log(e);
+          })
       }
-      const myForm = new FormData();
+    } else {
+      if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
+        const myForm = new FormData();
 
-      myForm.set("name", name);
-      myForm.set("department", department);
-      myForm.set("college_email", email);
-      myForm.set("mobile", mobile);
-      myForm.set("designation", designation);
-      myForm.set("fdp_type", ftype);
-      myForm.set("fdp_name", any);
-      myForm.set("incentive_detail", incentive);
-      myForm.set("mobile", mobile);
-      myForm.set("remarks", remarks);
-      myForm.set("certificate", certificate);
-      myForm.set("starting_date", start);
-      myForm.set("end_date", end);
-      myForm.set("number_of_days", days);
-      myForm.set("venue", venue);
-      myForm.set("certificate_number", certificatenumber);
-      console.log(myForm);
+        myForm.set("name", name);
+        myForm.set("department", department);
+        myForm.set("college_email", email);
+        myForm.set("mobile", mobile);
+        myForm.set("designation", designation);
+        myForm.set("fdp_type", ftype);
+        myForm.set("face_to_face_fdp", offline);
+        myForm.set("incentive_detail", incentive);
+        myForm.set("phone_number", mobile);
+        myForm.set("remarks", remarks);
+        myForm.set("certificate", certificate);
+        myForm.set("starting_date", start);
+        myForm.set("end_date", end);
+        myForm.set("number_of_days", days);
+        myForm.set("online_fdp", online);
+        myForm.set("venue", venue);
+        myForm.set("certificate_number", certificatenumber);
 
-      doAddDetails(myForm)
-        .then((res) => {
-          console.log(res);
-        }).catch((e) => {
-          console.log(e);
-        })
+        console.log(myForm);
+
+        doAddDetails(myForm)
+          .then((res) => {
+            console.log(res);
+          }).catch((e) => {
+            console.log(e);
+          })
+      }
     }
-
   }
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
@@ -113,20 +180,20 @@ function CollegeForm() {
             <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
               <Row className='mb-3 mt-3'>
                 <Card.Title>
-                  Faculty Detail
+                  Faculty/Student Detail
                 </Card.Title>
               </Row>
               <Row>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                    <Form.Control type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Department</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
+                    <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
                       <option>Select the Department</option>
                       <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                       <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
@@ -144,13 +211,13 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>College mail id</Form.Label>
-                    <Form.Control type="email" placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
+                    <Form.Control type="email" value={email} placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" placeholder="ex-9956118026" required minlength="8" onChange={(e) => setMobile(e.target.value)} />
+                    <Form.Control type="number" value={mobile} placeholder="ex-9956118026" required minlength="8" onChange={(e) => setMobile(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>
@@ -158,7 +225,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
-                    <Form.Control type="text" placeholder="HOD,Dean,etc." required onChange={(e) => setDesignation(e.target.value)} />
+                    <Form.Control type="text" value={designation} placeholder="HOD,Dean,etc." required onChange={(e) => setDesignation(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>
@@ -171,7 +238,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>FDP type</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" required onChange={(e) => setFtype(e.target.value)}>
+                    <Form.Select className='mb-3' value={ftype} aria-label="Default select example" required onChange={(e) => setFtype(e.target.value)}>
                       <option>Select the FDP type</option>
                       <option value="Online">Online</option>
                       <option value="Face to Face FDP">Face to Face FDP</option>
@@ -183,7 +250,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Face to Face FDP</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" disabled={flag1} onChange={(e) => setOffline(e.target.value)}>
+                    <Form.Select className='mb-3' value={offline} aria-label="Default select example" disabled={flag1} onChange={(e) => setOffline(e.target.value)}>
                       <option>Select the Face to Face FDP</option>
                       <option value="AKTU Level-1 (UHV-II)">AKTU Level-1 (UHV-II)</option>
                       <option value="AKTU Refresher">AKTU Refresher</option>
@@ -201,7 +268,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Online FDP</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" disabled={flag2} onChange={(e) => setOnline(e.target.value)}>
+                    <Form.Select className='mb-3' value={online} aria-label="Default select example" disabled={flag2} onChange={(e) => setOnline(e.target.value)}>
                       <option>Select the Online FDP type</option>
                       <option value="AICTE-Five Days Introductory FDP">AICTE-Five Days Introductory FDP</option>
                       <option value="AICTE-UHV Refresher Part-I">AICTE-UHV Refresher Part-I</option>
@@ -223,25 +290,25 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <Form.Control type="date" placeholder="Starting Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setStart(e.target.value)} />
+                    <Form.Control type="date" value={start} placeholder="Starting Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setStart(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type="date" placeholder="End Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setEnd(e.target.value)} />
+                    <Form.Control type="date" value={end} placeholder="End Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setEnd(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={2}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Number of Days</Form.Label>
-                    <Form.Control type="number" placeholder="No. of Days" value={days} disabled />
+                    <Form.Control type="number" value={days} placeholder="No. of Days" value={days} disabled />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Venue</Form.Label>
-                    <Form.Control type="text" placeholder="Venue" required onChange={(e) => setVenue(e.target.value)} />
+                    <Form.Control type="text" value={venue} placeholder="Venue" required onChange={(e) => setVenue(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>
@@ -249,7 +316,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>AICTE/AKTU Certificate Number</Form.Label>
-                    <Form.Control type="text" placeholder="Certificate Number" required onChange={(e) => setCertificateNumber(e.target.value)} />
+                    <Form.Control type="text" value={certificatenumber} placeholder="Certificate Number" required onChange={(e) => setCertificateNumber(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>
@@ -268,7 +335,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Incentive Detail</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
+                    <Form.Select className='mb-3' value={incentive} aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
                       <option>Select the Incentive Details</option>
                       <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                       <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
@@ -281,7 +348,7 @@ function CollegeForm() {
               </Row>
               <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
                 <Form.Label>Remarks</Form.Label>
-                <Form.Control as="textarea" rows={2} />
+                <Form.Control value={remarks} as="textarea" rows={2} />
               </Form.Group>
               <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
                 Submit

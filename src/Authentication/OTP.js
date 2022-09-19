@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { useLocation,useNavigate } from 'react-router-dom'
+
 
 //Verification code package
 import AuthCode from "react-auth-code-input"
@@ -14,16 +16,43 @@ import {
     Row,
 } from "reactstrap"
 import profile from "../Assets/images/profile-img.png";
+import { doSignupUser, doVerifyUser } from '../Services/ApiServices'
 
 
 const OTP = () => {
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
+    const [otp,setOtp] = useState(null);
+    const navigate = useNavigate();
+
+    const location = useLocation();
 
     const handleClick = () => {
         setMinutes(1);
+         doSignupUser({email : location.state.email,})
+            .then((res)=>{
+                console.log(res);
+            }).catch((e)=>{
+                console.log(e);
+            })
     }
 
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        let obj = {
+            email : location.state.email,
+            otp:otp
+        }
+        console.log(obj);
+        doVerifyUser(obj)
+        .then((res)=>{
+            console.log(res);
+            navigate("/");
+        }).catch((e)=>{
+            console.log(e);
+        })
+    }
+    
     useEffect(() => {
         let myInterval = setInterval(() => {
             if (seconds > 0) {
@@ -76,7 +105,7 @@ const OTP = () => {
                                                     </span>
                                                 </p>
 
-                                                <Form>
+                                                <Form onSubmit={handleSubmit} >
                                                     <Row>
                                                         <Col xs={12}>
                                                             <FormGroup className="verification">
@@ -95,16 +124,15 @@ const OTP = () => {
                                                                         border: "1px solid #ced4da",
                                                                         textTransform: "uppercase",
                                                                     }}
-                                                                    onChange={(value) => console.log(value)}
+                                                                    onChange={(value) => setOtp(value)}
                                                                 />
                                                             </FormGroup>
                                                         </Col>
                                                     </Row>
+                                                    <button className="btn btn-primary w-100 mt-3 d-grid" type='submit' >
+                                                        Confirm
+                                                    </button>
                                                 </Form>
-
-                                                <div className="btn btn-primary w-md mt-3 d-grid">
-                                                    Confirm
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

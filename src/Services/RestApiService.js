@@ -33,9 +33,7 @@ export function RestAxiosService(url, method, body, headers) {
           if (typeof e === "object" && typeof e.response === "object") {
             console.log("1");
             if (url.indexOf("/token/refresh")===-1) {
-              console.log("2");
-              if (e.response.status == 406 || e.response.status == 405) {
-                console.log("3");
+              if (e.response.status == 406 ) {
                 doGetRefreshToken().then(
                   res => {
                     console.log("Response in Rest Axios Refresh ", res)
@@ -46,7 +44,6 @@ export function RestAxiosService(url, method, body, headers) {
                         console.log("resX",resX);   
                         resolve(resX)
                       },(errX)=>{
-                        console.log("4");
                         reject(errX)
                       })
                       console.log("Here! in place of rest axios")
@@ -56,7 +53,6 @@ export function RestAxiosService(url, method, body, headers) {
                     } else return
                   },
                   err => {
-                    console.log("5");
                     console.log("Error in Rest Axios Refresh ", JSON.stringify(err))
                     if (err.status == 405 && (["/"].indexOf(window.location.pathname)===-1)) {
                       window.location.href = "/"

@@ -15,7 +15,9 @@ function App() {
        <Routes>
        <Route exact path="/" element={<Login />} />
        <Route exact path="/view" element={<ViewDetail />} />
+       <Route exact path="/view/:id" element={<ViewDetail />} />
        <Route exact path="/form" element={<CollegeForm />} />
+       <Route exact path="/form/:id" element={<CollegeForm />} />
        <Route exact path="/signup" element={<Signup />} />
        <Route exact path="/forgot" element={<Forgot />} />
        <Route exact path="/otp" element={<OTP />} />

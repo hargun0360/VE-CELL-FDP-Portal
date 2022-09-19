@@ -1,4 +1,4 @@
-import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL } from "./ApiUrls"
+import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, } from "./ApiUrls"
 import { getAuthToken,RestAxiosService } from "./RestApiService"
 
 // Function To Get The Refresh Token from Local Storage
@@ -65,7 +65,7 @@ export function doSignupUser(credentials) {
     })
   }
 
-  // Add Details
+// Add Details
 export function doAddDetails(details) {
   let headers = {
     "Content-Type": "multipart/form-data",
@@ -73,6 +73,106 @@ export function doAddDetails(details) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(ADD_FDP_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Update Details
+export function doUpdateDetails(details,id) {
+  let headers = {
+    "Content-Type": "multipart/form-data",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(ADD_FDP_URL + `${id}/`, "PATCH", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+
+// Get all FDP
+export function doGetAllFDP() {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(GET_ALL_FDP, "GET", false, headers).then((res) => {
+      console.log("Get Users Response :- ", res);
+      resolve(res)
+    }, (err) => {
+      reject(err);
+    })
+  })
+}
+
+// Verify User
+export function doVerifyUser(credentials) {
+  let headers = {
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(VERIFY_OTP , "POST", credentials, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// GET Detail by Id
+export function doGetDetailById(id) {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(
+      ADD_FDP_URL + `${id}/` ,
+      "GET",
+      false, 
+      headers
+    ).then(
+      res => {
+        console.log("Get User Response :- ", res)
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// DELETE FDP by Id
+export function doDeleteFDPById(id) {
+  // console.log(id)
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(
+      ADD_FDP_URL + `${id}/`,
+      "DELETE",
+      false,
+      headers
+    ).then(
       res => {
         resolve(res)
       },

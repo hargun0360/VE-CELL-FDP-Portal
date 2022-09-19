@@ -1,15 +1,27 @@
 import PropTypes from 'prop-types'
 import React from "react"
 import { Col, Modal, ModalBody, Row } from "reactstrap"
+import { doDeleteFDPById } from '../Services/ApiServices'
+import { useSelector,useDispatch } from 'react-redux'
+import * as action from "../Redux/action"
 
 const DeleteModal = ({ show, setShow, id }) => {
+    const dispatch = useDispatch()
     const onDeleteClick = () => {
         console.log(id);
         setShow(false);
+        doDeleteFDPById(id)
+        .then((res)=>{
+            console.log(res);
+            dispatch(action.flag(true))
+        }).catch((e)=>{
+            console.log(e);
+        })
     }
     const onCloseClick = () => {
         setShow(false);
     }
+
     return (
         <Modal isOpen={show} toggle={onCloseClick} centered={true}>
             <ModalBody className="py-3 px-5">
