@@ -17,6 +17,7 @@ import {
 // import images
 import profile from "../Assets/images/profile-img.png";
 import { useNavigate } from "react-router-dom";
+import { doVerifyOtp } from "../Services/ApiServices";
 const Forgot = () => {
   const navigate = useNavigate();
   const validation = useFormik({
@@ -31,7 +32,13 @@ const Forgot = () => {
     }),
     onSubmit: (values) => {
       console.log(values);
-      navigate("/otp")
+      doVerifyOtp(values)
+      .then((res)=>{
+        console.log(res);
+        navigate("/otp",{state:{email:values.email,otp:"forgot"}});
+      }).catch((e)=>{
+        console.log(e);
+      })
     }
   });
 

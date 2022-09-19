@@ -16,7 +16,7 @@ import {
     Row,
 } from "reactstrap"
 import profile from "../Assets/images/profile-img.png";
-import { doSignupUser, doVerifyUser } from '../Services/ApiServices'
+import { doSignupUser, doVerifyResetOtp, doVerifyUser } from '../Services/ApiServices'
 
 
 const OTP = () => {
@@ -44,6 +44,15 @@ const OTP = () => {
             otp:otp
         }
         console.log(obj);
+        if(location.state.otp=="forgot"){
+            doVerifyResetOtp(obj)
+            .then((res)=>{
+                console.log(res);
+                navigate("/");
+            }).catch((e)=>{
+                console.log(e);
+            })
+        }
         doVerifyUser(obj)
         .then((res)=>{
             console.log(res);
@@ -53,7 +62,7 @@ const OTP = () => {
         })
     }
     
-    useEffect(() => {
+    useEffect(() => {       
         let myInterval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(seconds - 1);

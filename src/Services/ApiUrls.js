@@ -7,3 +7,6 @@ export const SIGNUP_URL = BASE_URL + 'signup/sendotp/';
 export const ADD_FDP_URL = BASE_URL + 'form/'
 export const GET_ALL_FDP = BASE_URL + 'form/list/'
 export const VERIFY_OTP = BASE_URL + 'signup/verify/'
+export const RESET_PASSWORD = BASE_URL + 'reset/password/'
+export const FORGOT_OTP = BASE_URL + 'reset/'
+export const VERIFY_RESET_OTP = BASE_URL + 'reset/verify/'

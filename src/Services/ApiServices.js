@@ -1,4 +1,4 @@
-import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, } from "./ApiUrls"
+import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, RESET_PASSWORD, FORGOT_OTP, VERIFY_RESET_OTP, } from "./ApiUrls"
 import { getAuthToken,RestAxiosService } from "./RestApiService"
 
 // Function To Get The Refresh Token from Local Storage
@@ -65,6 +65,23 @@ export function doSignupUser(credentials) {
     })
   }
 
+// OTP Forgot
+export function doVerifyOtp(credentials) {
+    let headers = {
+      "Content-Type": "application/json",
+    }
+    return new Promise((resolve, reject) => {
+      return RestAxiosService(FORGOT_OTP, "POST", credentials, headers).then(
+        res => {
+          resolve(res)
+        },
+        err => {
+          reject(err)
+        }
+      )
+    })
+  }
+
 // Add Details
 export function doAddDetails(details) {
   let headers = {
@@ -73,6 +90,24 @@ export function doAddDetails(details) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(ADD_FDP_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Reset Password
+export function doResetPassword(new_pass) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(RESET_PASSWORD, "PATCH", new_pass, headers).then(
       res => {
         resolve(res)
       },
@@ -125,6 +160,23 @@ export function doVerifyUser(credentials) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(VERIFY_OTP , "POST", credentials, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Verify Reset OTP
+export function doVerifyResetOtp(credentials) {
+  let headers = {
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(VERIFY_RESET_OTP , "POST", credentials, headers).then(
       res => {
         resolve(res)
       },
