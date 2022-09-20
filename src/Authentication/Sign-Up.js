@@ -18,8 +18,9 @@ import {
 import profile from "../Assets/images/profile-img.png";
 import { useNavigate } from "react-router-dom";
 import { doSignupUser } from "../Services/ApiServices";
+import Spinner from '../Components/Spinner'
 const Signup = () => {
-
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
 
@@ -43,22 +44,28 @@ const Signup = () => {
       email: Yup.string().required("Please Enter Your Email"),
     }),
     onSubmit: (values) => {
+      setLoading(true);
       doSignupUser(values)
       .then((res) =>{
         console.log(res);
+        setLoading(false)
         navigate("/otp",{state:values});
       }).catch((e)=>{
         console.log(e);
+        setLoading(false)
       })
     }
   });
 
   const handleLogin = () => {
       navigate("/")
-  }
+  } 
 
   return (
     <React.Fragment>
+      {
+        loading & <Spinner />
+      }
       <div className="account-pages my-5 pt-sm-5">
         <Container>
           <Row className="justify-content-center">

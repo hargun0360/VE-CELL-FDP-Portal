@@ -4,18 +4,24 @@ import { Col, Modal, ModalBody, Row } from "reactstrap"
 import { doDeleteFDPById } from '../Services/ApiServices'
 import { useSelector,useDispatch } from 'react-redux'
 import * as action from "../Redux/action"
+import Spinner from '../Components/Spinner'
 
-const DeleteModal = ({ show, setShow, id }) => {
+const DeleteModal = ({ show, setShow, setLoading, id }) => {
+
     const dispatch = useDispatch()
+    const [loading, setLoading] = useState(false)
     const onDeleteClick = () => {
+        setLoading(true)
         console.log(id);
         setShow(false);
         doDeleteFDPById(id)
         .then((res)=>{
             console.log(res);
+            setLoading(false)
             dispatch(action.flag(true))
         }).catch((e)=>{
             console.log(e);
+            setLoading(false)
         })
     }
     const onCloseClick = () => {
@@ -24,6 +30,7 @@ const DeleteModal = ({ show, setShow, id }) => {
 
     return (
         <Modal isOpen={show} toggle={onCloseClick} centered={true}>
+
             <ModalBody className="py-3 px-5">
                 <Row>
                     <Col lg={12}>

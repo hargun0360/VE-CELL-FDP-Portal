@@ -9,11 +9,11 @@ import { useFormik } from "formik";
 import profile from "../Assets/images/profile-img.png";
 import { useNavigate } from "react-router-dom";
 import { doLoginUser } from "../Services/ApiServices";
-
+import Spinner from '../Components/Spinner'
 const Login = props => {
 
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false)
   const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
 
   const validation = useFormik({
@@ -38,14 +38,17 @@ const Login = props => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
+      setLoading(true);
       console.log(values);  
       doLoginUser(values)
       .then((res)=>{
         console.log(res);
+        setLoading(false)
         localStorage.setItem("token",res.data.access);
         localStorage.setItem("rtoken",res.data.refresh);
         navigate("/form")
       }).catch((e)=>{
+        setLoading(false)
         console.log(e);
       })
     }
@@ -67,9 +70,7 @@ const Login = props => {
 
   return (
     <React.Fragment>
-      {/* <MetaTags>
-        <title>Login | Skote - React Admin & Dashboard Template</title>
-      </MetaTags> */}
+      {loading & <Spinner />}
       <div className="home-btn d-none d-sm-block">
         {/* <Link to="/" className="text-dark">
           <i className="fas fa-home h2" />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation,useNavigate } from 'react-router-dom'
 
-
+import Spinner from '../Components/Spinner'
 //Verification code package
 import AuthCode from "react-auth-code-input"
 import 'boxicons'
@@ -24,7 +24,7 @@ const OTP = () => {
     const [seconds, setSeconds] = useState(0);
     const [otp,setOtp] = useState(null);
     const navigate = useNavigate();
-
+    const [loading, setLoading] = useState(false)
     const location = useLocation();
 
     const handleClick = () => {
@@ -39,6 +39,7 @@ const OTP = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault();
+        setLoading(true);
         let obj = {
             email : location.state.email,
             otp:otp
@@ -48,9 +49,11 @@ const OTP = () => {
             doVerifyResetOtp(obj)
             .then((res)=>{
                 console.log(res);
+                setLoading(false);
                 navigate("/");
             }).catch((e)=>{
                 console.log(e);
+                setLoading(false);  
             })
         }
         doVerifyUser(obj)
@@ -59,6 +62,7 @@ const OTP = () => {
             navigate("/");
         }).catch((e)=>{
             console.log(e);
+            setLoading(false);
         })
     }
     
@@ -82,6 +86,11 @@ const OTP = () => {
     });
     return (
         <React.Fragment>
+            {
+                
+                    loading && <Spinner />
+                
+            }
             <div className="account-pages my-5 pt-sm-5">
                 <Container>
                     <Row className="justify-content-center">

@@ -9,11 +9,12 @@ import { doAddDetails,doUpdateDetails } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
 import { useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
+import Spinner from '../Components/Spinner'
 
 function CollegeForm() {
 
   const { id } = useParams();
-
+  const [loading, setLoading] = useState(false)
   const [name, setName] = useState(null);
   const [department, setDepartment] = useState(null);
   const [email, setEmail] = useState(null);
@@ -97,7 +98,7 @@ function CollegeForm() {
 
   const today = new Date();
   const handleSubmit = (e) => {
-
+    setLOading(true);
     e.preventDefault();
 
     if (id) {
@@ -127,8 +128,10 @@ function CollegeForm() {
         doUpdateDetails(myForm,id)
           .then((res) => {
             console.log(res);
+            setLoading(false)
           }).catch((e) => {
             console.log(e);
+            setLoading(false)
           })
       }
     } else {
@@ -158,8 +161,10 @@ function CollegeForm() {
         doAddDetails(myForm)
           .then((res) => {
             console.log(res);
+            setLoading(false)
           }).catch((e) => {
             console.log(e);
+            setLoading(false)
           })
       }
     }
@@ -167,6 +172,9 @@ function CollegeForm() {
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
     <div className='page-content'>
+      {
+        loading & <Spinner />
+      }
       <Container fluid>
         {flag ? <Breadcrumb
           title="Update FDP"

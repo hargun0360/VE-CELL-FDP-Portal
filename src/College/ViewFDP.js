@@ -21,9 +21,10 @@ import { doGetAllFDP } from "../Services/ApiServices";
 import * as action from "../Redux/action";
 import { useDispatch,useSelector } from 'react-redux'
 
-
+import Spinner from '../Components/Spinner'
 
 const ViewFDP = () => {
+    const [loading, setLoading] = useState(false)
     const [project, setProject] = useState(null)
     const [modal, setModal] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
@@ -65,8 +66,11 @@ const ViewFDP = () => {
 
     return (
         <React.Fragment>
+            {
+                loading & <Spinner />
+            }
             <DeleteModal
-                show={deleteModal} setShow={setDeleteModal} id={id}
+                show={deleteModal} setShow={setDeleteModal} setLoading={setLoading} id={id}
             />
             <div className="w-100 h-100 pb-3">
                 <Container fluid>
