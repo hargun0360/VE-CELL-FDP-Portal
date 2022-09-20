@@ -7,9 +7,11 @@ import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, 
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import profile from "../Assets/images/profile-img.png";
+import { doResetPassword } from "../Services/ApiServices";
+import { useNavigate } from "react-router-dom";
 
 const RecoverPass = props => {
-
+  const navigate  = useNavigate();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -24,6 +26,13 @@ const RecoverPass = props => {
     }),
     onSubmit: (values) => {
       console.log(values);
+      doResetPassword({new_password:values.Npassword})
+      .then((res)=>{
+        console.log(res);
+        navigate("/")
+      }).catch((e)=>{
+        console.log(e);
+      })
     }
   });
 

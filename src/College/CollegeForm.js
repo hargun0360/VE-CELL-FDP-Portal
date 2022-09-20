@@ -226,7 +226,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" value={mobile} placeholder="ex-9956118026" required minlength="8" onChange={(e) => setMobile(e.target.value)} />
+                    <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="8" onChange={(e) => setMobile(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>
