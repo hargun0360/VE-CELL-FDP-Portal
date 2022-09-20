@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation,useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import Spinner from '../Components/Spinner'
 //Verification code package
@@ -22,51 +22,57 @@ import { doSignupUser, doVerifyResetOtp, doVerifyUser } from '../Services/ApiSer
 const OTP = () => {
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
-    const [otp,setOtp] = useState(null);
+    const [otp, setOtp] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
     const location = useLocation();
 
     const handleClick = () => {
         setMinutes(1);
-         doSignupUser({email : location.state.email,})
-            .then((res)=>{
+        if (location.state.otp == "forgot"){
+            
+        }else{
+            doSignupUser({ email: location.state.email, })
+            .then((res) => {
                 console.log(res);
-            }).catch((e)=>{
+            }).catch((e) => {
                 console.log(e);
             })
+        }
     }
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
+        console.log(location.state.otp);
         let obj = {
-            email : location.state.email,
-            otp:otp
+            email: location.state.email,
+            otp: otp
         }
         console.log(obj);
-        if(location.state.otp=="forgot"){
+        if (location.state.otp == "forgot") {
             doVerifyResetOtp(obj)
-            .then((res)=>{
-                console.log(res);
-                setLoading(false);
-                navigate("/");
-            }).catch((e)=>{
-                console.log(e);
-                setLoading(false);  
-            })
+                .then((res) => {
+                    console.log(res);
+                    setLoading(false);
+                    navigate("/");
+                }).catch((e) => {
+                    console.log(e);
+                    setLoading(false);
+                })
+        } else {
+            doVerifyUser(obj)
+                .then((res) => {
+                    console.log(res);
+                    navigate("/");
+                }).catch((e) => {
+                    console.log(e);
+                    setLoading(false);
+                })
         }
-        doVerifyUser(obj)
-        .then((res)=>{
-            console.log(res);
-            navigate("/");
-        }).catch((e)=>{
-            console.log(e);
-            setLoading(false);
-        })
     }
-    
-    useEffect(() => {       
+
+    useEffect(() => {
         let myInterval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(seconds - 1);
@@ -87,9 +93,9 @@ const OTP = () => {
     return (
         <React.Fragment>
             {
-                
-                    loading && <Spinner />
-                
+
+                loading && <Spinner />
+
             }
             <div className="account-pages my-5 pt-sm-5">
                 <Container>

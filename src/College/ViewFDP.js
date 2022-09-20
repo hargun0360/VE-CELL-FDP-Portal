@@ -66,9 +66,7 @@ const ViewFDP = () => {
 
     return (
         <React.Fragment>
-            {
-        loading ? <Spinner /> : null
-      }
+          
             <DeleteModal
                 show={deleteModal} setShow={setDeleteModal} setLoading={setLoader} id={id}
             />
