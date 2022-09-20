@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 
@@ -9,9 +9,10 @@ import { useFormik } from "formik";
 import profile from "../Assets/images/profile-img.png";
 import { doResetPassword } from "../Services/ApiServices";
 import { useNavigate } from "react-router-dom";
-
+import Spinner from '../Components/Spinner'
 const Reset = props => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false)
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -25,6 +26,7 @@ const Reset = props => {
       Npassword: Yup.string().required("Please Enter Your New Password"),
     }),
     onSubmit: (values) => {
+      setLoading(true);
       console.log(values);
       let obj = {
         new_password:values.Npassword
@@ -32,11 +34,13 @@ const Reset = props => {
       doResetPassword(obj)
       .then((res)=>{
         console.log(res);
+        setLoading(false)
         localStorage.setItem("token",res.data.access);
         localStorage.setItem("rtoken",res.data.refresh);
         navigate("/")
       }).catch((e)=>{
         console.log(e);
+        setLoading(false)
       })
     }
   });
@@ -50,9 +54,7 @@ const Reset = props => {
 
   return (
     <React.Fragment>
-      {/* <MetaTags>
-        <title>Login | Skote - React Admin & Dashboard Template</title>
-      </MetaTags> */}
+      {loading ? <Spinner /> : null}
       <div className="home-btn d-none d-sm-block">
         {/* <Link to="/" className="text-dark">
           <i className="fas fa-home h2" />

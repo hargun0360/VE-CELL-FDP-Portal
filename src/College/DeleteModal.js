@@ -9,7 +9,7 @@ import Spinner from '../Components/Spinner'
 const DeleteModal = ({ show, setShow, setLoading, id }) => {
 
     const dispatch = useDispatch()
-    const [loading, setLoading] = useState(false)
+    
     const onDeleteClick = () => {
         setLoading(true)
         console.log(id);

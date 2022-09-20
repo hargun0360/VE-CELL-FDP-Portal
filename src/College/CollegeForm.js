@@ -32,7 +32,7 @@ function CollegeForm() {
   const [certificatenumber, setCertificateNumber] = useState(null);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-  const [days, setDays] = useState(null);
+  const [days, setDays] = useState("");
   const [venue, setVenue] = useState(null);
 
   useEffect(() => {
@@ -98,8 +98,8 @@ function CollegeForm() {
 
   const today = new Date();
   const handleSubmit = (e) => {
-    setLOading(true);
     e.preventDefault();
+    setLoading(true);
 
     if (id) {
       if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
@@ -172,10 +172,11 @@ function CollegeForm() {
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
     <div className='page-content'>
-      {
-        loading & <Spinner />
-      }
+     
       <Container fluid>
+      {
+        loading ? <Spinner /> : null
+      }
         {flag ? <Breadcrumb
           title="Update FDP"
           breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add" }]}
@@ -310,7 +311,7 @@ function CollegeForm() {
                 <Col xs={12} md={2}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Number of Days</Form.Label>
-                    <Form.Control type="number" value={days} placeholder="No. of Days" value={days} disabled />
+                    <Form.Control type="number" value={days} placeholder="No. of Days"  disabled />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>

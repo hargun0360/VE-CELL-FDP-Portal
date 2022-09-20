@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -63,8 +63,8 @@ const Signup = () => {
 
   return (
     <React.Fragment>
-      {
-        loading & <Spinner />
+       {
+        loading ? <Spinner /> : null
       }
       <div className="account-pages my-5 pt-sm-5">
         <Container>

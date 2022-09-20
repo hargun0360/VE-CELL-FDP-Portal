@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 
@@ -70,7 +70,9 @@ const Login = props => {
 
   return (
     <React.Fragment>
-      {loading & <Spinner />}
+       {
+        loading ? <Spinner /> : null
+      }
       <div className="home-btn d-none d-sm-block">
         {/* <Link to="/" className="text-dark">
           <i className="fas fa-home h2" />
