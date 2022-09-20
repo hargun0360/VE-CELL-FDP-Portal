@@ -40,7 +40,10 @@ function App() {
           <PrivateRoute>
             <Reset />
           </PrivateRoute>} />
-        {/* <Route exact path="/recoverpass" element={<RecoverPass />} /> */}
+        <Route exact path="/recoverpass" element={
+        <PrivateRoute>
+        <RecoverPass />
+        </PrivateRoute>} />
         <Route exact path="/viewall" element={
           <PrivateRoute>
             <ViewFDP />

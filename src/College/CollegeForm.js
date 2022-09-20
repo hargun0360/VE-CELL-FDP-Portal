@@ -179,17 +179,17 @@ function CollegeForm() {
       }
         {flag ? <Breadcrumb
           title="Update FDP"
-          breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add" }]}
+          breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add", href: "/form" }]}
         /> : <Breadcrumb
           title="Add FDP"
-          breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add" }]}
+          breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add", href: "/form" }]}
         />}
         <Card className='w-100 h-100 mt-3'>
           <Card.Body className='w-100'>
             <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
               <Row className='mb-3 mt-3'>
                 <Card.Title>
-                  Faculty/Student Detail
+                  Faculty Detail
                 </Card.Title>
               </Row>
               <Row>
@@ -234,7 +234,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
-                    <Form.Control type="text" value={designation} placeholder="HOD,Dean,etc." required onChange={(e) => setDesignation(e.target.value)} />
+                    <Form.Control type="text" value={designation} placeholder="HOD, Professor, Asistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>

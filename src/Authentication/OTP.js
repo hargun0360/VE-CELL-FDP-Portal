@@ -55,7 +55,7 @@ const OTP = () => {
                 .then((res) => {
                     console.log(res);
                     setLoading(false);
-                    navigate("/");
+                    navigate("/recoverpass");
                 }).catch((e) => {
                     console.log(e);
                     setLoading(false);

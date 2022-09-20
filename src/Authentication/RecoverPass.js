@@ -19,8 +19,8 @@ const RecoverPass = props => {
       Npassword: '',
     },
     validationSchema: Yup.object({
-      password: Yup.string().required("Please Enter Your Current Password"),
-      Npassword: Yup.string().required("Please Enter Your New Password"),
+      password: Yup.string().required("Please Enter Your New Password"),
+      Npassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
     }),
     onSubmit: (values) => {
       console.log(values);
