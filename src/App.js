@@ -10,11 +10,16 @@ import ViewDetail from './College/ViewDetail';
 import ViewFDP from './College/ViewFDP';
 import { Routes, Route } from 'react-router-dom'
 import PrivateRoute from './Routes/PrivateRoutes';
+import StudentForm from './College/StudentForm';
+import ViewStudent from './College/ViewStudent';
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Login />} />
+        <Route exact path="/stform" element={<StudentForm />} />
+        <Route exact path="/stform/:id" element={<StudentForm />} />
+        <Route exact path="/viewst" element={<ViewStudent />} />
         <Route exact path="/view" element={
           <PrivateRoute>
             <ViewDetail />

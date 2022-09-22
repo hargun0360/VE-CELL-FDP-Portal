@@ -22,6 +22,7 @@
     "react-auth-code-input": "1.2.1",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
+    "react-html-table-to-excel": "^2.0.0",
     "react-paginate": "^8.1.3",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
@@ -33,6 +34,7 @@
     "redux-devtools-extension": "^2.13.9",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5",
     "yup": "^0.32.11"
   },
   "scripts": {

@@ -1,4 +1,4 @@
-import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, RESET_PASSWORD, FORGOT_OTP, VERIFY_RESET_OTP, } from "./ApiUrls"
+import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, RESET_PASSWORD, FORGOT_OTP, VERIFY_RESET_OTP, ADD_BULK_STUDENT_URL,GET_ALL_STUDENT,DELETE_STUDENT_URL,UPDATE_STUDENT_URL,ADD_STUDENT_URL,GET_STUDENT_BY_ID } from "./ApiUrls"
 import { getAuthToken,RestAxiosService } from "./RestApiService"
 
 // Function To Get The Refresh Token from Local Storage
@@ -226,6 +226,125 @@ export function doDeleteFDPById(id) {
       headers
     ).then(
       res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// ---------------------------------------------------------------------------------------
+
+// Add Bulk Student Details
+export function doAddBulkStudentDetails(details) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(ADD_BULK_STUDENT_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Get all Students
+export function doGetAllStudent() {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(GET_ALL_STUDENT, "GET", false, headers).then((res) => {
+      console.log("Get Users Response :- ", res);
+      resolve(res)
+    }, (err) => {
+      reject(err);
+    })
+  })
+}
+
+// DELETE Student by Id
+export function doDeleteStudentById(id) {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(
+      DELETE_STUDENT_URL,
+      "DELETE",
+      false,
+      headers
+    ).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Add Student Details
+export function  doAddStudentDetail(details) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(ADD_STUDENT_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Update Student Details
+export function doUpdateStudentDetail(details,id) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(UPDATE_STUDENT_URL + `/${id}/`, "PATCH", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// GET Student Detail by Id
+export function doGetStudentDetailById(id) {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(
+      GET_STUDENT_BY_ID + + `/${id}/`,
+      "GET",
+      false, 
+      headers
+    ).then(
+      res => {
+        console.log("Get User Response :- ", res)
         resolve(res)
       },
       err => {

@@ -355,7 +355,7 @@ function CollegeForm() {
                   </Form.Group>
                 </Col>
               </Row>
-              <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
+              <Form.Group className="mb-5" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
                 <Form.Label>Remarks</Form.Label>
                 <Form.Control value={remarks} as="textarea" rows={2} />
               </Form.Group>
