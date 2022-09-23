@@ -21,7 +21,10 @@ const RecoverPass = props => {
       Npassword: '',
     },
     validationSchema: Yup.object({
-      password: Yup.string().required("Please Enter Your New Password"),
+      password: Yup.string().min(8).max(25).required("Please Enter Your New Password").matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        "Must Contain atleast 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
       Npassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
     }),
     onSubmit: (values) => {

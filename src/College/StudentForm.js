@@ -25,6 +25,7 @@ function StudentForm() {
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [remarks, setRemarks] = useState("");
+    const [flag, setFlag] = useState(false)
 
     useEffect(() => {
         if (id) {
@@ -52,9 +53,9 @@ function StudentForm() {
     }
 
     useEffect(() => {
-        if (start && end) {
-            const date1 = new Date(start);
-            const date2 = new Date(end);
+        if (from && to) {
+            const date1 = new Date(from);
+            const date2 = new Date(to);
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             setDuration(diffDays);
@@ -153,7 +154,7 @@ function StudentForm() {
                                 <Col xs={12} md={6}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Branch</Form.Label>
-                                        <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
+                                        <Form.Select className='mb-3' value={branch} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
                                             <option>Select the Branch</option>
                                             <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                             <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -170,13 +171,13 @@ function StudentForm() {
                                 <Col xs={3} md={1}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Year</Form.Label>
-                                        <Form.Control type="number" value={email}  required onChange={(e) => setEmail(e.target.value)} />
+                                        <Form.Control type="number" value={year}  required onChange={(e) => setYear(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={4} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Section</Form.Label>
-                                        <Form.Control type="text" value={email} required onChange={(e) => setEmail(e.target.value)} />
+                                        <Form.Control type="text" value={section} required onChange={(e) => setSection(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={4}>
@@ -202,19 +203,19 @@ function StudentForm() {
                                 <Col xs={12} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>Duration</Form.Label>
-                                        <Form.Control type="number" value={days} placeholder="Duration" disabled />
+                                        <Form.Control type="number" value={duration} placeholder="Duration" disabled />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" value={start} placeholder="Starting Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setStart(e.target.value)} />
+                                        <Form.Control type="date" value={from} placeholder="Starting Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setStart(e.target.value)} />
                                     </Form.Group>
                                 </Col>  
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>To</Form.Label>
-                                        <Form.Control type="date" value={end} placeholder="End Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setEnd(e.target.value)} />
+                                        <Form.Control type="date" value={to} placeholder="End Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setEnd(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                             </Row>
