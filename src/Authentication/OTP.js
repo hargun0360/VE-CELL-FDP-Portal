@@ -176,11 +176,11 @@ const OTP = () => {
                                                                     className="form-control form-control-lg text-center"
                                                                     allowedCharacters="[0-9]"
                                                                     inputStyle={{
-                                                                        width: "50px",
-                                                                        height: "45px",
+                                                                        width: "40px",
+                                                                        height: "50px",
                                                                         padding: "8px",
                                                                         borderRadius: "8px",
-                                                                        fontSize: "16px",
+                                                                        fontSize: "24px",
                                                                         textAlign: "center",
                                                                         marginRight: "15px",
                                                                         border: "1px solid #ced4da",
@@ -192,7 +192,7 @@ const OTP = () => {
                                                         </Col>
                                                     </Row>
                                                     <div style={{ display: "flex", justifyContent: "center" }}>
-                                                        <button className="btn btn-primary w-75 mt-3 d-grid" type='submit' >
+                                                        <button className="btn btn-primary w-50 mt-3 d-grid" type='submit' >
                                                             Confirm
                                                         </button>
                                                     </div>
