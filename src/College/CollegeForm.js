@@ -289,7 +289,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
-                    <Form.Control type="text" value={designation} placeholder="HOD, Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
+                    <Form.Control type="text" value={designation} placeholder="Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>

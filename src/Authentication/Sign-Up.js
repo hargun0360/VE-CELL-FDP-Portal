@@ -124,7 +124,7 @@ const Signup = () => {
                         <Input
                           name="email"
                           className="form-control"
-                          placeholder="Enter email"
+                          placeholder="example@akgec.ac.in"
                           type="email"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
