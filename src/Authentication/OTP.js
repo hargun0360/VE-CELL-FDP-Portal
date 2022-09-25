@@ -36,7 +36,7 @@ const OTP = () => {
                 .then((res) => {
                     console.log(res);
                     swal({
-                        title: "OTP will sent again",
+                        title: "OTP resent successfully",
                         text: "",
                         icon: "success",
                         button: "OK",

@@ -29,15 +29,15 @@ const Login = props => {
     validate: values => {
       let errors = {};
       if (!values.email) {
-        errors.email = 'Required!'
+        errors.email = 'required'
       } else if (!regex.test(values.email)) {
-        errors.email = 'Invalid email format!'
+        errors.email = 'Invalid email format'
       }
       return errors;
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Please Enter Your Email"),
-      password: Yup.string().required("Please Enter Your Password"),
+      email: Yup.string().required("please enter your email"),
+      password: Yup.string().required("please enter password"),
     }),
     onSubmit: (values) => {
       setLoading(true);
@@ -53,7 +53,7 @@ const Login = props => {
         }).catch((e) => {
           setLoading(false)
           swal({
-            title: e.data.status,
+            title: e.data.non_field_object[0],
             text: "",
             icon: "error",
             button: "OK",
@@ -123,7 +123,7 @@ const Login = props => {
                         <Input
                           name="email"
                           className="form-control"
-                          placeholder="Enter email"
+                          placeholder="example@akgec.ac.in"
                           type="email"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}

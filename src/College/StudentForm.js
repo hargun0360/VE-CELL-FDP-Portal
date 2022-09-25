@@ -179,10 +179,10 @@ function StudentForm() {
                 {
                     admin ? <Breadcrumb
                         title={flag ? "Update FDP" : "Add FDP"}
-                        breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" }]}
+                        breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
                     /> : <Breadcrumb
                         title={flag ? "Update FDP" : "Add FDP"}
-                        breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" }]}
+                        breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
                     />
                 }
                 <Card className='w-100 h-100 mt-3'>
@@ -232,7 +232,7 @@ function StudentForm() {
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="8" onChange={(e) => setMobile(e.target.value)} />
+                                        <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="10" maxLength={"10"} pattern="[0-9]{10}" onChange={(e) => setMobile(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={5}>
@@ -252,13 +252,13 @@ function StudentForm() {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" value={from} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"  min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
+                                        <Form.Control type="date" value={from}  placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"  min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>To</Form.Label>
-                                        <Form.Control type="date" value={to} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={new Date().toISOString().split('T')[0]} onChange={(e) => setTo(e.target.value)} />
+                                        <Form.Control type="date" value={to} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={from} disabled={from ? false : true} onChange={(e) => setTo(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={2}>

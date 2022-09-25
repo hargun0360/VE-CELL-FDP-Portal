@@ -25,7 +25,7 @@ const RecoverPass = props => {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
         "Must Contain atleast 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       ),
-      Npassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
+      Npassword: Yup.string().oneOf([Yup.ref('password'), null], 'password must match')
     }),
     onSubmit: (values) => {
       console.log(values);

@@ -19,10 +19,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal'
 import { doGetAllFDP } from "../Services/ApiServices";
 import * as action from "../Redux/action";
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import swal from "sweetalert";
 import Spinner from '../Components/Spinner'
-
+import Breadcrumb from './Breadcrumb';
 const ViewFDP = () => {
     const [loader, setLoader] = useState(false)
     const [project, setProject] = useState(null)
@@ -36,10 +36,19 @@ const ViewFDP = () => {
     const dispatch = useDispatch();
     const { val } = useSelector((state) => state.toggle);
     const [details, setDetails] = useState([]);
-     // //delete order
-     const [deleteModal, setDeleteModal] = useState(false)
-     
-    console.log(val);                                                                                                                                                   
+    // //delete order
+    const [deleteModal, setDeleteModal] = useState(false)
+
+    const [admin, setAdmin] = useState(false);
+
+
+    useEffect(() => {
+        if (localStorage.getItem("admin") == "true") {
+            setAdmin(true);
+        }
+    }, [])
+
+    console.log(val);
     useEffect(() => {
         getFDP();
     }, [val]);
@@ -52,16 +61,16 @@ const ViewFDP = () => {
             setDetails(res.data);
         }).catch((e) => {
             console.log(e);
-            if(e.status==403){
+            if (e.status == 403) {
                 localStorage.clear();
                 window.location.href = "/";
-              }
+            }
             swal({
                 title: e.data.status,
                 text: "",
                 icon: "error",
                 button: "OK",
-              });
+            });
         })
     }
 
@@ -69,23 +78,31 @@ const ViewFDP = () => {
         console.log(details);
     }
 
-   
+
 
     const [id, setId] = useState(null)
 
 
     return (
         <React.Fragment>
-          
+
             <DeleteModal
                 show={deleteModal} setShow={setDeleteModal} setLoading={setLoader} id={id}
             />
             <div className="w-100 h-100 pb-3">
                 <Container fluid>
+                <div className='py-4'>
+                    {
+                        admin ? <Breadcrumb
+                            title="View FDP"
+                            breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                        /> : <Breadcrumb
+                            title="View FDP"
+                            breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                        />
+                    }
+                    </div>
                     {/* Render Breadcrumbs */}
-                    <CardTitle className="py-2">
-                        <h4 className="font-size-20 mx-3">View FDP</h4>
-                    </CardTitle>
                     <Card>
                         <CardBody>
                             <div className="table-responsive">

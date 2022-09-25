@@ -34,6 +34,7 @@ function CollegeForm() {
   const [end, setEnd] = useState(null);
   const [days, setDays] = useState("");
   const [venue, setVenue] = useState(null);
+  const [state,setState] = useState(false);
 
   const [admin,setAdmin] = useState(false);
   
@@ -231,10 +232,10 @@ function CollegeForm() {
       {
         admin ? <Breadcrumb
           title={flag ? "Update FDP" : "Add FDP"}
-          breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" }]}
+          breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
         /> : <Breadcrumb
           title={flag ? "Update FDP" : "Add FDP"}
-          breadcrumbItems={[{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" }]}
+          breadcrumbItems={[{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
         />
       }
        
@@ -280,7 +281,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="8" onChange={(e) => setMobile(e.target.value)} />
+                    <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="10" maxLength={"10"} pattern="[0-9]{10}" onChange={(e) => setMobile(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>
@@ -288,7 +289,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
-                    <Form.Control type="text" value={designation} placeholder="HOD, Professor, Asistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
+                    <Form.Control type="text" value={designation} placeholder="HOD, Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
                   </Form.Group>
                 </Col>
               </Row>
@@ -359,7 +360,7 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type="date" placeholder="YYYY-MM-DD"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={new Date().toISOString().split('T')[0]} onChange={(e) => setEnd(e.target.value)} />
+                    <Form.Control type="date" disabled={start ? false : true}  placeholder="YYYY-MM-DD"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={2}>

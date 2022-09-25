@@ -13,11 +13,16 @@ import PrivateRoute from './Routes/PrivateRoutes';
 import StudentForm from './College/StudentForm';
 import ViewStudent from './College/ViewStudent';
 import AdminPrivateRoute from './Routes/AdminPrivateRoutes';
+import AuthenticatedRoutes from "./Routes/AuthenticatedRoutes";
+import Logout from './College/Logout';
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route exact path="/" element={<Login />} />
+        <Route exact path="/" element={
+        <AuthenticatedRoutes>
+        <Login />
+        </AuthenticatedRoutes>} />
         <Route exact path="/stform" element={
         <AdminPrivateRoute>
         <StudentForm />
@@ -46,8 +51,14 @@ function App() {
           <PrivateRoute>
             <CollegeForm />
           </PrivateRoute>} />
-        <Route exact path="/signup" element={<Signup />} />
-        <Route exact path="/forgot" element={<Forgot />} />
+        <Route exact path="/signup" element={
+        <AuthenticatedRoutes>
+        <Signup />
+        </AuthenticatedRoutes>} />
+        <Route exact path="/forgot" element={
+        <AuthenticatedRoutes>
+        <Forgot />
+        </AuthenticatedRoutes>} />
         <Route exact path="/otp" element={
           <PrivateRoute>
             <OTP />
@@ -55,6 +66,10 @@ function App() {
         <Route exact path="/reset" element={
           <PrivateRoute>
             <Reset />
+          </PrivateRoute>} />
+        <Route exact path="/logout" element={
+          <PrivateRoute>
+            <Logout />
           </PrivateRoute>} />
         <Route exact path="/recoverpass" element={
         <PrivateRoute>
