@@ -27,6 +27,10 @@ const DeleteModal2 = ({ show, setShow, setLoading, id }) => {
               });
         }).catch((e)=>{
             console.log(e);
+            if(e.status==403){
+                localStorage.clear();
+                window.location.href = "/";
+              }
             setLoading(false)
             swal({
                 title: e.data.status,

@@ -52,6 +52,10 @@ const ViewFDP = () => {
             setDetails(res.data);
         }).catch((e) => {
             console.log(e);
+            if(e.status==403){
+                localStorage.clear();
+                window.location.href = "/";
+              }
             swal({
                 title: e.data.status,
                 text: "",

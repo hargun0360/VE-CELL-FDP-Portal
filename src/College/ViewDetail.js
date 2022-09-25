@@ -29,7 +29,7 @@ const ViewDetail = () => {
     const [state,setState] = useState(true);
     const [days,setDays] = useState("")
     const [fdpname,setFdpName] = useState(null);
-    
+
     const componentRef = useRef();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -68,6 +68,10 @@ const ViewDetail = () => {
            setRemarks(res.data.remarks);
         }).catch((e) => {
             console.log(e);
+            if(e.status==403){
+                localStorage.clear();
+                window.location.href = "/";
+              }
             swal({
                 title: e.data.status,
                 text: "",

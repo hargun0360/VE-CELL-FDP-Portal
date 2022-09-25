@@ -33,7 +33,7 @@ export function RestAxiosService(url, method, body, headers) {
           if (typeof e === "object" && typeof e.response === "object") {
             console.log("1");
             if (url.indexOf("/token/refresh")===-1) {
-              if (e.response.status == 406 ) {
+              if (e.response.status == 406) {
                 doGetRefreshToken().then(
                   res => {
                     console.log("Response in Rest Axios Refresh ", res)

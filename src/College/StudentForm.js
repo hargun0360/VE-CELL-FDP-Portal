@@ -59,6 +59,10 @@ function StudentForm() {
             setBranch(res.data.branch);
         }).catch((e) => {
             console.log(e);
+            if(e.status==403){
+                localStorage.clear();
+                window.location.href = "/";
+              }
             swal({
                 title: e.data.detail,
                 text: "",
@@ -95,7 +99,7 @@ function StudentForm() {
                     venue_of_activity: venue,
                     starting_date: from,
                     end_date: to,
-                    mobile_number: mobile,
+                    phone_number: mobile,
                     remarks
                 }
 
@@ -111,6 +115,10 @@ function StudentForm() {
                         });
                     }).catch((e) => {
                         console.log(e);
+                        if(e.status==403){
+                            localStorage.clear();
+                            window.location.href = "/";
+                          }
                         setLoading(false)
                         swal({
                             title: e.data.status,
@@ -134,7 +142,7 @@ function StudentForm() {
                     venue_of_activity: venue,
                     starting_date: from,
                     end_date: to,
-                    mobile_number: mobile,
+                    phone_number: mobile,
                     remarks
                 }
 
@@ -244,13 +252,13 @@ function StudentForm() {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" value={from} placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"  min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
+                                        <Form.Control type="date" value={from} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"  min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>To</Form.Label>
-                                        <Form.Control type="date" value={to} placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={new Date().toISOString().split('T')[0]} onChange={(e) => setTo(e.target.value)} />
+                                        <Form.Control type="date" value={to} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={new Date().toISOString().split('T')[0]} onChange={(e) => setTo(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={2}>

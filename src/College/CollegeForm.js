@@ -92,6 +92,10 @@ function CollegeForm() {
       setCertificate(res.data.certificate)
     }).catch((e) => {
       console.log(e);
+      if(e.status==403){
+        localStorage.clear();
+        window.location.href = "/";
+      }
       swal({
         title: e.data.status,
         text: "",
@@ -147,11 +151,15 @@ function CollegeForm() {
             swal({
               title: "Details Updated Successfully",
               text: "",
-              icon: "sucess",
+              icon: "success",
               button: "OK",
             });
           }).catch((e) => {
             console.log(e);
+            if(e.status==403){
+              localStorage.clear();
+              window.location.href = "/";
+            }
             setLoading(false)
             swal({
               title: e.data.status,
@@ -197,6 +205,10 @@ function CollegeForm() {
             });
           }).catch((e) => {
             console.log(e);
+            if(e.status==403){
+              localStorage.clear();
+              window.location.href = "/";
+            }
             setLoading(false)
             swal({
               title: e.data.status,
@@ -341,13 +353,13 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <Form.Control type="date" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={start} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStart(e.target.value)} />
+                    <Form.Control type="date" placeholder="YYYY-MM-DD"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={start} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStart(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type="date" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={new Date().toISOString().split('T')[0]} onChange={(e) => setEnd(e.target.value)} />
+                    <Form.Control type="date" placeholder="YYYY-MM-DD"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={new Date().toISOString().split('T')[0]} onChange={(e) => setEnd(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={2}>
