@@ -1,11 +1,12 @@
 import React from 'react'
 
 const Logout = () => {
-    let url = window.location.href
-    var arr = url.split("/");
-    if(arr[4]=="logout"){
+    const url = window.location.href
+    const newRegex = new RegExp(/logout/, "gi");
+    const hasKeyWord = url.match(newRegex);
+    if (hasKeyWord) {
         localStorage.clear();
-        window.location.href="/";
+        window.location.href = "/";
     }
 }
 
