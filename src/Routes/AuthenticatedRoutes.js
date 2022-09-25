@@ -7,6 +7,6 @@ const AuthenticatedRoutes = ({ children}) => {
       return children
     }
       
-    return <Navigate to="/form" />
+    <Navigate to="/form" />
   }
 export default AuthenticatedRoutes;

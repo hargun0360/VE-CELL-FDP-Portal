@@ -1,12 +1,12 @@
 import React from 'react'
-
+import { Navigate } from 'react-router-dom';
 const Logout = () => {
     const url = window.location.href
     const newRegex = new RegExp(/logout/, "gi");
     const hasKeyWord = url.match(newRegex);
     if (hasKeyWord) {
         localStorage.clear();
-        window.location.href = "/";
+        return <Navigate to="/form" />
     }
 }
 
