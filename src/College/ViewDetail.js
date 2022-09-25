@@ -8,7 +8,7 @@ import { useReactToPrint } from 'react-to-print';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
-
+import swal from 'sweetalert';
 const ViewDetail = () => {
     const [name, setName] = useState(null);
     const [department, setDepartment] = useState(null);
@@ -29,6 +29,7 @@ const ViewDetail = () => {
     const [state,setState] = useState(true);
     const [days,setDays] = useState("")
     const [fdpname,setFdpName] = useState(null);
+    
     const componentRef = useRef();
     const navigate = useNavigate();
     const {id} = useParams();
@@ -67,6 +68,12 @@ const ViewDetail = () => {
            setRemarks(res.data.remarks);
         }).catch((e) => {
             console.log(e);
+            swal({
+                title: e.data.status,
+                text: "",
+                icon: "error",
+                button: "OK",
+              });
         })
     }
 

@@ -20,7 +20,7 @@ import DeleteModal from './DeleteModal'
 import { doGetAllFDP } from "../Services/ApiServices";
 import * as action from "../Redux/action";
 import { useDispatch,useSelector } from 'react-redux'
-
+import swal from "sweetalert";
 import Spinner from '../Components/Spinner'
 
 const ViewFDP = () => {
@@ -52,6 +52,12 @@ const ViewFDP = () => {
             setDetails(res.data);
         }).catch((e) => {
             console.log(e);
+            swal({
+                title: e.data.status,
+                text: "",
+                icon: "error",
+                button: "OK",
+              });
         })
     }
 

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label } from "reactstrap";
 
@@ -10,12 +10,14 @@ import profile from "../Assets/images/profile-img.png";
 import { useNavigate } from "react-router-dom";
 import { doLoginUser } from "../Services/ApiServices";
 import Spinner from '../Components/Spinner'
+import { useSelector, useDispatch } from 'react-redux';
+import swal from "sweetalert";
 const Login = props => {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
-
+  const dispatch = useDispatch();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -24,14 +26,14 @@ const Login = props => {
       email: '',
       password: '',
     },
-    validate:values=>{
+    validate: values => {
       let errors = {};
-     if(!values.email){
-       errors.email= 'Required!'
-      }else if(!regex.test(values.email)){
-     errors.email = 'Invalid email format!'
-     }
-     return errors;
+      if (!values.email) {
+        errors.email = 'Required!'
+      } else if (!regex.test(values.email)) {
+        errors.email = 'Invalid email format!'
+      }
+      return errors;
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -39,38 +41,45 @@ const Login = props => {
     }),
     onSubmit: (values) => {
       setLoading(true);
-      console.log(values);  
+      console.log(values);
       doLoginUser(values)
-      .then((res)=>{
-        console.log(res);
-        setLoading(false)
-        localStorage.setItem("token",res.data.access);
-        localStorage.setItem("rtoken",res.data.refresh);
-        navigate("/form")
-      }).catch((e)=>{
-        setLoading(false)
-        console.log(e);
-      })
+        .then((res) => {
+          console.log(res);
+          setLoading(false)
+          localStorage.setItem("token", res.data.access);
+          localStorage.setItem("rtoken", res.data.refresh);
+          localStorage.setItem('admin',res.data.is_admin);
+          navigate("/form")
+        }).catch((e) => {
+          setLoading(false)
+          swal({
+            title: e.data.status,
+            text: "",
+            icon: "error",
+            button: "OK",
+          });
+          console.log(e);
+        })
     }
   });
 
   const handleSignup = () => {
-      navigate('/signup')
+    navigate('/signup')
   }
   const handleForgot = () => {
-      navigate('/forgot')
+    navigate('/forgot')
   }
 
 
   // handleValidSubmit
-//   const handleValidSubmit = (event, values) => {
-//     dispatch(loginUser(values, props.history));
-//   };
+  //   const handleValidSubmit = (event, values) => {
+  //     dispatch(loginUser(values, props.history));
+  //   };
 
 
   return (
     <React.Fragment>
-       {
+      {
         loading ? <Spinner /> : null
       }
       <div className="home-btn d-none d-sm-block">
@@ -97,7 +106,7 @@ const Login = props => {
                   </Row>
                 </div>
                 <CardBody className="pt-0">
-            
+
                   <div className="p-2">
                     <Form
                       className="form-horizontal"
@@ -156,9 +165,9 @@ const Login = props => {
                         </button>
                       </div>
                       <div className="mt-4 text-center">
-                         <span  style={{cursor:"pointer"}} className="text-primary" onClick={handleSignup}>Sign Up</span>
-                         <span className="p-2">|</span>
-                          <span style={{cursor:"pointer"}} className="text-primary" onClick={handleForgot} >Forgot password </span>
+                        <span style={{ cursor: "pointer" }} className="text-primary" onClick={handleSignup}>Sign Up</span>
+                        <span className="p-2">|</span>
+                        <span style={{ cursor: "pointer" }} className="text-primary" onClick={handleForgot} >Forgot password </span>
                       </div>
                     </Form>
                   </div>

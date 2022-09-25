@@ -12,14 +12,25 @@ import { Routes, Route } from 'react-router-dom'
 import PrivateRoute from './Routes/PrivateRoutes';
 import StudentForm from './College/StudentForm';
 import ViewStudent from './College/ViewStudent';
+import AdminPrivateRoute from './Routes/AdminPrivateRoutes';
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Login />} />
-        <Route exact path="/stform" element={<StudentForm />} />
-        <Route exact path="/stform/:id" element={<StudentForm />} />
-        <Route exact path="/viewst" element={<ViewStudent />} />
+        <Route exact path="/stform" element={
+        <AdminPrivateRoute>
+        <StudentForm />
+        </AdminPrivateRoute>
+        } />
+        <Route exact path="/stform/:id" element={
+        <AdminPrivateRoute>
+        <StudentForm />
+        </AdminPrivateRoute>} />
+        <Route exact path="/viewst" element={
+        <AdminPrivateRoute>
+        <ViewStudent />
+        </AdminPrivateRoute>} />
         <Route exact path="/view" element={
           <PrivateRoute>
             <ViewDetail />

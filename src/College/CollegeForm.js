@@ -10,7 +10,7 @@ import { getAuthToken } from '../Services/RestApiService'
 import { useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
 import Spinner from '../Components/Spinner'
-
+import swal from 'sweetalert';
 function CollegeForm() {
 
   const { id } = useParams();
@@ -34,6 +34,15 @@ function CollegeForm() {
   const [end, setEnd] = useState(null);
   const [days, setDays] = useState("");
   const [venue, setVenue] = useState(null);
+
+  const [admin,setAdmin] = useState(false);
+  
+
+  useEffect(()=>{
+    if(localStorage.getItem("admin")=="true"){
+      setAdmin(true);
+    }
+  },[])
 
   useEffect(() => {
     if (ftype === "Online") {
@@ -83,6 +92,12 @@ function CollegeForm() {
       setCertificate(res.data.certificate)
     }).catch((e) => {
       console.log(e);
+      swal({
+        title: e.data.status,
+        text: "",
+        icon: "error",
+        button: "OK",
+      });
     })
   }
 
@@ -129,9 +144,21 @@ function CollegeForm() {
           .then((res) => {
             console.log(res);
             setLoading(false)
+            swal({
+              title: "Details Updated Successfully",
+              text: "",
+              icon: "sucess",
+              button: "OK",
+            });
           }).catch((e) => {
             console.log(e);
             setLoading(false)
+            swal({
+              title: e.data.status,
+              text: "",
+              icon: "error",
+              button: "OK",
+            });
           })
       }
     } else {
@@ -162,9 +189,21 @@ function CollegeForm() {
           .then((res) => {
             console.log(res);
             setLoading(false)
+            swal({
+              title: "Details Added Successfully",
+              text: "",
+              icon: "success",
+              button: "OK",
+            });
           }).catch((e) => {
             console.log(e);
             setLoading(false)
+            swal({
+              title: e.data.status,
+              text: "",
+              icon: "error",
+              button: "OK",
+            });
           })
       }
     }
@@ -177,13 +216,16 @@ function CollegeForm() {
       {
         loading ? <Spinner /> : null
       }
-        {flag ? <Breadcrumb
-          title="Update FDP"
-          breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add", href: "/form" }]}
+      {
+        admin ? <Breadcrumb
+          title={flag ? "Update FDP" : "Add FDP"}
+          breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" }]}
         /> : <Breadcrumb
-          title="Add FDP"
-          breadcrumbItems={[{ title: "View", href: "/viewall" }, { title: "Add", href: "/form" }]}
-        />}
+          title={flag ? "Update FDP" : "Add FDP"}
+          breadcrumbItems={[{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" }]}
+        />
+      }
+       
         <Card className='w-100 h-100 mt-3'>
           <Card.Body className='w-100'>
             <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
@@ -299,13 +341,13 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <Form.Control type="date" value={start} placeholder="Starting Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setStart(e.target.value)} />
+                    <Form.Control type="date" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={start} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStart(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type="date" value={end} placeholder="End Date" min={new Date().toISOString().split('T')[0]} required onChange={(e) => setEnd(e.target.value)} />
+                    <Form.Control type="date" placeholder="YYYY-MM-DD" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={new Date().toISOString().split('T')[0]} onChange={(e) => setEnd(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={2}>

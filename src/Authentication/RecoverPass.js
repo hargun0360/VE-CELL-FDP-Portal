@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import profile from "../Assets/images/profile-img.png";
 import { doResetPassword } from "../Services/ApiServices";
 import { useNavigate } from "react-router-dom";
-
+import swal from "sweetalert";
 const RecoverPass = props => {
   const navigate  = useNavigate();
   const validation = useFormik({
@@ -32,9 +32,21 @@ const RecoverPass = props => {
       doResetPassword({new_password:values.Npassword})
       .then((res)=>{
         console.log(res);
+        swal({
+          title: "Password Added Successfully",
+          text: "",
+          icon: "success",
+          button: "OK",
+        });
         navigate("/")
       }).catch((e)=>{
         console.log(e);
+        swal({
+          title: e.data.status,
+          text: "",
+          icon: "error",
+          button: "OK",
+        });
       })
     }
   });

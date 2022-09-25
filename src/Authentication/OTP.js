@@ -35,8 +35,20 @@ const OTP = () => {
             doSignupUser({ email: location.state.email, })
             .then((res) => {
                 console.log(res);
+                swal({
+                    title: "OTP will sent again",
+                    text: "",
+                    icon: "success",
+                    button: "OK",
+                  });
             }).catch((e) => {
                 console.log(e);
+                swal({
+                    title: e.data.status,
+                    text: "",
+                    icon: "error",
+                    button: "OK",
+                  });
             })
         }
     }
@@ -55,19 +67,43 @@ const OTP = () => {
                 .then((res) => {
                     console.log(res);
                     setLoading(false);
+                    swal({
+                        title: "OTP is Verified",
+                        text: null,
+                        icon: "success",
+                        button: "OK",
+                      });
                     navigate("/recoverpass");
                 }).catch((e) => {
                     console.log(e);
                     setLoading(false);
+                    swal({
+                        title: e.data.status,
+                        text: "",
+                        icon: "error",
+                        button: "OK",
+                      });
                 })
         } else {
             doVerifyUser(obj)
                 .then((res) => {
                     console.log(res);
+                    swal({
+                        title: "Password will sent in Your Email",
+                        text: "",
+                        icon: "success",
+                        button: "OK",
+                      });
                     navigate("/");
                 }).catch((e) => {
                     console.log(e);
                     setLoading(false);
+                    swal({
+                        title: e.data.status,
+                        text: "",
+                        icon: "error",
+                        button: "OK",
+                      });
                 })
         }
     }

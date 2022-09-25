@@ -25,13 +25,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Breadcrumb from './Breadcrumb';
 import * as XLSX from "xlsx"
-
+import swal from 'sweetalert';
 const ViewStudent = () => {
     const [show, setShow] = useState(false);
     const [studentData, setStudentData] = useState([]);
     const [loader, setLoader] = useState(false)
+    const [file,setFile] = useState(null);
     let students = [];
+    const [flag,setFlag] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
     const [id, setId] = useState(null)
     const dispatch = useDispatch();
@@ -40,38 +43,42 @@ const ViewStudent = () => {
     const handleClose = () => {
         setShow(false);
     }
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        
+    } 
     let cnt = 0;
-    const handleFile = (e) => {
-        const file = e.target.files[0];
-        const promise = new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsArrayBuffer(file);
-            fileReader.onload = (e) => {
-                const bufferArray = e.target.result;
-                const wb = XLSX.read(bufferArray, { type: 'buffer' });
-                const wsname = wb.SheetNames[0];
-                const ws = wb.Sheets[wsname];
-                const data = XLSX.utils.sheet_to_json(ws);
-                resolve(data);
-            }
-            fileReader.onerror = (error) => {
-                reject(error);
-            }
-        })
-        promise.then((d) => {
-            console.log(d);
-            setStudentData(d);
-        })
-    }
+    // const handleFile = (e) => {
+    //     const file = e.target.files[0];
+        // const promise = new Promise((resolve, reject) => {
+        //     const fileReader = new FileReader();
+        //     fileReader.readAsArrayBuffer(file);
+        //     fileReader.onload = (e) => {
+        //         const bufferArray = e.target.result;
+        //         const wb = XLSX.read(bufferArray, { type: 'buffer' });
+        //         const wsname = wb.SheetNames[0];
+        //         const ws = wb.Sheets[wsname];
+        //         const data = XLSX.utils.sheet_to_json(ws);
+        //         resolve(data);
+        //     }
+        //     fileReader.onerror = (error) => {
+        //         reject(error);
+        //     }
+        // })
+        // promise.then((d) => {
+        //     console.log(d);
+        //     setStudentData(d);
+        // })
+
+    // }
 
     useEffect(()=>{
         getAllStudents();
-    },[val])
+    },[val,flag])
 
     const getAllStudents = () => {
         doGetAllStudent().then((res) => {
-            setDetails(res.data);
+            setStudentData(res.data);
         }).catch((e) => {
             console.log(e);
         })
@@ -79,34 +86,58 @@ const ViewStudent = () => {
 
     const handleFileSubmit = (e) => {
         e.preventDefault();
-        if (studentData.length > 0) {
-            studentData.forEach(function (data) {
-                students.push({
-                    name: data['Name'],
-                    branch: data['Branch'],
-                    year: data['Year'],
-                    section: data['Section'],
-                    mobile_number: data['Mobile Number'],
-                    name_of_activity: data['Name of Activity'],
-                    venue_of_activity: data['Venue of Activity'],
-                    duration: data['Duration'],
-                    from: data['From'],
-                    to: data['To'],
-                    remarks: data['Remarks'],
-                })
-            });
-        }
-        if(students.length>0){
-             // post the data through API
-             doAddBulkStudentDetails(students)
+        if (file) {
+            // studentData.forEach(function (data) {
+            //     students.push({
+            //         name: data['Name'],
+            //         branch: data['Branch'],
+            //         year: data['Year'],
+            //         section: data['Section'],
+            //         mobile_number: data['Mobile Number'],
+            //         name_of_activity: data['Name of Activity'],
+            //         venue_of_activity: data['Venue of Activity'],
+            //         duration: data['Duration'],
+            //         from: data['From'],
+            //         to: data['To'],
+            //         remarks: data['Remarks'],
+            //     })
+            // });
+
+            // API CALL
+
+            const myForm = new FormData();
+
+            myForm.set("excel", file);
+            setFlag(true)
+            doAddBulkStudentDetails(myForm)
              .then((res)=>{
                 console.log(res);
                 setDetails(res.data);
+                swal({
+                    title: "Added Successfully",
+                    text: "",
+                    icon: "success",
+                    button: "OK",
+                  });
+                  setFlag(false);
              }).catch((e)=>{
                 console.log(e);
+                setFlag(false);
+                swal({
+                    title: e.data.status,
+                    text: "",
+                    icon: "error",
+                    button: "OK",
+                  });
              })
+             setShow(false);
+
         }
-        setShow(false);
+        // if(students.length>0){
+        //      // post the data through API
+             
+        // }
+        
     }
     return (
         <div>
@@ -123,7 +154,7 @@ const ViewStudent = () => {
                             <Row>
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                     <Form.Label >Add Student</Form.Label>
-                                    <Form.Control type="file" accept='.xlsx' name='student' required onChange={handleFile} />
+                                    <Form.Control type="file" accept='.xlsx' name='student' required onChange={(e)=>{setFile(e.target.files[0])}} />
                                 </Form.Group>
                             </Row>
                             <Row style={{float:"right"}} className="px-2">
@@ -134,13 +165,17 @@ const ViewStudent = () => {
                         </Form>
                     </Modal.Body>
                 </Modal>
+               
                 <Container fluid>
-                    <CardTitle className="py-1 pt-3 mb-1">
-                        <h4 className="font-size-20">Student Details</h4>
-                    </CardTitle>
-                    <Button variant="success" className='mb-2' onClick={handleShow}>
+                    <div className='py-3'>
+                     <Breadcrumb
+                    title="Student Details"
+                    breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" }]}
+                />       
+                </div>      
+                <Button variant="success" className='mb-2' onClick={handleShow}>
                         Add Students
-                    </Button>               
+                    </Button>  
                     <Card>
                         <CardBody>
                             <div className="table-responsive">              
@@ -164,7 +199,7 @@ const ViewStudent = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            students.length > 0 && details.length > 0 ? details.map((item) => (
+                                            studentData.length > 0 ? studentData.map((item) => (
                                                 <>
                                                     <tr>
                                                         <td className="text-center">{++cnt}</td>
@@ -172,12 +207,12 @@ const ViewStudent = () => {
                                                         <td className="text-center"> {item.branch === "" ? "" : item.branch} </td>
                                                         <td className="text-center"> {item.year === "" ? "" : item.year} </td>
                                                         <td className="text-center"> {item.section === "" ? "" : item.section} </td>
-                                                        <td className="text-center"> {item.mobile_number === "" ? "" : item.mobile_number} </td>
+                                                        <td className="text-center"> {item.phone_number === "" ? "" : item.phone_number} </td>
                                                         <td className="text-center"> {item.name_of_activity === "" ? "" : item.name_of_activity} </td>
                                                         <td className="text-center"> {item.venue_of_activity === "" ? "" : item.venue_of_activity} </td>
-                                                        <td className="text-center"> {item.duration === "" ? "" : item.duration} </td>
-                                                        <td className="text-center"> {item.from === "" ? "" : item.from} </td>
-                                                        <td className="text-center"> {item.to === "" ? "" : item.to} </td>
+                                                        <td className="text-center"> {item.number_of_days === "" ? "" : item.number_of_days} </td>
+                                                        <td className="text-center"> {item.starting_date.split(" ")[0] === "" ? "" : item.starting_date.split(" ")[0]} </td>
+                                                        <td className="text-center"> {item.end_date.split(" ")[0] === "" ? "" : item.end_date.split(" ")[0]} </td>
                                                         <td className="text-center"> {item.remarks === "" ? "" : item.remarks} </td>
                                                         <td className="text-center">
                                                             <UncontrolledDropdown>

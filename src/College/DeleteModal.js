@@ -5,7 +5,7 @@ import { doDeleteFDPById } from '../Services/ApiServices'
 import { useSelector,useDispatch } from 'react-redux'
 import * as action from "../Redux/action"
 import Spinner from '../Components/Spinner'
-
+import swal from 'sweetalert'
 const DeleteModal = ({ show, setShow, setLoading, id }) => {
 
     const dispatch = useDispatch()
@@ -19,9 +19,21 @@ const DeleteModal = ({ show, setShow, setLoading, id }) => {
             console.log(res);
             setLoading(false)
             dispatch(action.flag(true))
+            swal({
+                title: "Delete Successfully",
+                text: "",
+                icon: "success",
+                button: "OK",
+              });
         }).catch((e)=>{
             console.log(e);
             setLoading(false)
+            swal({
+                title: e.data.status,
+                text: "",
+                icon: "error",
+                button: "OK",
+              });
         })
     }
     const onCloseClick = () => {

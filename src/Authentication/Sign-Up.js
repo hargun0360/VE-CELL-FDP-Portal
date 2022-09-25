@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -16,14 +16,17 @@ import {
 
 // import images
 import profile from "../Assets/images/profile-img.png";
+import swal from 'sweetalert';
 import { useNavigate } from "react-router-dom";
 import { doSignupUser } from "../Services/ApiServices";
 import Spinner from '../Components/Spinner'
+import { useSelector,useDispatch } from 'react-redux';
+
 const Signup = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
   const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
-
+  const dispatch = useDispatch();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -31,14 +34,14 @@ const Signup = () => {
     initialValues: {
       email: '',
     },
-    validate:values=>{
+    validate: values => {
       let errors = {};
-     if(!values.email){
-       errors.email= 'Required!'
-      }else if(!regex.test(values.email)){
-     errors.email = 'Invalid email format!'
-     }
-     return errors;
+      if (!values.email) {
+        errors.email = 'Required!'
+      } else if (!regex.test(values.email)) {
+        errors.email = 'Invalid email format!'
+      }
+      return errors;
     },
     validationSchema: Yup.object({
       email: Yup.string().required("Please Enter Your Email"),
@@ -46,24 +49,38 @@ const Signup = () => {
     onSubmit: (values) => {
       setLoading(true);
       doSignupUser(values)
-      .then((res) =>{
-        console.log(res);
-        setLoading(false)
-        navigate("/otp",{state:values});
-      }).catch((e)=>{
-        console.log(e);
-        setLoading(false)
-      })
+        .then((res) => {
+          console.log(res);
+          setLoading(false)
+          swal({
+            title: "OTP is Sent Successfully",
+            text: "",
+            icon: "success",
+            button: "OK",
+          });
+          localStorage.setItem("token",res.data.access);
+          localStorage.setItem("rtoken",res.data.refresh);
+          navigate("/otp", { state: values });
+        }).catch((e) => {
+          console.log(e);
+          setLoading(false)
+          swal({
+            title: e.data.status,
+            text: "",
+            icon: "error",
+            button: "OK",
+          });
+        })
     }
   });
 
   const handleLogin = () => {
-      navigate("/")
-  } 
+    navigate("/")
+  }
 
   return (
     <React.Fragment>
-       {
+      {
         loading ? <Spinner /> : null
       }
       <div className="account-pages my-5 pt-sm-5">
@@ -132,10 +149,10 @@ const Signup = () => {
                   </div>
                 </CardBody>
                 <div className="mt-2 text-center">
-                <p>
-                   Already have an account? <span className=" text-primary" style={{cursor:"pointer"}} onClick={handleLogin}>Login</span>
-                </p>
-              </div>
+                  <p>
+                    Already have an account? <span className=" text-primary" style={{ cursor: "pointer" }} onClick={handleLogin}>Login</span>
+                  </p>
+                </div>
               </Card>
             </Col>
           </Row>

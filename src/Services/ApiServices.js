@@ -240,7 +240,7 @@ export function doDeleteFDPById(id) {
 // Add Bulk Student Details
 export function doAddBulkStudentDetails(details) {
   let headers = {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
     Authorization: "Bearer " + getAuthToken(),
   }
   return new Promise((resolve, reject) => {
@@ -279,7 +279,7 @@ export function doDeleteStudentById(id) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(
-      DELETE_STUDENT_URL,
+      DELETE_STUDENT_URL + `/${id}/`,
       "DELETE",
       false,
       headers
@@ -338,7 +338,7 @@ export function doGetStudentDetailById(id) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(
-      GET_STUDENT_BY_ID + + `/${id}/`,
+      GET_STUDENT_BY_ID + `/${id}/`,
       "GET",
       false, 
       headers

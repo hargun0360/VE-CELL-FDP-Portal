@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -18,6 +18,7 @@ import {
 import profile from "../Assets/images/profile-img.png";
 import { useNavigate } from "react-router-dom";
 import { doVerifyOtp } from "../Services/ApiServices";
+import swal from "sweetalert";
 const Forgot = () => {
   const navigate = useNavigate();
   const validation = useFormik({
@@ -33,12 +34,24 @@ const Forgot = () => {
     onSubmit: (values) => {
       console.log(values);
       doVerifyOtp(values)
-      .then((res)=>{
-        console.log(res);
-        navigate("/otp",{state:{email:values.email,otp:"forgot"}});
-      }).catch((e)=>{
-        console.log(e);
-      })
+        .then((res) => {
+          console.log(res);
+          swal({
+            title: "OTP will Sent Successfully",
+            text: "",
+            icon: "success",
+            button: "OK",
+          });
+          navigate("/otp", { state: { email: values.email, otp: "forgot" } });
+        }).catch((e) => {
+          console.log(e);
+          swal({
+            title: e.data.status,
+            text: "",
+            icon: "error",
+            button: "OK",
+          });
+        })
     }
   });
 
@@ -48,7 +61,7 @@ const Forgot = () => {
   const handleLogin = () => {
     navigate("/")
   }
- 
+
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-sm-5">
@@ -117,10 +130,10 @@ const Forgot = () => {
                   </div>
                 </CardBody>
                 <div className="mb-4 text-center">
-                         <span  style={{cursor:"pointer"}} className="text-primary" onClick={handleSignup}>Sign Up</span>
-                         <span className="p-2">|</span>
-                          <span style={{cursor:"pointer"}} className="text-primary" onClick={handleLogin}>Login</span>
-                      </div>
+                  <span style={{ cursor: "pointer" }} className="text-primary" onClick={handleSignup}>Sign Up</span>
+                  <span className="p-2">|</span>
+                  <span style={{ cursor: "pointer" }} className="text-primary" onClick={handleLogin}>Login</span>
+                </div>
               </Card>
             </Col>
           </Row>

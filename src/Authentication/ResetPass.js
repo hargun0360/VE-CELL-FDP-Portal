@@ -10,6 +10,7 @@ import profile from "../Assets/images/profile-img.png";
 import { doResetPassword } from "../Services/ApiServices";
 import { useNavigate } from "react-router-dom";
 import Spinner from '../Components/Spinner'
+import swal from "sweetalert";
 const Reset = props => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
@@ -40,10 +41,22 @@ const Reset = props => {
         setLoading(false)
         localStorage.setItem("token",res.data.access);
         localStorage.setItem("rtoken",res.data.refresh);
+        swal({
+          title: "Password Reset Successfully",
+          text: "",
+          icon: "success",
+          button: "OK",
+        });
         navigate("/")
       }).catch((e)=>{
         console.log(e);
         setLoading(false)
+        swal({
+          title: e.data.status,
+          text: "",
+          icon: "error",
+          button: "OK",
+        });
       })
     }
   });
