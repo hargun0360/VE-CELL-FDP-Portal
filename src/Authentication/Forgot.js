@@ -37,7 +37,7 @@ const Forgot = () => {
         .then((res) => {
           console.log(res);
           swal({
-            title: "OTP will Sent Successfully",
+            title: "OTP will be Sent Successfully",
             text: "",
             icon: "success",
             button: "OK",
@@ -105,7 +105,7 @@ const Forgot = () => {
                         <Input
                           name="email"
                           className="form-control"
-                          placeholder="Enter email"
+                          placeholder="example@akgec.ac.in"
                           type="email"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
