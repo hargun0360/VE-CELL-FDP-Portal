@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import swal from "sweetalert";
 import Spinner from '../Components/Spinner'
 import Breadcrumb from './Breadcrumb';
+import { useNavigate } from "react-router-dom";
 const ViewFDP = () => {
     const [loader, setLoader] = useState(false)
     const [project, setProject] = useState(null)
@@ -34,6 +35,7 @@ const ViewFDP = () => {
     });
     let cnt = 0;
     const dispatch = useDispatch();
+    const navigate = useNavigate()
     const { val } = useSelector((state) => state.toggle);
     const [details, setDetails] = useState([]);
     // //delete order
@@ -63,10 +65,10 @@ const ViewFDP = () => {
             console.log(e);
             if (e.status == 403) {
                 localStorage.clear();
-                window.location.href = "/";
+                navigate("/")
             }
             swal({
-                title: e.data.status,
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                 text: "",
                 icon: "error",
                 button: "OK",

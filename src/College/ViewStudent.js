@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import {
     Container,
     Dropdown,
@@ -39,6 +39,7 @@ const ViewStudent = () => {
     const [id, setId] = useState(null)
     const dispatch = useDispatch();
     const [details,setDetails] = useState([]);
+    const navigate = useNavigate()
     const { val } = useSelector((state) => state.toggle);
     const handleClose = () => {
         setShow(false);
@@ -83,7 +84,7 @@ const ViewStudent = () => {
             console.log(e);
             if(e.status==403){
                 localStorage.clear();
-                window.location.href = "/";
+                navigate("/")
               }
         })
     }
@@ -128,11 +129,11 @@ const ViewStudent = () => {
                 console.log(e);
                 if(e.status==403){
                     localStorage.clear();
-                    window.location.href = "/";
+                    navigate("/")
                   }
                 setFlag(false);
                 swal({
-                    title: e.data.status,
+                    title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                     text: "",
                     icon: "error",
                     button: "OK",

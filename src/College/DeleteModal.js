@@ -6,10 +6,11 @@ import { useSelector,useDispatch } from 'react-redux'
 import * as action from "../Redux/action"
 import Spinner from '../Components/Spinner'
 import swal from 'sweetalert'
+import { useNavigate } from 'react-router-dom'
 const DeleteModal = ({ show, setShow, setLoading, id }) => {
 
     const dispatch = useDispatch()
-    
+    const navigate  = useNavigate()
     const onDeleteClick = () => {
         setLoading(true)
         console.log(id);
@@ -29,11 +30,11 @@ const DeleteModal = ({ show, setShow, setLoading, id }) => {
             console.log(e);
             if(e.status==403){
                 localStorage.clear();
-                window.location.href = "/";
+                navigate("/")
               }
             setLoading(false)
             swal({
-                title: e.data.status,
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                 text: "",
                 icon: "error",
                 button: "OK",

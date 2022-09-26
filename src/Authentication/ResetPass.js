@@ -39,8 +39,8 @@ const Reset = props => {
       .then((res)=>{
         console.log(res);
         setLoading(false)
-        localStorage.setItem("token",res.data.access);
-        localStorage.setItem("rtoken",res.data.refresh);
+        // localStorage.setItem("token",res.data.access);
+        // localStorage.setItem("rtoken",res.data.refresh);
         swal({
           title: "Password Reset Successfully",
           text: "",
@@ -53,7 +53,7 @@ const Reset = props => {
         console.log(e);
         setLoading(false)
         swal({
-          title: e.data.status,
+          title: e.data.status ? e.data.status : e.data.non_field_errors[0],
           text: "",
           icon: "error",
           button: "OK",

@@ -58,14 +58,14 @@ const Signup = () => {
             icon: "success",
             button: "OK",
           });
-          localStorage.setItem("token",res.data.access);
-          localStorage.setItem("rtoken",res.data.refresh);
+          // localStorage.setItem("token",res.data.access);
+          // localStorage.setItem("rtoken",res.data.refresh);
           navigate("/otp", { state: values });
         }).catch((e) => {
           console.log(e);
           setLoading(false)
           swal({
-            title: e.data.status,
+            title: e.data.status ? e.data.status : e.data.non_field_errors[0] ,
             text: "",
             icon: "error",
             button: "OK",

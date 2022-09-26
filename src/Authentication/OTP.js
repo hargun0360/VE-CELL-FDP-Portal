@@ -44,7 +44,7 @@ const OTP = () => {
                 }).catch((e) => {
                     console.log(e);
                     swal({
-                        title: e.data.status,
+                        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                         text: "",
                         icon: "error",
                         button: "OK",
@@ -79,7 +79,7 @@ const OTP = () => {
                         console.log(e);
                         setLoading(false);
                         swal({
-                            title: e.data.status,
+                            title: e.data.non_field_errors[0] ?  e.data.non_field_errors[0] : e.data.status,
                             text: "",
                             icon: "error",
                             button: "OK",
@@ -100,7 +100,7 @@ const OTP = () => {
                         console.log(e);
                         setLoading(false);
                         swal({
-                            title: e.data.status,
+                            title: e.data.non_field_errors[0] ?  e.data.non_field_errors[0] : e.data.status,
                             text: "",
                             icon: "error",
                             button: "OK",

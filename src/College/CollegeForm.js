@@ -8,11 +8,12 @@ import "../App.css";
 import Breadcrumb from './Breadcrumb';
 import { doAddDetails, doUpdateDetails } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
 import Spinner from '../Components/Spinner'
 import swal from 'sweetalert';
 import { StoreMallDirectory } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import "../App.css"
 function CollegeForm() {
 
@@ -43,6 +44,8 @@ function CollegeForm() {
   const [mobilemessage,setMobileMessage] = useState(false)
   const [designationmessage,setDesignationMessage] = useState(false)
   const [admin, setAdmin] = useState(false);
+
+  const navigate = useNavigate();
 
   let error = {
     name: null,
@@ -108,10 +111,10 @@ function CollegeForm() {
       console.log(e);
       if (e.status == 403) {
         localStorage.clear();
-        window.location.href = "/";
+        navigate("/")
       }
       swal({
-        title: e.data.status,
+        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
         text: "",
         icon: "error",
         button: "OK",
@@ -186,11 +189,11 @@ function CollegeForm() {
                     console.log(e);
                     if (e.status == 403) {
                       localStorage.clear();
-                      window.location.href = "/";
+                      navigate("/")
                     }
                     setLoading(false)
                     swal({
-                      title: e.data.status,
+                      title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                       text: "",
                       icon: "error",
                       button: "OK",
@@ -267,11 +270,11 @@ function CollegeForm() {
                     console.log(e);
                     if (e.status == 403) {
                       localStorage.clear();
-                      window.location.href = "/";
+                      navigate("/")
                     }
                     setLoading(false)
                     swal({
-                      title: e.data.status,
+                      title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                       text: "",
                       icon: "error",
                       button: "OK",

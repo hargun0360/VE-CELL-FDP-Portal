@@ -57,7 +57,7 @@ const Forgot = () => {
         }).catch((e) => {
           console.log(e);
           swal({
-            title: e.data.status,
+            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
             text: "",
             icon: "error",
             button: "OK",

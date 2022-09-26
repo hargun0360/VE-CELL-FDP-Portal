@@ -7,7 +7,7 @@ import "../App.css";
 import Breadcrumb from './Breadcrumb';
 import { doUpdateStudentDetail, doAddStudentDetail, doGetStudentDetailById } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../Components/Spinner'
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
@@ -30,6 +30,7 @@ function StudentForm() {
     const [admin, setAdmin] = useState(false);
     const [namemessage, setNameMessage] = useState(false)
     const [mobilemessage, setMobileMessage] = useState(false)
+    const navigate = useNavigate()
 
     let error = {
         name: null,
@@ -69,10 +70,10 @@ function StudentForm() {
             console.log(e);
             if (e.status == 403) {
                 localStorage.clear();
-                window.location.href = "/";
+                navigate("/")
             }
             swal({
-                title: e.data.detail,
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                 text: "",
                 icon: "error",
                 button: "OK",
@@ -133,11 +134,11 @@ function StudentForm() {
                                 console.log(e);
                                 if (e.status == 403) {
                                     localStorage.clear();
-                                    window.location.href = "/";
+                                    navigate("/")
                                 }
                                 setLoading(false)
                                 swal({
-                                    title: e.data.status,
+                                    title:  e.data.status ? e.data.status : e.data.non_field_errors[0],
                                     text: "",
                                     icon: "error",
                                     button: "OK",
@@ -193,7 +194,7 @@ function StudentForm() {
                                 console.log(e);
                                 setLoading(false)
                                 swal({
-                                    title: e.data.status,
+                                    title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                                     text: "",
                                     icon: "error",
                                     button: "OK",

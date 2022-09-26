@@ -67,10 +67,10 @@ const ViewDetail = () => {
             console.log(e);
             if(e.status==403){
                 localStorage.clear();
-                window.location.href = "/";
+                navigate("/")
               }
             swal({
-                title: e.data.status,
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
                 text: "",
                 icon: "error",
                 button: "OK",
