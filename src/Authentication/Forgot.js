@@ -21,6 +21,7 @@ import { doVerifyOtp } from "../Services/ApiServices";
 import swal from "sweetalert";
 const Forgot = () => {
   const navigate = useNavigate();
+  const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -28,11 +29,21 @@ const Forgot = () => {
     initialValues: {
       email: '',
     },
+    validate: values => {
+      let errors = {};
+      if (!values.email) {
+        errors.email = 'required'
+      } else if (!regex.test(values.email)) {
+        errors.email = 'Invalid email format'
+      }
+      return errors;
+    },
     validationSchema: Yup.object({
       email: Yup.string().required("please enter your email"),
     }),
     onSubmit: (values) => {
       console.log(values);
+    
       doVerifyOtp(values)
         .then((res) => {
           console.log(res);
