@@ -95,10 +95,10 @@ const ViewFDP = () => {
                     {
                         admin ? <Breadcrumb
                             title="View FDP"
-                            breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                            breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
                         /> : <Breadcrumb
                             title="View FDP"
-                            breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                            breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
                         />
                     }
                     </div>

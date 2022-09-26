@@ -11,12 +11,12 @@ const Breadcrumb = props => {
     <Row>
       <Col xs="12">
         <div className="page-title-box d-flex align-items-center justify-content-between">
-          <h4 className="mb-0 font-size-20">{title}</h4>
+          <h4 className="mb-0 font-size-20 px-1">{title}</h4>
           <div className="page-title-right">
             <ol className="breadcrumb m-0">
               {breadcrumbItems.map((item, key) => (
                 <BreadcrumbItem key={key} active={key + 1 === itemLength}>
-                  <Link style={{textDecoration:"none",color:"black",fontWeight:"500"}} to={(item.href)?item.href:"/"}>{item.title}</Link>
+                  <Link style={{textDecoration:"none",color:"black",fontWeight:"500",fontSize:"1rem"}} to={(item.href)?item.href:"/"}>{item.title}</Link>
                 </BreadcrumbItem>
               ))}
             </ol>

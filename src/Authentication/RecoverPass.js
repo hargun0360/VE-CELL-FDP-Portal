@@ -32,13 +32,13 @@ const RecoverPass = props => {
       doResetPassword({new_password:values.Npassword})
       .then((res)=>{
         console.log(res);
+        navigate("/")
         swal({
-          title: "Password Added Successfully",
+          title: "Password Reset Successfully",
           text: "",
           icon: "success",
           button: "OK",
         });
-        navigate("/")
       }).catch((e)=>{
         console.log(e);
         swal({

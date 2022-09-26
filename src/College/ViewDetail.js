@@ -40,9 +40,6 @@ const ViewDetail = () => {
         onBeforePrint : () => setState(false),
         onAfterPrint: () => setState(true),
     });
-    const handleReset = () =>{
-        navigate("/reset");
-    }
     
     useEffect(()=>{
         getDetailByID();
@@ -101,9 +98,6 @@ const ViewDetail = () => {
                 <h3 style={{ textAlign: "center", marginTop: "1%", }} className="py-1 px-5 mx-5">View Details</h3>
                 <div style={{ float:"right"}}> <Button variant="primary" type="button"  className=' mt-2 w-sm-100 ' onClick={handlePrint}>
                     Print
-                </Button>
-                <Button variant="primary" type="button"  className=' mt-2 w-sm-100 mx-4' onClick={handleReset} >
-                    Reset Password
                 </Button>
                  </div>
                 

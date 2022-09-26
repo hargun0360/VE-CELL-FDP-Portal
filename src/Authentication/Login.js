@@ -53,7 +53,7 @@ const Login = props => {
         }).catch((e) => {
           setLoading(false)
           swal({
-            title: e.data.non_field_object[0],
+            title: e.data.status,
             text: "",
             icon: "error",
             button: "OK",

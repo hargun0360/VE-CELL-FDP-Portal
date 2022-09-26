@@ -178,7 +178,7 @@ const ViewStudent = () => {
                     <div className='py-3'>
                      <Breadcrumb
                     title="Student Details"
-                    breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                    breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
                 />       
                 </div>      
                 <Button variant="success" className='mb-2' onClick={handleShow}>

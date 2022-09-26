@@ -28,18 +28,26 @@ function StudentForm() {
     const [remarks, setRemarks] = useState("");
     const [flag, setFlag] = useState(false)
     const [admin, setAdmin] = useState(false);
-    
+    const [namemessage, setNameMessage] = useState(false)
+    const [mobilemessage, setMobileMessage] = useState(false)
 
-    useEffect(()=>{
+    let error = {
+        name: null,
+        email: null,
+        mobile: null,
+        designation: null,
+      }
+    useEffect(() => {
         if (localStorage.getItem("admin") == "true") {
             setAdmin(true);
         }
-    },[]);
+    }, []);
 
 
     useEffect(() => {
         if (id) {
             getDetailByID();
+            setFlag(true);
         }
     }, [id]);
 
@@ -59,10 +67,10 @@ function StudentForm() {
             setBranch(res.data.branch);
         }).catch((e) => {
             console.log(e);
-            if(e.status==403){
+            if (e.status == 403) {
                 localStorage.clear();
                 window.location.href = "/";
-              }
+            }
             swal({
                 title: e.data.detail,
                 text: "",
@@ -84,88 +92,121 @@ function StudentForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setLoading(true);
 
         if (id) {
             if (name && branch && section && duration && activity && year && venue && to && from && mobile) {
+                const nameRegex = /[a-zA-Z]{1,}/i
 
-                let obj = {
-                    name,
-                    branch,
-                    section,
-                    number_of_days: duration,
-                    name_of_activity: activity,
-                    year,
-                    venue_of_activity: venue,
-                    starting_date: from,
-                    end_date: to,
-                    phone_number: mobile,
-                    remarks
+                const mobileRegex = /[6789]{1}[0-9]{9}/i
+
+                if (nameRegex.test(name)) {
+                    setNameMessage(false);
+                    if (mobileRegex.test(mobile)) {
+                        setMobileMessage(false);
+                        setLoading(true);
+
+                        let obj = {
+                            name,
+                            branch,
+                            section,
+                            number_of_days: duration,
+                            name_of_activity: activity,
+                            year,
+                            venue_of_activity: venue,
+                            starting_date: from,
+                            end_date: to,
+                            phone_number: mobile,
+                            remarks
+                        }
+
+                        doUpdateStudentDetail(obj, Number(id))
+                            .then((res) => {
+                                console.log(res);
+                                setLoading(false)
+                                swal({
+                                    title: "Updated Successfully",
+                                    text: "",
+                                    icon: "success",
+                                    button: "OK",
+                                });
+                            }).catch((e) => {
+                                console.log(e);
+                                if (e.status == 403) {
+                                    localStorage.clear();
+                                    window.location.href = "/";
+                                }
+                                setLoading(false)
+                                swal({
+                                    title: e.data.status,
+                                    text: "",
+                                    icon: "error",
+                                    button: "OK",
+                                });
+                            })
+                    } else {
+                        error.mobile = "invalid format"
+                        setMobileMessage(true);
+                    }
+                } else {
+                    error.name = "invalid format"
+                    setNameMessage(true);
                 }
-
-                doUpdateStudentDetail(obj, Number(id))
-                    .then((res) => {
-                        console.log(res);
-                        setLoading(false)
-                        swal({
-                            title: "Updated Successfully",
-                            text: "",
-                            icon: "success",
-                            button: "OK",
-                        });
-                    }).catch((e) => {
-                        console.log(e);
-                        if(e.status==403){
-                            localStorage.clear();
-                            window.location.href = "/";
-                          }
-                        setLoading(false)
-                        swal({
-                            title: e.data.status,
-                            text: "",
-                            icon: "error",
-                            button: "OK",
-                        });
-                    })
             }
         } else {
             if (name && branch && section && duration && activity && year && venue && to && from && mobile) {
 
+                const nameRegex = /[a-zA-Z]{1,}/i
 
-                let obj = {
-                    name,
-                    branch,
-                    section,
-                    number_of_days: duration,
-                    name_of_activity: activity,
-                    year,
-                    venue_of_activity: venue,
-                    starting_date: from,
-                    end_date: to,
-                    phone_number: mobile,
-                    remarks
+                const mobileRegex = /[6789]{1}[0-9]{9}/i
+
+                if (nameRegex.test(name)) {
+                    setNameMessage(false);
+                    if (mobileRegex.test(mobile)) {
+                        setMobileMessage(false);
+                        setLoading(true);
+
+                        let obj = {
+                            name,
+                            branch,
+                            section,
+                            number_of_days: duration,
+                            name_of_activity: activity,
+                            year,
+                            venue_of_activity: venue,
+                            starting_date: from,
+                            end_date: to,
+                            phone_number: mobile,
+                            remarks
+                        }
+
+                        doAddStudentDetail(obj)
+                            .then((res) => {
+                                console.log(res);
+                                setLoading(false)
+                                swal({
+                                    title: "Student Added Successfully",
+                                    text: "",
+                                    icon: "success",
+                                    button: "OK",
+                                });
+                            }).catch((e) => {
+                                console.log(e);
+                                setLoading(false)
+                                swal({
+                                    title: e.data.status,
+                                    text: "",
+                                    icon: "error",
+                                    button: "OK",
+                                });
+                            })
+                    } else {
+                        error.mobile = "invalid format"
+                        setMobileMessage(true);
+                    }
+                } else {
+                    error.name = "invalid format"
+                    setNameMessage(true);
                 }
-
-                doAddStudentDetail(obj)
-                    .then((res) => {
-                        console.log(res);
-                        setLoading(false)
-                        swal({
-                            title: "Student Added Successfully",
-                            text: "",
-                            icon: "success",
-                            button: "OK",
-                        });
-                    }).catch((e) => {
-                        console.log(e);
-                        setLoading(false)
-                        swal({
-                            title: e.data.status,
-                            text: "",
-                            icon: "error",
-                            button: "OK",
-                        });
-                    })
             }
         }
     }
@@ -179,10 +220,10 @@ function StudentForm() {
                 {
                     admin ? <Breadcrumb
                         title={flag ? "Update FDP" : "Add FDP"}
-                        breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                        breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
                     /> : <Breadcrumb
                         title={flag ? "Update FDP" : "Add FDP"}
-                        breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
+                        breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
                     />
                 }
                 <Card className='w-100 h-100 mt-3'>
@@ -198,6 +239,7 @@ function StudentForm() {
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Name</Form.Label>
                                         <Form.Control type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                        {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={6}>
@@ -232,7 +274,8 @@ function StudentForm() {
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="10" maxlength="10" pattern="[0-9]{10}" onChange={(e) => setMobile(e.target.value)} />
+                                        <Form.Control type="text" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
+                                        {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={5}>
@@ -252,7 +295,7 @@ function StudentForm() {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" value={from}  placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"  min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
+                                        <Form.Control type="date" value={from} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>

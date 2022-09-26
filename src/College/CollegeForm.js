@@ -3,14 +3,17 @@ import { Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { logDOM } from '@testing-library/react';
 import { Container } from 'reactstrap';
+import {FormFeedback} from 'reactstrap';
 import "../App.css";
 import Breadcrumb from './Breadcrumb';
-import { doAddDetails,doUpdateDetails } from '../Services/ApiServices';
+import { doAddDetails, doUpdateDetails } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
 import { useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
 import Spinner from '../Components/Spinner'
 import swal from 'sweetalert';
+import { StoreMallDirectory } from '@mui/icons-material';
+import "../App.css"
 function CollegeForm() {
 
   const { id } = useParams();
@@ -34,16 +37,25 @@ function CollegeForm() {
   const [end, setEnd] = useState(null);
   const [days, setDays] = useState("");
   const [venue, setVenue] = useState(null);
-  const [state,setState] = useState(false);
+  const [state, setState] = useState(false);
+  const [namemessage,setNameMessage] = useState(false)
+  const [emailmessage,setEmailMessage] = useState(false)
+  const [mobilemessage,setMobileMessage] = useState(false)
+  const [designationmessage,setDesignationMessage] = useState(false)
+  const [admin, setAdmin] = useState(false);
 
-  const [admin,setAdmin] = useState(false);
-  
+  let error = {
+    name: null,
+    email: null,
+    mobile: null,
+    designation: null,
+  }
 
-  useEffect(()=>{
-    if(localStorage.getItem("admin")=="true"){
+  useEffect(() => {
+    if (localStorage.getItem("admin") == "true") {
       setAdmin(true);
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     if (ftype === "Online") {
@@ -69,6 +81,7 @@ function CollegeForm() {
   useEffect(() => {
     if (id) {
       getDetailByID();
+      setFlag(true);
     }
   }, [id]);
 
@@ -93,7 +106,7 @@ function CollegeForm() {
       setCertificate(res.data.certificate)
     }).catch((e) => {
       console.log(e);
-      if(e.status==403){
+      if (e.status == 403) {
         localStorage.clear();
         window.location.href = "/";
       }
@@ -119,126 +132,188 @@ function CollegeForm() {
   const today = new Date();
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
 
     if (id) {
       if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
-        const myForm = new FormData();
+        const nameRegex = /[a-zA-Z]{1,}/i
+        const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
+        const mobileRegex = /[6789]{1}[0-9]{9}/i
+        const designationRegex = /[a-zA-Z]{1,}/i
 
-        myForm.set("name", name);
-        myForm.set("department", department);
-        myForm.set("college_email", email);
-        myForm.set("mobile", mobile);
-        myForm.set("designation", designation);
-        myForm.set("fdp_type", ftype);
-        myForm.set("face_to_face_fdp", offline);
-        myForm.set("incentive_detail", incentive);
-        myForm.set("phone_number", mobile);
-        myForm.set("remarks", remarks);
-        myForm.set("certificate", certificate);
-        myForm.set("starting_date", start);
-        myForm.set("end_date", end);
-        myForm.set("number_of_days", days);
-        myForm.set("online_fdp", online);
-        myForm.set("venue", venue);
-        myForm.set("certificate_number", certificatenumber);
+        if (nameRegex.test(name)) {
+          setNameMessage(false);
+          if (emailRegex.test(email)) {
+            setEmailMessage(false);
+            if (mobileRegex.test(mobile)) {
+              setMobileMessage(false);
+              if (designationRegex.test(designation)) {
+                setDesignationMessage(false);
+                setLoading(true);
+                
+                const myForm = new FormData();
 
-        console.log(myForm);
+                myForm.set("name", name);
+                myForm.set("department", department);
+                myForm.set("college_email", email);
+                myForm.set("mobile", mobile);
+                myForm.set("designation", designation);
+                myForm.set("fdp_type", ftype);
+                myForm.set("face_to_face_fdp", offline);
+                myForm.set("incentive_detail", incentive);
+                myForm.set("phone_number", mobile);
+                myForm.set("remarks", remarks);
+                myForm.set("certificate", certificate);
+                myForm.set("starting_date", start);
+                myForm.set("end_date", end);
+                myForm.set("number_of_days", days);
+                myForm.set("online_fdp", online);
+                myForm.set("venue", venue);
+                myForm.set("certificate_number", certificatenumber);
 
-        doUpdateDetails(myForm,id)
-          .then((res) => {
-            console.log(res);
-            setLoading(false)
-            swal({
-              title: "Details Updated Successfully",
-              text: "",
-              icon: "success",
-              button: "OK",
-            });
-          }).catch((e) => {
-            console.log(e);
-            if(e.status==403){
-              localStorage.clear();
-              window.location.href = "/";
+                console.log(myForm);
+
+                doUpdateDetails(myForm, id)
+                  .then((res) => {
+                    console.log(res);
+                    setLoading(false)
+                    swal({
+                      title: "Details Updated Successfully",
+                      text: "",
+                      icon: "success",
+                      button: "OK",
+                    });
+                  }).catch((e) => {
+                    console.log(e);
+                    if (e.status == 403) {
+                      localStorage.clear();
+                      window.location.href = "/";
+                    }
+                    setLoading(false)
+                    swal({
+                      title: e.data.status,
+                      text: "",
+                      icon: "error",
+                      button: "OK",
+                    });
+                  })
+              } else {
+                error.designation = "invalid format"
+                setDesignationMessage(true);
+              }
+            } else {
+              error.mobile = "invalid format"
+              setMobileMessage(true);
             }
-            setLoading(false)
-            swal({
-              title: e.data.status,
-              text: "",
-              icon: "error",
-              button: "OK",
-            });
-          })
+          } else {
+            error.email = "invalid format"
+            setEmailMessage(true);
+          }
+        } else {
+          error.name = "invalid format"
+          setNameMessage(true);
+        }
       }
     } else {
       if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
-        const myForm = new FormData();
 
-        myForm.set("name", name);
-        myForm.set("department", department);
-        myForm.set("college_email", email);
-        myForm.set("mobile", mobile);
-        myForm.set("designation", designation);
-        myForm.set("fdp_type", ftype);
-        myForm.set("face_to_face_fdp", offline);
-        myForm.set("incentive_detail", incentive);
-        myForm.set("phone_number", mobile);
-        myForm.set("remarks", remarks);
-        myForm.set("certificate", certificate);
-        myForm.set("starting_date", start);
-        myForm.set("end_date", end);
-        myForm.set("number_of_days", days);
-        myForm.set("online_fdp", online);
-        myForm.set("venue", venue);
-        myForm.set("certificate_number", certificatenumber);
+        const nameRegex = /[a-zA-Z]{1,}/i
+        const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
+        const mobileRegex = /[6789]{1}[0-9]{9}/i
+        const designationRegex = /[a-zA-Z]{1,}/i
 
-        console.log(myForm);
+        if (nameRegex.test(name)) {
+          setNameMessage(false)
+          if (emailRegex.test(email)) {
+            setEmailMessage(false)
+            if (mobileRegex.test(mobile)) {
+              setMobileMessage(false)
+              if (designationRegex.test(designation)) {
+                setDesignationMessage(false);
+                setLoading(true);
+                
+                const myForm = new FormData();
 
-        doAddDetails(myForm)
-          .then((res) => {
-            console.log(res);
-            setLoading(false)
-            swal({
-              title: "Details Added Successfully",
-              text: "",
-              icon: "success",
-              button: "OK",
-            });
-          }).catch((e) => {
-            console.log(e);
-            if(e.status==403){
-              localStorage.clear();
-              window.location.href = "/";
+                myForm.set("name", name);
+                myForm.set("department", department);
+                myForm.set("college_email", email);
+                myForm.set("mobile", mobile);
+                myForm.set("designation", designation);
+                myForm.set("fdp_type", ftype);
+                myForm.set("face_to_face_fdp", offline);
+                myForm.set("incentive_detail", incentive);
+                myForm.set("phone_number", mobile);
+                myForm.set("remarks", remarks);
+                myForm.set("certificate", certificate);
+                myForm.set("starting_date", start);
+                myForm.set("end_date", end);
+                myForm.set("number_of_days", days);
+                myForm.set("online_fdp", online);
+                myForm.set("venue", venue);
+                myForm.set("certificate_number", certificatenumber);
+
+                console.log(myForm);
+
+                doAddDetails(myForm)
+                  .then((res) => {
+                    console.log(res);
+                    setLoading(false)
+                    swal({
+                      title: "Details Added Successfully",
+                      text: "",
+                      icon: "success",
+                      button: "OK",
+                    });
+                  }).catch((e) => {
+                    console.log(e);
+                    if (e.status == 403) {
+                      localStorage.clear();
+                      window.location.href = "/";
+                    }
+                    setLoading(false)
+                    swal({
+                      title: e.data.status,
+                      text: "",
+                      icon: "error",
+                      button: "OK",
+                    });
+                  })
+              } else {
+                error.designation = "invalid format"
+                setDesignationMessage(true)
+              }
+            } else {
+              error.mobile = "invalid format"
+              setMobileMessage(true);
             }
-            setLoading(false)
-            swal({
-              title: e.data.status,
-              text: "",
-              icon: "error",
-              button: "OK",
-            });
-          })
+          } else {
+            error.email = "invalid format"
+            setEmailMessage(true);
+          }
+        } else {
+          error.name = "invalid format"
+          setNameMessage(true);
+        }
       }
     }
   }
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
     <div className='page-content'>
-     
+
       <Container fluid>
-      {
-        loading ? <Spinner /> : null
-      }
-      {
-        admin ? <Breadcrumb
-          title={flag ? "Update FDP" : "Add FDP"}
-          breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
-        /> : <Breadcrumb
-          title={flag ? "Update FDP" : "Add FDP"}
-          breadcrumbItems={[{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Logout", href: "/logout" }]}
-        />
-      }
-       
+        {
+          loading ? <Spinner /> : null
+        }
+        {
+          admin ? <Breadcrumb
+            title={flag ? "Update FDP" : "Add FDP"}
+            breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
+          /> : <Breadcrumb
+            title={flag ? "Update FDP" : "Add FDP"}
+            breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
+          />
+        }
+
         <Card className='w-100 h-100 mt-3'>
           <Card.Body className='w-100'>
             <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
@@ -252,6 +327,7 @@ function CollegeForm() {
                   <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
                     <Form.Control type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                    {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
@@ -276,13 +352,16 @@ function CollegeForm() {
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>College mail id</Form.Label>
                     <Form.Control type="email" value={email} placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
+                    {emailmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required minlength="10" maxlength="10" pattern="[0-9]{10}" onChange={(e) => setMobile(e.target.value)} />
+                    <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
+                    {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
+
                 </Col>
               </Row>
               <Row>
@@ -290,6 +369,7 @@ function CollegeForm() {
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
                     <Form.Control type="text" value={designation} placeholder="Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
+                    {designationmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}   >invaild format</p> : null}
                   </Form.Group>
                 </Col>
               </Row>
@@ -354,19 +434,19 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <Form.Control type="date" placeholder="YYYY-MM-DD"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={start} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStart(e.target.value)} />
+                    <Form.Control type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={start} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStart(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type="date" disabled={start ? false : true}  placeholder="YYYY-MM-DD"  pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
+                    <Form.Control type="date" disabled={start ? false : true} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={2}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Number of Days</Form.Label>
-                    <Form.Control type="number" value={days} placeholder="No. of Days"  disabled />
+                    <Form.Control type="number" value={days} placeholder="No. of Days" disabled />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>
