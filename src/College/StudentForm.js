@@ -239,7 +239,7 @@ function StudentForm() {
                                 <Col xs={12} md={6}>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                        <Form.Control autoFocus={true}  type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
                                         {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
@@ -275,7 +275,7 @@ function StudentForm() {
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control type="text" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
+                                        <Form.Control autoFocus={true}  type="text" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
                                         {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>

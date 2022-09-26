@@ -329,7 +329,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                    <Form.Control type="text" autoFocus={true} value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
                     {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
                 </Col>
@@ -354,14 +354,14 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>College mail id</Form.Label>
-                    <Form.Control type="email" value={email} placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
+                    <Form.Control type="email" autoFocus={true}  value={email} placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
                     {emailmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
+                    <Form.Control type="number" autoFocus={true}  value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
                     {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
 
@@ -371,7 +371,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
-                    <Form.Control type="text" value={designation} placeholder="Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
+                    <Form.Control type="text" autoFocus={true}  value={designation} placeholder="Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
                     {designationmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}   >invaild format</p> : null}
                   </Form.Group>
                 </Col>
