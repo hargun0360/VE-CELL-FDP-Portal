@@ -47,6 +47,7 @@ const Reset = props => {
           icon: "success",
           button: "OK",
         });
+        localStorage.clear();
         navigate("/")
       }).catch((e)=>{
         console.log(e);
