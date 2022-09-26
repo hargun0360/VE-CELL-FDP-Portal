@@ -60,9 +60,9 @@ function App() {
         <Forgot />
         </AuthenticatedRoutes>} />
         <Route exact path="/otp" element={
-          <AuthenticatedRoutes>
+         
             <OTP />
-          </AuthenticatedRoutes>} />  
+          } />  
         <Route exact path="/reset" element={
           <PrivateRoute>
             <Reset />
