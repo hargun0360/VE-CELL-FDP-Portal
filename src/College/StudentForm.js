@@ -27,12 +27,12 @@ function StudentForm() {
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [remarks, setRemarks] = useState("");
-    const [email,setEmail] = useState("");
+    const [email, setEmail] = useState("");
     const [flag, setFlag] = useState(false)
     const [admin, setAdmin] = useState(false);
     const [namemessage, setNameMessage] = useState(false)
     const [mobilemessage, setMobileMessage] = useState(false)
-    const [emailmessage,setEmailmessage] = useState(false)
+    const [emailmessage, setEmailmessage] = useState(false)
     const navigate = useNavigate()
 
     let error = {
@@ -40,7 +40,7 @@ function StudentForm() {
         email: null,
         mobile: null,
         designation: null,
-      }
+    }
     useEffect(() => {
         if (localStorage.getItem("admin") == "true") {
             setAdmin(true);
@@ -90,7 +90,7 @@ function StudentForm() {
             const date2 = new Date(to);
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            setDuration(diffDays);
+            setDuration(diffDays + 1);
         }
     }, [from, to])
 
@@ -107,52 +107,56 @@ function StudentForm() {
                     setNameMessage(false);
                     if (mobileRegex.test(mobile)) {
                         setMobileMessage(false);
-                        if(emailRegex.test(email)){
+                        if (emailRegex.test(email)) {
                             setEmailmessage(false);
                             setLoading(true);
+                            var dArr = from.split("-");
+                            var Arr = to.split("-");
+                            setFrom(Arr[2] + "-" + Arr[1] + "-" + Arr[0]);
+                            setTo(dArr[2] + "-" + dArr[1] + "-" + dArr[0]);
 
-                        let obj = {
-                            name,
-                            branch,
-                            section,
-                            number_of_days: duration,
-                            name_of_activity: activity,
-                            year,
-                            venue_of_activity: venue,
-                            starting_date: from,
-                            end_date: to,
-                            phone_number: mobile,
-                            remarks
-                        }
+                            let obj = {
+                                name,
+                                branch,
+                                section,
+                                number_of_days: duration,
+                                name_of_activity: activity,
+                                year,
+                                venue_of_activity: venue,
+                                starting_date: from,
+                                end_date: to,
+                                phone_number: mobile,
+                                remarks
+                            }
 
-                        doUpdateStudentDetail(obj, Number(id))
-                            .then((res) => {
-                                console.log(res);
-                                setLoading(false)
-                                swal({
-                                    title: "Updated Successfully",
-                                    text: "",
-                                    icon: "success",
-                                    button: "OK",
-                                });
-                            }).catch((e) => {
-                                console.log(e);
-                                if (e.status == 403) {
-                                    localStorage.clear();
-                                    navigate("/")
-                                }
-                                setLoading(false)
-                                swal({
-                                    title:  e.data.status ? e.data.status : e.data.non_field_errors[0],
-                                    text: "",
-                                    icon: "error",
-                                    button: "OK",
-                                });
-                            })
-                        }else{
+                            doUpdateStudentDetail(obj, Number(id))
+                                .then((res) => {
+                                    console.log(res);
+                                    setLoading(false)
+                                    swal({
+                                        title: "Updated Successfully",
+                                        text: "",
+                                        icon: "success",
+                                        button: "OK",
+                                    });
+                                }).catch((e) => {
+                                    console.log(e);
+                                    if (e.status == 403) {
+                                        localStorage.clear();
+                                        navigate("/")
+                                    }
+                                    setLoading(false)
+                                    swal({
+                                        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                                        text: "",
+                                        icon: "error",
+                                        button: "OK",
+                                    });
+                                })
+                        } else {
                             setEmailmessage(true);
                         }
-                        
+
                     } else {
                         error.mobile = "invalid format"
                         setMobileMessage(true);
@@ -173,45 +177,49 @@ function StudentForm() {
                     setNameMessage(false);
                     if (mobileRegex.test(mobile)) {
                         setMobileMessage(false);
-                        if(emailRegex.test(email)){
+                        if (emailRegex.test(email)) {
                             setEmailmessage(false);
                             setLoading(true);
+                            var dArr = from.split("-"); 
+                            var Arr = to.split("-");
+                            setFrom(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
+                            setTo(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
 
-                        let obj = {
-                            name,
-                            branch,
-                            section,
-                            number_of_days: duration,
-                            name_of_activity: activity,
-                            year,
-                            venue_of_activity: venue,
-                            starting_date: from,
-                            end_date: to,
-                            phone_number: mobile,
-                            remarks
-                        }
+                            let obj = {
+                                name,
+                                branch,
+                                section,
+                                number_of_days: duration,
+                                name_of_activity: activity,
+                                year,
+                                venue_of_activity: venue,
+                                starting_date: from,
+                                end_date: to,
+                                phone_number: mobile,
+                                remarks
+                            }
 
-                        doAddStudentDetail(obj)
-                            .then((res) => {
-                                console.log(res);
-                                setLoading(false)
-                                swal({
-                                    title: "Student Added Successfully",
-                                    text: "",
-                                    icon: "success",
-                                    button: "OK",
-                                });
-                            }).catch((e) => {
-                                console.log(e);
-                                setLoading(false)
-                                swal({
-                                    title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                                    text: "",
-                                    icon: "error",
-                                    button: "OK",
-                                });
-                            })
-                        }else{
+                            doAddStudentDetail(obj)
+                                .then((res) => {
+                                    console.log(res);
+                                    setLoading(false)
+                                    swal({
+                                        title: "Student Added Successfully",
+                                        text: "",
+                                        icon: "success",
+                                        button: "OK",
+                                    });
+                                }).catch((e) => {
+                                    console.log(e);
+                                    setLoading(false)
+                                    swal({
+                                        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                                        text: "",
+                                        icon: "error",
+                                        button: "OK",
+                                    });
+                                })
+                        } else {
                             setEmailmessage(true);
                         }
                     } else {
@@ -229,16 +237,16 @@ function StudentForm() {
         {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
         <Navbar />
         <div className='page-content'>
-            
+
             <Container fluid>
                 {
                     loading ? <Spinner /> : null
                 }
-               <Row className='mb-3 mt-3'>
-                                <Card.Title>
-                                    Student Detail
-                                </Card.Title>
-                            </Row>
+                <Row className='mb-3 mt-3'>
+                    <Card.Title>
+                        Student Detail
+                    </Card.Title>
+                </Row>
                 <Card className='w-100 h-100 mt-3'>
                     <Card.Body className='w-100'>
                         <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
@@ -246,15 +254,15 @@ function StudentForm() {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control autoFocus={true}  type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
-                                        {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                                        <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                        {namemessage ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control autoFocus={true}  type="text" value={email} placeholder="Enter your email" required onChange={(e) => setEmail(e.target.value)} />
-                                        {emailmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                                        <Form.Control autoFocus={true} type="text" value={email} placeholder="Enter your email" required onChange={(e) => setEmail(e.target.value)} />
+                                        {emailmessage ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={5}>
@@ -268,6 +276,7 @@ function StudentForm() {
                                             <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
                                             <option value="Computer Science And Engineering">Computer Science And Engineering</option>
                                             <option value="Information Technology">Information Technology</option>
+                                            <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
                                             <option value="Master Of Computer Applications">Master Of Computer Applications</option>
                                         </Form.Select>
                                     </Form.Group>
@@ -289,8 +298,8 @@ function StudentForm() {
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control autoFocus={true}  type="text" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
-                                        {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                                        <Form.Control autoFocus={true} type="text" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
+                                        {mobilemessage ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={5}>
@@ -310,13 +319,13 @@ function StudentForm() {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" value={from} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={new Date().toISOString().split('T')[0]} onChange={(e) => setFrom(e.target.value)} />
+                                        <Form.Control type="date" value={from} min='01-01-2009' onChange={(e) => setFrom(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>To</Form.Label>
-                                        <Form.Control type="date" value={to} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" min={from} disabled={from ? false : true} onChange={(e) => setTo(e.target.value)} />
+                                        <Form.Control type="date" value={to} min={from} disabled={from ? false : true} onChange={(e) => setTo(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={2}>

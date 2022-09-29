@@ -12,7 +12,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
 import Spinner from '../Components/Spinner'
 import swal from 'sweetalert';
-import { StoreMallDirectory } from '@mui/icons-material';
+import { SettingsEthernetRounded, StoreMallDirectory } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import "../App.css"
 import Navbar from "./Navbar"
@@ -129,7 +129,7 @@ function CollegeForm() {
       const date2 = new Date(end);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setDays(diffDays);
+      setDays(diffDays+1);
     }
   }, [start, end])
 
@@ -153,6 +153,10 @@ function CollegeForm() {
               if (designationRegex.test(designation)) {
                 setDesignationMessage(false);
                 setLoading(true);
+                var dArr = start.split("-"); 
+                var Arr = end.split("-");
+                setEnd(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
+                setStart(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
                 
                 const myForm = new FormData();
 
@@ -234,6 +238,10 @@ function CollegeForm() {
               if (designationRegex.test(designation)) {
                 setDesignationMessage(false);
                 setLoading(true);
+                var dArr = start.split("-"); 
+                var Arr = end.split("-");
+                setEnd(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
+                setStart(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
                 
                 const myForm = new FormData();
 
@@ -341,6 +349,7 @@ function CollegeForm() {
                       <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
                       <option value="Computer Science And Engineering">Computer Science And Engineering</option>
                       <option value="Information Technology">Information Technology</option>
+                      <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
                       <option value="Master Of Computer Applications">Master Of Computer Applications</option>
                     </Form.Select>
                   </Form.Group>
@@ -433,7 +442,7 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <Form.Control type="date" placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={start} min={new Date().toISOString().split('T')[0]} onChange={(e) => setStart(e.target.value)} />
+                    <Form.Control type="date" min='01-01-2009'  value={start} onChange={(e) => setStart(e.target.value)} />
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>

@@ -46,6 +46,10 @@ const FacultyParticipation = () => {
 
     const onSubmit = (data, e) => {
         e.preventDefault();
+        var dArr = from.split("-"); 
+        var Arr = to.split("-");
+        setFrom(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
+        setTo(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
         let obj = {
 
         }
@@ -57,7 +61,7 @@ const FacultyParticipation = () => {
     //     if(from){
     //         var dArr = from.split("-");  // ex input: "2010-01-18"
 
-    //         console.log(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
+             //console.log(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
     //     }
     // },[from])
 //---------------------------------------------------------------------------------------
@@ -138,7 +142,7 @@ const FacultyParticipation = () => {
                                             <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
                                             <option value="Computer Science And Engineering">Computer Science And Engineering</option>
                                             <option value="Information Technology">Information Technology</option>
-                                            <option value="Information Technology">Master of Business Administration (MBA)</option>
+                                            <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
                                             <option value="Master Of Computer Applications">Master Of Computer Applications</option>
                                         </Form.Select>
                                         <p style={{color:"red",padding:"0px",margin:"0px"}}>{errors.department?.message}</p>
