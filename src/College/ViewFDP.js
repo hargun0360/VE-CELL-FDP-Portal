@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Link } from "react-router-dom"
 import {
     Container,
@@ -10,6 +10,7 @@ import {
     UncontrolledDropdown,
 } from "reactstrap"
 import { Card } from "react-bootstrap"
+import { useReactToPrint } from 'react-to-print';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
@@ -23,11 +24,18 @@ import Spinner from '../Components/Spinner'
 import Breadcrumb from './Breadcrumb';
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar"
+import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 const ViewFDP = () => {
     const [loader, setLoader] = useState(false)
     const [project, setProject] = useState(null)
     const [modal, setModal] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
+    const [name, setName] = useState("")
+    const [department, setDepartment] = useState(null)
+    const [incentive, setIncentive] = useState(null)
+    const [state,setState] = useState(true)
+    const componentRef = useRef();
+
     const [menu, setMenu] = useState({
         id: null,
         open: false
@@ -75,6 +83,13 @@ const ViewFDP = () => {
         })
     }
 
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: "FDP report",
+        onBeforePrint : () => setState(false),
+        onAfterPrint: () => setState(true),
+    });
+
     if (details.length) {
         console.log(details);
     }
@@ -86,20 +101,104 @@ const ViewFDP = () => {
 
     return (
         <React.Fragment>
-            
+
             <Navbar />
             <DeleteModal
                 show={deleteModal} setShow={setDeleteModal} setLoading={setLoader} id={id}
             />
             <div className="w-100 h-100 pb-3">
                 <Container fluid>
-                <div className='py-4'>
-                <Card.Title>
-                    View FDP
-                </Card.Title>
+                    <Card.Title className="pt-3">
+                        View FDP
+                    </Card.Title>
+
+
+                    <div className="py-2">
+                        <Card >
+                            <Card.Body>
+                                <Form onSubmit={(e) => handleSubmit(e)}>
+                                    <Row>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>Name</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={4}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Department</Form.Label>
+                                                <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
+                                                    <option>Select the Department</option>
+                                                    <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
+                                                    <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
+                                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                                    <option value="Civil Engineering">Civil Engineering</option>
+                                                    <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
+                                                    <option value="Computer Science And Engineering">Computer Science And Engineering</option>
+                                                    <option value="Information Technology">Information Technology</option>
+                                                    <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
+                                                    <option value="Master Of Computer Applications">Master Of Computer Applications</option>
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>FDP Type</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>Start Date</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>End Date</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col xs={12} md={4}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Incentive Detail</Form.Label>
+                                                <Form.Select className='mb-3' value={incentive} aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
+                                                    <option>Select the Incentive Details</option>
+                                                    <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
+                                                    <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
+                                                    <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
+                                                    <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
+                                                    <option value="Not Taken Yet">Not Taken Yet</option>
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={3}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>Venue</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={3} >
+                                            <div className='mb-4 py-1'></div>
+                                            <Button type='submit' variant="success">
+                                                Add Filter
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                        <div className="py-2 mt-2">
+                            <Button type='button' className="px-3" variant="success" onClick={handlePrint}>
+                                Generate Report
+                            </Button>
+                        </div>
                     </div>
+
                     {/* Render Breadcrumbs */}
-                    <Card>
+                    <Card ref={componentRef}>
                         <Card.Body>
                             <div className="table-responsive">
                                 <Table className="table" style={{ height: "50vh" }}>
@@ -113,7 +212,7 @@ const ViewFDP = () => {
                                             <th className="text-center">End Date</th>
                                             <th className="text-center">Certificate Number</th>
                                             <th className="text-center">Incentive Detail</th>
-                                            <th className="text-center">Actions</th>
+                                            {state ? <th className="text-center">Actions</th> : null}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -129,7 +228,7 @@ const ViewFDP = () => {
                                                         <td className="text-center"> {item.end_date === null ? "" : item.end_date} </td>
                                                         <td className="text-center"> {item.certificate_number === null ? "" : item.certificate_number} </td>
                                                         <td className="text-center"> {item.incentive_detail === null ? "" : item.incentive_detail} </td>
-                                                        <td className="text-center">
+                                                        {state ? <td className="text-center">
                                                             <UncontrolledDropdown>
                                                                 <DropdownToggle href="#" className="card-drop" tag="i">
                                                                     <div className="align-middle me-1">
@@ -156,7 +255,7 @@ const ViewFDP = () => {
                                                                     </DropdownItem>
                                                                 </DropdownMenu>
                                                             </UncontrolledDropdown>
-                                                        </td>
+                                                        </td> : null}
                                                     </tr>
                                                 </>
                                             ))
