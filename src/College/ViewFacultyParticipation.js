@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import {
     Container,
@@ -16,6 +16,7 @@ import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal2'
+import { useReactToPrint } from 'react-to-print';
 import { doAddBulkStudentDetails, doGetAllFDP, doGetAllStudent } from "../Services/ApiServices";
 import * as action from "../Redux/action";
 import { useDispatch, useSelector } from 'react-redux'
@@ -40,7 +41,11 @@ const ViewFacultyParticipation = () => {
     const [name, setName] = useState("")
     const [department, setDepartment] = useState(null)
     const [incentive, setIncentive] = useState(null)
-    const [state, setState] = useState(true)
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: "Student report",
+    });
     const { val } = useSelector((state) => state.toggle);
     const handleClose = () => {
         setShow(false);
@@ -198,7 +203,7 @@ const ViewFacultyParticipation = () => {
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Department</Form.Label>
                                                 <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
-                                                    <option>Select the Department</option>
+                                                    <option>Select the Department   </option>
                                                     <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                                     <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -241,12 +246,12 @@ const ViewFacultyParticipation = () => {
                             </Button>
                         </div>
                         <div className='px-3'>
-                            <Button variant="success" className='mb-2' onClick={handleShow}>
+                            <Button variant="success" className='mb-2' onClick={handlePrint}>
                                 Generate Report
                             </Button>
                         </div>
                     </div>  
-                    <Card>
+                    <Card  ref={componentRef}>
                         <Card.Body>
                             <div className="table-responsive">
                                 <Table className="table" style={{ height: "50vh" }}>
