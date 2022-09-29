@@ -218,7 +218,7 @@ const ViewFacultyParticipation = () => {
                                     <Row>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
-                                                <Form.Label>Name</Form.Label>
+                                                <Form.Label>Email</Form.Label>
                                                 <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
                                             </Form.Group>
                                         </Col>
