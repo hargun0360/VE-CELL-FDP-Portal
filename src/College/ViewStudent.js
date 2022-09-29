@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import {
     Container,
@@ -39,8 +39,10 @@ const ViewStudent = () => {
     const [details, setDetails] = useState([]);
     const navigate = useNavigate()
     const [name, setName] = useState("")
-    const [department, setDepartment] = useState(null)
-    const [incentive, setIncentive] = useState(null)
+    const [branch, setBranch] = useState(null)
+    const [start, setStart] = useState("")
+    const [end, setEnd] = useState("")
+
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -52,6 +54,22 @@ const ViewStudent = () => {
     }
     const handleShow = () => {
         setShow(true);
+
+    }
+    
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        var dArr = start.split("-");
+        setEnd(dArr[2] + "-" + dArr[1] + "-" + dArr[0]);
+        var Arr = end.split("-");
+        setStart(Arr[2] + "-" + Arr[1] + "-" + Arr[0]); 
+        let obj = {
+            name,
+            branch,
+            start,
+            end
+        }
+        console.log(obj);
 
     }
     let cnt = 0;
@@ -148,6 +166,7 @@ const ViewStudent = () => {
             setShow(false);
 
         }
+
         // if(students.length>0){
         //      // post the data through API
 
@@ -191,18 +210,18 @@ const ViewStudent = () => {
                     <div className="py-2">
                         <Card  >
                             <Card.Body>
-                                <Form onSubmit={(e) => handleSubmit(e)}>
+                                <Form onSubmit={(e) => { handleSubmit(e) }}>
                                     <Row>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Name</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={4}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Branch</Form.Label>
-                                                <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
+                                                <Form.Select className='mb-3' value={branch} aria-label="Default select example" onChange={(e) => setBranch(e.target.value)}>
                                                     <option>Select the Branch</option>
                                                     <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                                     <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
@@ -219,13 +238,13 @@ const ViewStudent = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={start} min='01-01-2009' onChange={(e) => setStart(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2} >

@@ -15,7 +15,7 @@ const FacultyParticipation = () => {
     const [department, setDepartment] = useState(null);
     const [event, setEvent] = useState("");
     const [venue, setVenue] = useState("");
-    const [duration, setDuration] = useState("");
+    const [duration, setDuration] = useState(null);
     const [from, setFrom] = useState(null)
     const [to, setTo] = useState(null)
     const [role, setRole] = useState("")
@@ -50,10 +50,26 @@ const FacultyParticipation = () => {
         var Arr = to.split("-");
         setFrom(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
         setTo(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
-        let obj = {
-
+        if(duration && from && to){
+            var dArr = from.split("-");
+            setFrom(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
+            var Arr = to.split("-");
+            setTo(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0])
+            let obj = {
+                faculty_name : data.facultyname,
+                email:data.email,
+                department:data.department,
+                event:data.event,
+                venue:data.venue,
+                role:data.role,
+                starting_date:from,
+                end_date:to,
+                number_of_days:duration,
+                remarks
+            }    
+            
         }
-
+        
         // API call post
     }
 

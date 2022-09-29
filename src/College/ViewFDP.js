@@ -121,13 +121,13 @@ const ViewFDP = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Name</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={4}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Department</Form.Label>
-                                                <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
+                                                <Form.Select className='mb-3' value={department} aria-label="Default select example" onChange={(e) => setDepartment(e.target.value)}>
                                                     <option>Select the Department</option>
                                                     <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                                     <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
@@ -144,19 +144,19 @@ const ViewFDP = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>FDP Type</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name"  onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                     </Row>
@@ -164,7 +164,7 @@ const ViewFDP = () => {
                                         <Col xs={12} md={4}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Incentive Detail</Form.Label>
-                                                <Form.Select className='mb-3' value={incentive} aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
+                                                <Form.Select className='mb-3' value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
                                                     <option>Select the Incentive Details</option>
                                                     <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                                                     <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
@@ -177,7 +177,7 @@ const ViewFDP = () => {
                                         <Col xs={12} md={3}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Venue</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={3} >
