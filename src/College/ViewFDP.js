@@ -8,10 +8,8 @@ import {
     DropdownToggle,
     Table,
     UncontrolledDropdown,
-    Card,
-    CardBody,
-    CardTitle,
 } from "reactstrap"
+import { Card } from "react-bootstrap"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
@@ -24,6 +22,7 @@ import swal from "sweetalert";
 import Spinner from '../Components/Spinner'
 import Breadcrumb from './Breadcrumb';
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar"
 const ViewFDP = () => {
     const [loader, setLoader] = useState(false)
     const [project, setProject] = useState(null)
@@ -87,26 +86,21 @@ const ViewFDP = () => {
 
     return (
         <React.Fragment>
-
+            
+            <Navbar />
             <DeleteModal
                 show={deleteModal} setShow={setDeleteModal} setLoading={setLoader} id={id}
             />
             <div className="w-100 h-100 pb-3">
                 <Container fluid>
                 <div className='py-4'>
-                    {
-                        admin ? <Breadcrumb
-                            title="View FDP"
-                            breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
-                        /> : <Breadcrumb
-                            title="View FDP"
-                            breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
-                        />
-                    }
+                <Card.Title>
+                    View FDP
+                </Card.Title>
                     </div>
                     {/* Render Breadcrumbs */}
                     <Card>
-                        <CardBody>
+                        <Card.Body>
                             <div className="table-responsive">
                                 <Table className="table" style={{ height: "50vh" }}>
                                     <thead className="table-light">
@@ -170,7 +164,7 @@ const ViewFDP = () => {
                                     </tbody>
                                 </Table>
                             </div>
-                        </CardBody>
+                        </Card.Body>
                     </Card>
                 </Container>
             </div>

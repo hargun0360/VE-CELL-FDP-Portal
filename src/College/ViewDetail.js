@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
 import swal from 'sweetalert';
+import Navbar from "./Navbar"
 const ViewDetail = () => {
     const [name, setName] = useState(null);
     const [department, setDepartment] = useState(null);
@@ -93,7 +94,7 @@ const ViewDetail = () => {
     }
 
     return (<>
-        
+            <Navbar />
             <div style={{ display: "flex", justifyContent: "center",alignItems:"center" }}  className="w-100 w-sm-50">
                 <h3 style={{ textAlign: "center", marginTop: "1%", }} className="py-1 px-5 mx-5">View Details</h3>
                 <div style={{ float:"right"}}> <Button variant="primary" type="button"  className=' mt-2 w-sm-100 ' onClick={handlePrint}>

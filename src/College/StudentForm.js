@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../Components/Spinner'
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
+import Navbar from "./Navbar"
 function StudentForm() {
 
     const { id } = useParams();
@@ -26,10 +27,12 @@ function StudentForm() {
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [remarks, setRemarks] = useState("");
+    const [email,setEmail] = useState("");
     const [flag, setFlag] = useState(false)
     const [admin, setAdmin] = useState(false);
     const [namemessage, setNameMessage] = useState(false)
     const [mobilemessage, setMobileMessage] = useState(false)
+    const [emailmessage,setEmailmessage] = useState(false)
     const navigate = useNavigate()
 
     let error = {
@@ -97,14 +100,16 @@ function StudentForm() {
         if (id) {
             if (name && branch && section && duration && activity && year && venue && to && from && mobile) {
                 const nameRegex = /[a-zA-Z]{1,}/i
-
+                const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
                 const mobileRegex = /[6789]{1}[0-9]{9}/i
 
                 if (nameRegex.test(name)) {
                     setNameMessage(false);
                     if (mobileRegex.test(mobile)) {
                         setMobileMessage(false);
-                        setLoading(true);
+                        if(emailRegex.test(email)){
+                            setEmailmessage(false);
+                            setLoading(true);
 
                         let obj = {
                             name,
@@ -144,6 +149,10 @@ function StudentForm() {
                                     button: "OK",
                                 });
                             })
+                        }else{
+                            setEmailmessage(true);
+                        }
+                        
                     } else {
                         error.mobile = "invalid format"
                         setMobileMessage(true);
@@ -157,14 +166,16 @@ function StudentForm() {
             if (name && branch && section && duration && activity && year && venue && to && from && mobile) {
 
                 const nameRegex = /[a-zA-Z]{1,}/i
-
+                const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
                 const mobileRegex = /[6789]{1}[0-9]{9}/i
 
                 if (nameRegex.test(name)) {
                     setNameMessage(false);
                     if (mobileRegex.test(mobile)) {
                         setMobileMessage(false);
-                        setLoading(true);
+                        if(emailRegex.test(email)){
+                            setEmailmessage(false);
+                            setLoading(true);
 
                         let obj = {
                             name,
@@ -200,6 +211,9 @@ function StudentForm() {
                                     button: "OK",
                                 });
                             })
+                        }else{
+                            setEmailmessage(true);
+                        }
                     } else {
                         error.mobile = "invalid format"
                         setMobileMessage(true);
@@ -213,37 +227,37 @@ function StudentForm() {
     }
     return (<>
         {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
+        <Navbar />
         <div className='page-content'>
+            
             <Container fluid>
                 {
                     loading ? <Spinner /> : null
                 }
-                {
-                    admin ? <Breadcrumb
-                        title={flag ? "Update FDP" : "Add FDP"}
-                        breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
-                    /> : <Breadcrumb
-                        title={flag ? "Update FDP" : "Add FDP"}
-                        breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },    ]}
-                    />
-                }
-                <Card className='w-100 h-100 mt-3'>
-                    <Card.Body className='w-100'>
-                        <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
-                            <Row className='mb-3 mt-3'>
+               <Row className='mb-3 mt-3'>
                                 <Card.Title>
                                     Student Detail
                                 </Card.Title>
                             </Row>
+                <Card className='w-100 h-100 mt-3'>
+                    <Card.Body className='w-100'>
+                        <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
                             <Row>
-                                <Col xs={12} md={6}>
+                                <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Name</Form.Label>
                                         <Form.Control autoFocus={true}  type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
                                         {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                                     </Form.Group>
                                 </Col>
-                                <Col xs={12} md={6}>
+                                <Col xs={12} md={4}>
+                                    <Form.Group className="mb-3" controlId="formBasicName">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control autoFocus={true}  type="text" value={email} placeholder="Enter your email" required onChange={(e) => setEmail(e.target.value)} />
+                                        {emailmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={12} md={5}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Branch</Form.Label>
                                         <Form.Select className='mb-3' value={branch} aria-label="Default select example" required onChange={(e) => setBranch(e.target.value)}>

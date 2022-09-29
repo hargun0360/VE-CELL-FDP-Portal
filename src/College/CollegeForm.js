@@ -15,6 +15,7 @@ import swal from 'sweetalert';
 import { StoreMallDirectory } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import "../App.css"
+import Navbar from "./Navbar"
 function CollegeForm() {
 
   const { id } = useParams();
@@ -301,21 +302,16 @@ function CollegeForm() {
   }
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
+   <Navbar />
     <div className='page-content'>
 
       <Container fluid>
         {
           loading ? <Spinner /> : null
         }
-        {
-          admin ? <Breadcrumb
-            title={flag ? "Update FDP" : "Add FDP"}
-            breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" }, { title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
-          /> : <Breadcrumb
-            title={flag ? "Update FDP" : "Add FDP"}
-            breadcrumbItems={[{ title: "Add FDP", href: "/form" }, { title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
-          />
-        }
+         <Card.Title>
+                    Add FDP
+                </Card.Title>
 
         <Card className='w-100 h-100 mt-3'>
           <Card.Body className='w-100'>
@@ -361,7 +357,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" autoFocus={true}  value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
+                    <Form.Control type="number"  value={mobile} placeholder="9956118026" required onChange={(e) => setMobile(e.target.value)} />
                     {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
                   </Form.Group>
 

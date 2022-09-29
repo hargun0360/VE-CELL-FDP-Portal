@@ -15,6 +15,8 @@ import ViewStudent from './College/ViewStudent';
 import AdminPrivateRoute from './Routes/AdminPrivateRoutes';
 import AuthenticatedRoutes from "./Routes/AuthenticatedRoutes";
 import Logout from './College/Logout';
+import FacultyParticipation from './College/FacultyParticipation';
+
 function App() {
   return (
     <div className="App">
@@ -26,6 +28,11 @@ function App() {
         <Route exact path="/stform" element={
         <AdminPrivateRoute>
         <StudentForm />
+        </AdminPrivateRoute>
+        } />
+        <Route exact path="/participation" element={
+        <AdminPrivateRoute>
+        <FacultyParticipation />
         </AdminPrivateRoute>
         } />
         <Route exact path="/stform/:id" element={

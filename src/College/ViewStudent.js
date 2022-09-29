@@ -8,12 +8,10 @@ import {
     DropdownToggle,
     Table,
     UncontrolledDropdown,
-    Card,
-    CardBody,
-    CardTitle,
     Row,
 
 } from "reactstrap"
+import {Card} from "react-bootstrap"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
@@ -27,6 +25,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Breadcrumb from './Breadcrumb';
 import * as XLSX from "xlsx"
+import Navbar from "./Navbar"
 import swal from 'sweetalert';
 const ViewStudent = () => {
     const [show, setShow] = useState(false);
@@ -151,6 +150,7 @@ const ViewStudent = () => {
     return (
         <div>
             <React.Fragment>
+            <Navbar />
             <DeleteModal
                 show={deleteModal} setShow={setDeleteModal} setLoading={setLoader} id={id}
             />
@@ -177,16 +177,15 @@ const ViewStudent = () => {
                
                 <Container fluid>
                     <div className='py-3'>
-                     <Breadcrumb
-                    title="Student Details"
-                    breadcrumbItems={[{ title: "View Students", href: "/viewst" }, { title: "Add Student", href: "/stform" },{ title: "Add FDP", href: "/form" },{ title: "View FDP", href: "/viewall" },{ title: "Reset Password", href: "/reset" },{ title: "Logout", href: "/logout" },]}
-                />       
+                    <Card.Title>
+                    View Students
+                </Card.Title>
                 </div>      
                 <Button variant="success" className='mb-2' onClick={handleShow}>
                         Add Students
                     </Button>  
                     <Card>
-                        <CardBody>
+                        <Card.Body>
                             <div className="table-responsive">              
                                 <Table className="table" style={{ height: "50vh" }}>
                                     <thead className="table-light">
@@ -258,7 +257,7 @@ const ViewStudent = () => {
                                     </tbody>
                                 </Table>
                             </div>
-                        </CardBody>
+                        </Card.Body>
                     </Card>
                 </Container>
             </React.Fragment>
