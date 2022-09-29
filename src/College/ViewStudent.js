@@ -39,7 +39,7 @@ const ViewStudent = () => {
     const dispatch = useDispatch();
     const [details, setDetails] = useState([]);
     const navigate = useNavigate()
-    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
     const [branch, setBranch] = useState(null)
     const [start, setStart] = useState("")
     const [end, setEnd] = useState("")
@@ -70,7 +70,7 @@ const ViewStudent = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         let obj = {
-            name,
+            email,
             branch,
             start:starting,
             end:ending
@@ -221,8 +221,8 @@ const ViewStudent = () => {
                                     <Row>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
-                                                <Form.Label>Name</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={4}>

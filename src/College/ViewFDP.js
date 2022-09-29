@@ -31,7 +31,7 @@ const ViewFDP = () => {
     const [project, setProject] = useState(null)
     const [modal, setModal] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
-    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
     const [department, setDepartment] = useState(null)
     const [incentive, setIncentive] = useState(null)
     const [state,setState] = useState(true)
@@ -67,7 +67,7 @@ const ViewFDP = () => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         let obj = {
-            name,
+            email,
             department,
             incentive,
             start : starting,
@@ -147,8 +147,8 @@ const ViewFDP = () => {
                                     <Row>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
-                                                <Form.Label>Name</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Label>Email</Form.Label>
+                                                <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={4}>

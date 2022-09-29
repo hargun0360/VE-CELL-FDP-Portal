@@ -39,7 +39,7 @@ const ViewFacultyParticipation = () => {
     const dispatch = useDispatch();
     const [details, setDetails] = useState([]);
     const navigate = useNavigate()
-    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
     const [department, setDepartment] = useState(null)
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
@@ -69,7 +69,7 @@ const ViewFacultyParticipation = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         let obj = {
-            name,
+            email,
             department,
             start:starting,
             end:ending
@@ -219,7 +219,7 @@ const ViewFacultyParticipation = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Name</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={4}>
@@ -242,11 +242,11 @@ const ViewFacultyParticipation = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={start} min='01-01-2009'  onChange={(e) => setStart(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={start} min={'01-01-2009'}  onChange={(e) => setStart(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
-                                            <Form.Group controlId="formBasicName">
+                                            <Form.Group controlId="formBasicName">``
                                                 <Form.Label>End Date</Form.Label>
                                                 <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
                                             </Form.Group>

@@ -32,7 +32,7 @@ function CollapsibleExample() {
                                 <Nav.Link href="#/viewst">View Students</Nav.Link>
                                 <Nav.Link href="#/stform">Add Student</Nav.Link>
                                 <Nav.Link href="#/participation">Faculty Participation</Nav.Link>
-                                <Nav.Link href="#/viewparticipation">View Participation</Nav.Link>
+                                <Nav.Link href="#/viewparticipation">View Faculty Participation</Nav.Link>
                             </> : null
                         }
                     </Nav>
