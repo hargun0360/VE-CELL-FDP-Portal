@@ -196,9 +196,9 @@ const ViewFacultyParticipation = () => {
                                         </Col>
                                         <Col xs={12} md={4}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label>Branch</Form.Label>
+                                                <Form.Label>Department</Form.Label>
                                                 <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
-                                                    <option>Select the Branch</option>
+                                                    <option>Select the Department</option>
                                                     <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                                     <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
