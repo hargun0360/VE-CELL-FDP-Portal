@@ -17,6 +17,7 @@
     "bootstrap": "^5.2.0",
     "boxicons": "^2.1.2",
     "formik": "^2.2.9",
+    "moment": "^2.29.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-auth-code-input": "1.2.1",

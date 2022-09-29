@@ -11,6 +11,7 @@ import {
 
 } from "reactstrap"
 import { Card } from "react-bootstrap"
+import moment from 'moment'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
@@ -40,7 +41,10 @@ const ViewFacultyParticipation = () => {
     const navigate = useNavigate()
     const [name, setName] = useState("")
     const [department, setDepartment] = useState(null)
-    const [incentive, setIncentive] = useState(null)
+    const [starting, setStarting] = useState(null)
+    const [ending, setEnding] = useState(null)
+    const [start, setStart] = useState("")
+    const [end, setEnd] = useState("")
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -52,6 +56,25 @@ const ViewFacultyParticipation = () => {
     }
     const handleShow = () => {
         setShow(true);
+
+    }
+
+    useEffect(()=>{
+        if(start || end){
+            setStarting(moment(start).format('DD-MM-YYYY'));
+            setEnding(moment(end).format('DD-MM-YYYY'));
+        }
+    },[start,end])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let obj = {
+            name,
+            department,
+            start:starting,
+            end:ending
+        }
+        console.log(obj);
 
     }
     let cnt = 0;
@@ -219,13 +242,13 @@ const ViewFacultyParticipation = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name"  onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={start} min='01-01-2009'  onChange={(e) => setStart(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2} >

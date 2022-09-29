@@ -23,6 +23,7 @@ import swal from "sweetalert";
 import Spinner from '../Components/Spinner'
 import Breadcrumb from './Breadcrumb';
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 import Navbar from "./Navbar"
 import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 const ViewFDP = () => {
@@ -34,6 +35,11 @@ const ViewFDP = () => {
     const [department, setDepartment] = useState(null)
     const [incentive, setIncentive] = useState(null)
     const [state,setState] = useState(true)
+    const [starting, setStarting] = useState(null)
+    const [ending, setEnding] = useState(null)
+    const [start, setStart] = useState("")
+    const [end, setEnd] = useState("")
+    const [venue,setVenue] = useState("")
     const componentRef = useRef();
 
     const [menu, setMenu] = useState({
@@ -50,12 +56,33 @@ const ViewFDP = () => {
 
     const [admin, setAdmin] = useState(false);
 
+    useEffect(()=>{
+        if(start || end){
+            setStarting(moment(start).format('DD-MM-YYYY'));
+            setEnding(moment(end).format('DD-MM-YYYY'));
+        }
+    },[start,end])
+
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        let obj = {
+            name,
+            department,
+            incentive,
+            start : starting,
+            end : ending,
+            venue,
+        }
+        console.log(obj);
+    }
 
     useEffect(() => {
         if (localStorage.getItem("admin") == "true") {
             setAdmin(true);
         }
     }, [])
+
 
     console.log(val);
     useEffect(() => {
@@ -150,13 +177,13 @@ const ViewFDP = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={start} min='01-01-2009' onChange={(e) => setStart(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                     </Row>
@@ -177,7 +204,7 @@ const ViewFDP = () => {
                                         <Col xs={12} md={3}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Venue</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" onChange={(e) => setName(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="text" value={venue} placeholder="Venue" onChange={(e) => setVenue(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={3} >

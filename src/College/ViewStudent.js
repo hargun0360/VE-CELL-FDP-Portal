@@ -14,6 +14,7 @@ import { Card } from "react-bootstrap"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
+import moment from 'moment'
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal2'
 import { useReactToPrint } from 'react-to-print';
@@ -42,6 +43,8 @@ const ViewStudent = () => {
     const [branch, setBranch] = useState(null)
     const [start, setStart] = useState("")
     const [end, setEnd] = useState("")
+    const [starting, setStarting] = useState(null)
+    const [ending, setEnding] = useState(null)
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -56,18 +59,21 @@ const ViewStudent = () => {
         setShow(true);
 
     }
+
+    useEffect(()=>{
+        if(start || end){
+            setStarting(moment(start).format('DD-MM-YYYY'));
+            setEnding(moment(end).format('DD-MM-YYYY'));
+        }
+    },[start,end])
     
     const handleSubmit = (e) => {
         e.preventDefault()
-        var dArr = start.split("-");
-        setEnd(dArr[2] + "-" + dArr[1] + "-" + dArr[0]);
-        var Arr = end.split("-");
-        setStart(Arr[2] + "-" + Arr[1] + "-" + Arr[0]); 
         let obj = {
             name,
             branch,
-            start,
-            end
+            start:starting,
+            end:ending
         }
         console.log(obj);
 
@@ -76,6 +82,7 @@ const ViewStudent = () => {
     // const handleFile = (e) => {
     //     const file = e.target.files[0];
     // const promise = new Promise((resolve, reject) => {
+
     //     const fileReader = new FileReader();
     //     fileReader.readAsArrayBuffer(file);
     //     fileReader.onload = (e) => {
