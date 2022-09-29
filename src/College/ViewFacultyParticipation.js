@@ -8,7 +8,6 @@ import {
     DropdownToggle,
     Table,
     UncontrolledDropdown,
-    Row,
 
 } from "reactstrap"
 import { Card } from "react-bootstrap"
@@ -20,14 +19,12 @@ import DeleteModal from './DeleteModal2'
 import { doAddBulkStudentDetails, doGetAllFDP, doGetAllStudent } from "../Services/ApiServices";
 import * as action from "../Redux/action";
 import { useDispatch, useSelector } from 'react-redux'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Breadcrumb from './Breadcrumb';
 import * as XLSX from "xlsx"
 import Navbar from "./Navbar"
 import swal from 'sweetalert';
-
+import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 const ViewFacultyParticipation = () => {
     const [show, setShow] = useState(false);
     const [studentData, setStudentData] = useState([]);
@@ -40,6 +37,10 @@ const ViewFacultyParticipation = () => {
     const dispatch = useDispatch();
     const [details, setDetails] = useState([]);
     const navigate = useNavigate()
+    const [name, setName] = useState("")
+    const [department, setDepartment] = useState(null)
+    const [incentive, setIncentive] = useState(null)
+    const [state, setState] = useState(true)
     const { val } = useSelector((state) => state.toggle);
     const handleClose = () => {
         setShow(false);
@@ -182,9 +183,69 @@ const ViewFacultyParticipation = () => {
                             View Faculty Participation
                         </Card.Title>
                     </div>
-                    <Button variant="success" className='mb-2' onClick={handleShow}>
-                        Add Faculty
-                    </Button>
+                    <div className="py-2">
+                        <Card >
+                            <Card.Body>
+                                <Form onSubmit={(e) => handleSubmit(e)}>
+                                    <Row>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>Name</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={4}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Branch</Form.Label>
+                                                <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
+                                                    <option>Select the Branch</option>
+                                                    <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
+                                                    <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
+                                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                                    <option value="Civil Engineering">Civil Engineering</option>
+                                                    <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
+                                                    <option value="Computer Science And Engineering">Computer Science And Engineering</option>
+                                                    <option value="Information Technology">Information Technology</option>
+                                                    <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
+                                                    <option value="Master Of Computer Applications">Master Of Computer Applications</option>
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>Start Date</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={2}>
+                                            <Form.Group controlId="formBasicName">
+                                                <Form.Label>End Date</Form.Label>
+                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={2} >
+                                            <div className='mb-4 py-1'></div>
+                                            <Button type='submit' variant="success">
+                                                Add Filter
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                        <div>
+                            <Button variant="success" className='mb-2' onClick={handleShow}>
+                                Add Faculty
+                            </Button>
+                        </div>
+                        <div className='px-3'>
+                            <Button variant="success" className='mb-2' onClick={handleShow}>
+                                Generate Report
+                            </Button>
+                        </div>
+                    </div>  
                     <Card>
                         <Card.Body>
                             <div className="table-responsive">
