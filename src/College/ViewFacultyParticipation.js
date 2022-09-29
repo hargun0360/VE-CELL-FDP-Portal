@@ -44,6 +44,7 @@ const ViewFacultyParticipation = () => {
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
     const [start, setStart] = useState("")
+    const [change,setChange] = useState(false)
     const [end, setEnd] = useState("")
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -67,6 +68,7 @@ const ViewFacultyParticipation = () => {
     },[start,end])
 
     const handleSubmit = (e) => {
+        
         e.preventDefault()
         let obj = {
             email,
@@ -75,6 +77,10 @@ const ViewFacultyParticipation = () => {
             end:ending
         }
         console.log(obj);
+
+        // Response pe aate hi true kr dena change ko 
+        // vahi dependency bn jayegi useEffect ki get api mai 
+
 
     }
     let cnt = 0;
