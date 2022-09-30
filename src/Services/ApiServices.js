@@ -1,4 +1,11 @@
-import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, RESET_PASSWORD, FORGOT_OTP, VERIFY_RESET_OTP, ADD_BULK_STUDENT_URL,GET_ALL_STUDENT,DELETE_STUDENT_URL,UPDATE_STUDENT_URL,ADD_STUDENT_URL,GET_STUDENT_BY_ID } from "./ApiUrls"
+import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP, 
+  RESET_PASSWORD, FORGOT_OTP, VERIFY_RESET_OTP, ADD_BULK_STUDENT_URL,
+  GET_ALL_STUDENT,DELETE_STUDENT_URL,UPDATE_STUDENT_URL,
+  ADD_STUDENT_URL,GET_STUDENT_BY_ID,ADD_FACULTY_PARTICIPATION_URL,
+  GET_FACULTY_PARTICIPATION_BY_ID,UPDATE_FACULTY_PARTICIPATION_URL,
+  GET_ALL_FACULTY_PARTICIPATION,DELETE_FACULTY_PARTICIPATION_URL,
+  STUDENT_FILTER_URL,FDP_FILTER_URL,
+  FACULTY_PARTICIPATION_FILTER_URL} from "./ApiUrls"
 import { getAuthToken,RestAxiosService } from "./RestApiService"
 
 // Function To Get The Refresh Token from Local Storage
@@ -138,13 +145,13 @@ export function doUpdateDetails(details,id) {
 
 
 // Get all FDP
-export function doGetAllFDP() {
+export function doGetAllFDP(data) {
   let headers = {
     Authorization: "Bearer " + getAuthToken(),
     "Content-Type": "application/json",
   }
   return new Promise((resolve, reject) => {
-    return RestAxiosService(GET_ALL_FDP, "GET", false, headers).then((res) => {
+    return RestAxiosService(GET_ALL_FDP, "POST", data, headers).then((res) => {
       console.log("Get Users Response :- ", res);
       resolve(res)
     }, (err) => {
@@ -256,13 +263,13 @@ export function doAddBulkStudentDetails(details) {
 }
 
 // Get all Students
-export function doGetAllStudent() {
+export function doGetAllStudent(data) {
   let headers = {
     Authorization: "Bearer " + getAuthToken(),
     "Content-Type": "application/json",
   }
   return new Promise((resolve, reject) => {
-    return RestAxiosService(GET_ALL_STUDENT, "GET", false, headers).then((res) => {
+    return RestAxiosService(GET_ALL_STUDENT, "POST", data, headers).then((res) => {
       console.log("Get Users Response :- ", res);
       resolve(res)
     }, (err) => {
@@ -345,6 +352,165 @@ export function doGetStudentDetailById(id) {
     ).then(
       res => {
         console.log("Get User Response :- ", res)
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// ----------------------- Faculty Participation ---------------------------------
+
+// Get all Faculty
+export function doGetAllFaculty(data) {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(GET_ALL_FACULTY_PARTICIPATION, "POST", data, headers).then((res) => {
+      console.log("Get Users Response :- ", res);
+      resolve(res)
+    }, (err) => {
+      reject(err);
+    })
+  })
+}
+
+// DELETE Faculty by Id
+export function doDeleteFacultyById(id) {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(
+      DELETE_FACULTY_PARTICIPATION_URL + `/${id}/`,
+      "DELETE",
+      false,
+      headers
+    ).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Add Faculty Details
+export function  doAddFacultyDetail(details) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(ADD_FACULTY_PARTICIPATION_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Update Faculty Details
+export function doUpdateFacultyDetail(details,id) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(UPDATE_FACULTY_PARTICIPATION_URL + `/${id}/`, "PATCH", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// GET Faculty Detail by Id
+export function doGetFacultyDetailById(id) {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(
+      GET_FACULTY_PARTICIPATION_BY_ID + `${id}/`,
+      "GET",
+      false, 
+      headers
+    ).then(
+      res => {
+        console.log("Get User Response :- ", res)
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// ------------------------ FILTER ------------------------------------
+
+// Add Faculty Filter Details
+export function  doAddFacultyFilter(details) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(FACULTY_PARTICIPATION_FILTER_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+
+// Add Student Filter Details
+export function  doAddStudentFilter(details) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(STUDENT_FILTER_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+
+// Add FDP Filter Details
+export function  doAddFDPFilter(details) {
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(FDP_FILTER_URL, "POST", details, headers).then(
+      res => {
         resolve(res)
       },
       err => {

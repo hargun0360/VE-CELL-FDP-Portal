@@ -18,7 +18,7 @@ import moment from 'moment'
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal2'
 import { useReactToPrint } from 'react-to-print';
-import { doAddBulkStudentDetails, doGetAllFDP, doGetAllStudent } from "../Services/ApiServices";
+import { doAddBulkStudentDetails, doGetAllFDP, doGetAllStudent,doAddStudentFilter } from "../Services/ApiServices";
 import * as action from "../Redux/action";
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from 'react-bootstrap/Modal';
@@ -39,12 +39,13 @@ const ViewStudent = () => {
     const dispatch = useDispatch();
     const [details, setDetails] = useState([]);
     const navigate = useNavigate()
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState(null)
     const [branch, setBranch] = useState(null)
     const [start, setStart] = useState("")
     const [end, setEnd] = useState("")
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
+    const [change,setChange] = useState(false)
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -71,11 +72,36 @@ const ViewStudent = () => {
         e.preventDefault()
         let obj = {
             email,
-            branch,
-            start:starting,
-            end:ending
+            branch : branch == "Select the Branch" ? null : branch,
+            starting_date: starting == "Invalid date" ? null : starting,
+            end_date: ending == "Invalid date" ? null : ending
         }
         console.log(obj);
+
+        doAddStudentFilter(obj)
+            .then((res) => {
+                console.log(res);
+                setChange(true);
+                swal({
+                    title: "Filter Added Successfully",
+                    text: "",
+                    icon: "success",
+                    button: "OK",
+                });
+            }).catch((e) => {
+                console.log(e);
+                setChange(false);
+                if (e.status == 403) {
+                    localStorage.clear();
+                    navigate("/")
+                }
+                swal({
+                    title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                    text: "",
+                    icon: "error",
+                    button: "OK",
+                });
+            })
 
     }
     let cnt = 0;
@@ -106,10 +132,19 @@ const ViewStudent = () => {
 
     useEffect(() => {
         getAllStudents();
-    }, [val, flag])
+        if(change){
+            setChange(false);
+        }
+    }, [val, flag,change])
 
     const getAllStudents = () => {
-        doGetAllStudent().then((res) => {
+        let obj = {
+            email,
+            branch:branch == "Select the Branch" ? null : branch,
+            starting_date: starting == "Invalid date" ? null : starting,
+            end_date: ending == "Invalid date" ? null : ending
+        }
+        doGetAllStudent(obj).then((res) => {
             setStudentData(res.data);
         }).catch((e) => {
             console.log(e);
@@ -119,6 +154,8 @@ const ViewStudent = () => {
             }
         })
     }
+
+    
 
     const handleFileSubmit = (e) => {
         e.preventDefault();
@@ -229,7 +266,7 @@ const ViewStudent = () => {
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Branch</Form.Label>
                                                 <Form.Select className='mb-3' value={branch} aria-label="Default select example" onChange={(e) => setBranch(e.target.value)}>
-                                                    <option>Select the Branch</option>
+                                                    <option value="Select the Branch">Select the Branch</option>
                                                     <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                                     <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                                     <option value="Mechanical Engineering">Mechanical Engineering</option>

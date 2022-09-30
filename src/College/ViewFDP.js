@@ -16,7 +16,7 @@ import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteModal from './DeleteModal'
-import { doGetAllFDP } from "../Services/ApiServices";
+import { doAddFDPFilter, doGetAllFDP } from "../Services/ApiServices";
 import * as action from "../Redux/action";
 import { useDispatch, useSelector } from 'react-redux'
 import swal from "sweetalert";
@@ -31,15 +31,17 @@ const ViewFDP = () => {
     const [project, setProject] = useState(null)
     const [modal, setModal] = useState(false)
     const [isEdit, setIsEdit] = useState(false)
-    const [email, setEmail] = useState("")
+    const [email, setEmail] = useState(null)
     const [department, setDepartment] = useState(null)
     const [incentive, setIncentive] = useState(null)
     const [state,setState] = useState(true)
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
-    const [start, setStart] = useState("")
-    const [end, setEnd] = useState("")
-    const [venue,setVenue] = useState("")
+    const [start, setStart] = useState(null)
+    const [end, setEnd] = useState(null)
+    const [type,setType] = useState(null)
+    const [venue,setVenue] = useState(null)
+    const [change,setChange] = useState(false)
     const componentRef = useRef();
 
     const [menu, setMenu] = useState({
@@ -67,14 +69,40 @@ const ViewFDP = () => {
     const handleSubmit = (e) =>{
         e.preventDefault();
         let obj = {
-            email,
-            department,
-            incentive,
-            start : starting,
-            end : ending,
+            fdp_type:type,
+            college_email : email,
+            department : department == "Select the Department" ? null : department,
+            incentive_detail : incentive,
+            starting_date : starting == "Invalid date" ? null : starting,
+            end_date: ending == "Invalid date" ? null : ending,
             venue,
         }
         console.log(obj);
+        doAddFDPFilter(obj)
+        .then((res) => {
+            console.log(res);
+            setChange(true);
+            swal({
+                title: "Filter Added Successfully",
+                text: "",
+                icon: "success",
+                button: "OK",
+            });
+        }).catch((e) => {
+            console.log(e);
+            setChange(false);
+            if (e.status == 403) {
+                localStorage.clear();
+                navigate("/")
+            }
+            swal({
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                text: "",
+                icon: "error",
+                button: "OK",
+            });
+        })
+        
     }
 
     useEffect(() => {
@@ -87,13 +115,25 @@ const ViewFDP = () => {
     console.log(val);
     useEffect(() => {
         getFDP();
-    }, [val]);
+        if(change){
+            setChange(false)
+        }
+    }, [val,change]);
 
 
     // Get All FDP
 
     const getFDP = () => {
-        doGetAllFDP().then((res) => {
+        let obj = {
+            fdp_type:type,
+            college_email : email,
+            department : department == "Select the Department" ? null : department,
+            incentive_detail : incentive == "Select the Incentive Details" ? null : incentive,
+            starting_date : starting == "Invalid date" ? null : starting,
+            end_date: ending == "Invalid date" ? null : ending,
+            venue,
+        }
+        doGetAllFDP(obj).then((res) => {
             setDetails(res.data);
         }).catch((e) => {
             console.log(e);
@@ -145,7 +185,7 @@ const ViewFDP = () => {
                             <Card.Body>
                                 <Form onSubmit={(e) => handleSubmit(e)}>
                                     <Row>
-                                        <Col xs={12} md={2}>
+                                        <Col xs={12} md={4}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
@@ -155,7 +195,7 @@ const ViewFDP = () => {
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Department</Form.Label>
                                                 <Form.Select className='mb-3' value={department} aria-label="Default select example" onChange={(e) => setDepartment(e.target.value)}>
-                                                    <option>Select the Department</option>
+                                                    <option value="Select the Department">Select the Department</option>
                                                     <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                                     <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                                     <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -166,12 +206,6 @@ const ViewFDP = () => {
                                                     <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
                                                     <option value="Master Of Computer Applications">Master Of Computer Applications</option>
                                                 </Form.Select>
-                                            </Form.Group>
-                                        </Col>
-                                        <Col xs={12} md={2}>
-                                            <Form.Group controlId="formBasicName">
-                                                <Form.Label>FDP Type</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name"  onChange={(e) => setName(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
@@ -192,7 +226,7 @@ const ViewFDP = () => {
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Incentive Detail</Form.Label>
                                                 <Form.Select className='mb-3' value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
-                                                    <option>Select the Incentive Details</option>
+                                                    <option value="Select the Incentive Details">Select the Incentive Details</option>
                                                     <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                                                     <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
                                                     <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>

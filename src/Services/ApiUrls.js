@@ -26,16 +26,16 @@ export const UPDATE_STUDENT_URL = BASE_URL + 'student'
 
 // ---------------- FACULTY PARICIPATION -----------------------------------------
 
-export const ADD_FACULTY_PARTICIPATION_URL = BASE_URL + ''
-export const GET_FACULTY_PARTICIPATION_BY_ID = BASE_URL + ''
-export const UPDATE_FACULTY_PARTICIPATION_URL = BASE_URL + ''
-export const GET_ALL_FACULTY_PARTICIPATION = BASE_URL + ''
-export const DELETE_FACULTY_PARTICIPATION_URL = BASE_URL + ''
+export const ADD_FACULTY_PARTICIPATION_URL = BASE_URL + 'faculty-form/'
+export const GET_FACULTY_PARTICIPATION_BY_ID = BASE_URL + 'faculty-form/'
+export const UPDATE_FACULTY_PARTICIPATION_URL = BASE_URL + 'faculty-form/'
+export const GET_ALL_FACULTY_PARTICIPATION = BASE_URL + 'faculty-form/list/'
+export const DELETE_FACULTY_PARTICIPATION_URL = BASE_URL + 'faculty-form/'
 export const ADD_BULK_FACULTY_PARTICIPATION_URL = BASE_URL + ''
 
 // --------------------- FILTER URL -------------------------------------------------
 
 
-export const STUDENT_FILTER_URL = BASE_URL + 'student/'
-export const FDP_FILTER_URL = BASE_URL + 'student/'
-export const FACULTY_PARTICIPATION_FILTER_URL = BASE_URL + 'student/'
+export const STUDENT_FILTER_URL = BASE_URL + 'student/list/'
+export const FDP_FILTER_URL = BASE_URL + 'form/list/'
+export const FACULTY_PARTICIPATION_FILTER_URL = BASE_URL + 'faculty-form/list/'

@@ -54,9 +54,10 @@ function StudentForm() {
             setFlag(true);
         }
     }, [id]);
+    
 
     const getDetailByID = () => {
-        doGetStudentDetailById(Number(id)).then((res) => {
+        doGetStudentDetailById(Number(id)).then((res) => { 
             console.log(res);
             setName(res.data.name);
             setMobile(res.data.phone_number);
@@ -69,6 +70,7 @@ function StudentForm() {
             setSection(res.data.section)
             setYear(res.data.year);
             setBranch(res.data.branch);
+            setEmail(res.data.email)
         }).catch((e) => {
             console.log(e);
             if (e.status == 403) {
@@ -126,7 +128,8 @@ function StudentForm() {
                                 starting_date: from,
                                 end_date: to,
                                 phone_number: mobile,
-                                remarks
+                                remarks,
+                                email
                             }
 
                             doUpdateStudentDetail(obj, Number(id))
@@ -196,7 +199,8 @@ function StudentForm() {
                                 starting_date: from,
                                 end_date: to,
                                 phone_number: mobile,
-                                remarks
+                                remarks,
+                                email   
                             }
 
                             doAddStudentDetail(obj)

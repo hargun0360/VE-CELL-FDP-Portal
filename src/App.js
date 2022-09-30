@@ -22,32 +22,37 @@ function App() {
     <div className="App">
       <Routes>
         <Route exact path="/" element={
-        <AuthenticatedRoutes>
-        <Login />
-        </AuthenticatedRoutes>} />
+          <AuthenticatedRoutes>
+            <Login />
+          </AuthenticatedRoutes>} />
         <Route exact path="/stform" element={
-        <AdminPrivateRoute>
-        <StudentForm />
-        </AdminPrivateRoute>
-        } />
-        <Route exact path="/participation" element={
-        <AdminPrivateRoute>
-        <FacultyParticipation />
-        </AdminPrivateRoute>
+          <AdminPrivateRoute>
+            <StudentForm />
+          </AdminPrivateRoute>
         } />
         <Route exact path="/viewparticipation" element={
-        <AdminPrivateRoute>
-        <ViewFacultyParticipation />
-        </AdminPrivateRoute>
+          <AdminPrivateRoute>
+            <ViewFacultyParticipation />
+          </AdminPrivateRoute>
+        } />
+        <Route exact path="/participation" element={
+          <AdminPrivateRoute>
+            <FacultyParticipation />
+          </AdminPrivateRoute>
+        } />
+        <Route exact path="/participation/:id" element={
+          <AdminPrivateRoute>
+            <FacultyParticipation />
+          </AdminPrivateRoute>
         } />
         <Route exact path="/stform/:id" element={
-        <AdminPrivateRoute>
-        <StudentForm />
-        </AdminPrivateRoute>} />
+          <AdminPrivateRoute>
+            <StudentForm />
+          </AdminPrivateRoute>} />
         <Route exact path="/viewst" element={
-        <AdminPrivateRoute>
-        <ViewStudent />
-        </AdminPrivateRoute>} />
+          <AdminPrivateRoute>
+            <ViewStudent />
+          </AdminPrivateRoute>} />
         <Route exact path="/view" element={
           <PrivateRoute>
             <ViewDetail />
@@ -64,17 +69,17 @@ function App() {
             <CollegeForm />
           </PrivateRoute>} />
         <Route exact path="/signup" element={
-        <AuthenticatedRoutes>
-        <Signup />
-        </AuthenticatedRoutes>} />
+          <AuthenticatedRoutes>
+            <Signup />
+          </AuthenticatedRoutes>} />
         <Route exact path="/forgot" element={
-        <AuthenticatedRoutes>
-        <Forgot />
-        </AuthenticatedRoutes>} />
+          <AuthenticatedRoutes>
+            <Forgot />
+          </AuthenticatedRoutes>} />
         <Route exact path="/otp" element={
-         
-            <OTP />
-          } />  
+
+          <OTP />
+        } />
         <Route exact path="/reset" element={
           <PrivateRoute>
             <Reset />
@@ -84,9 +89,9 @@ function App() {
             <Logout />
           </PrivateRoute>} />
         <Route exact path="/recoverpass" element={
-        <PrivateRoute>
-        <RecoverPass />
-        </PrivateRoute>} />
+          <PrivateRoute>
+            <RecoverPass />
+          </PrivateRoute>} />
         <Route exact path="/viewall" element={
           <PrivateRoute>
             <ViewFDP />
