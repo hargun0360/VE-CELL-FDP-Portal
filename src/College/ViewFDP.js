@@ -65,11 +65,16 @@ const ViewFDP = () => {
         }
     },[start,end])
 
+    useEffect(() => {
+        getFDP();
+        if(change){
+            setChange(false)
+        }
+    }, [val,change]);
 
     const handleSubmit = (e) =>{
         e.preventDefault();
         let obj = {
-            fdp_type:type,
             college_email : email,
             department : department == "Select the Department" ? null : department,
             incentive_detail : incentive,
@@ -110,22 +115,13 @@ const ViewFDP = () => {
             setAdmin(true);
         }
     }, [])
-
-
-    console.log(val);
-    useEffect(() => {
-        getFDP();
-        if(change){
-            setChange(false)
-        }
-    }, [val,change]);
+    
 
 
     // Get All FDP
 
     const getFDP = () => {
         let obj = {
-            fdp_type:type,
             college_email : email,
             department : department == "Select the Department" ? null : department,
             incentive_detail : incentive == "Select the Incentive Details" ? null : incentive,
