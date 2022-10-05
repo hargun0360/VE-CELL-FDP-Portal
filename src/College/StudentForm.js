@@ -12,6 +12,9 @@ import Spinner from '../Components/Spinner'
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
 import Navbar from "./Navbar"
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
+import { useForm } from 'react-hook-form'
 function StudentForm() {
 
     const { id } = useParams();
@@ -30,22 +33,29 @@ function StudentForm() {
     const [email, setEmail] = useState("");
     const [flag, setFlag] = useState(false)
     const [admin, setAdmin] = useState(false);
-    const [namemessage, setNameMessage] = useState(false)
-    const [mobilemessage, setMobileMessage] = useState(false)
-    const [emailmessage, setEmailmessage] = useState(false)
     const navigate = useNavigate()
 
-    let error = {
-        name: null,
-        email: null,
-        mobile: null,
-        designation: null,
-    }
+
     useEffect(() => {
         if (localStorage.getItem("admin") == "true") {
             setAdmin(true);
         }
     }, []);
+
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        mode: "onTouched",
+        // certificate and remarks left 
+        defaultValues: {
+            name,
+            email,
+            branch,
+            mobile,
+            year,
+            section,
+            venue,
+            activity,
+        },
+    });
 
 
     useEffect(() => {
@@ -53,24 +63,30 @@ function StudentForm() {
             getDetailByID();
             setFlag(true);
         }
-    }, [id]);
-    
+    }, [id, reset]);
+
 
     const getDetailByID = () => {
-        doGetStudentDetailById(Number(id)).then((res) => { 
+        doGetStudentDetailById(Number(id)).then((res) => {
             console.log(res);
-            setName(res.data.name);
-            setMobile(res.data.phone_number);
+
+
             setFrom(res.data.starting_date.split(" ")[0]);
             setTo(res.data.end_date.split(" ")[0]);
-            setVenue(res.data.venue_of_activity);
             setDuration(res.data.number_of_days)
             setRemarks(res.data.remarks);
-            setActivity(res.data.name_of_activity)
-            setSection(res.data.section)
-            setYear(res.data.year);
-            setBranch(res.data.branch);
-            setEmail(res.data.email)
+
+            let obj = {
+                name: res.data.name,
+                email: res.data.college_email,
+                mobile: res.data.phone_number,
+                venue: res.data.venue_of_activity,
+                activity: res.data.name_of_activity,
+                branch: res.data.branch,
+                year: res.data.year,
+                section: res.data.section,
+            }
+            reset(obj)
         }).catch((e) => {
             console.log(e);
             if (e.status == 403) {
@@ -96,147 +112,99 @@ function StudentForm() {
         }
     }, [from, to])
 
-    const handleSubmit = (e) => {
+
+    const onSubmit = (data, e) => {
         e.preventDefault();
-
+        setLoading(true)
         if (id) {
-            if (name && branch && section && duration && activity && year && venue && to && from && mobile) {
-                const nameRegex = /[a-zA-Z]{1,}/i
-                const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
-                const mobileRegex = /[6789]{1}[0-9]{9}/i
+            if (from && to) {
 
-                if (nameRegex.test(name)) {
-                    setNameMessage(false);
-                    if (mobileRegex.test(mobile)) {
-                        setMobileMessage(false);
-                        if (emailRegex.test(email)) {
-                            setEmailmessage(false);
-                            setLoading(true);
-                            var dArr = from.split("-");
-                            var Arr = to.split("-");
-                            setFrom(Arr[2] + "-" + Arr[1] + "-" + Arr[0]);
-                            setTo(dArr[2] + "-" + dArr[1] + "-" + dArr[0]);
 
-                            let obj = {
-                                name,
-                                branch,
-                                section,
-                                number_of_days: duration,
-                                name_of_activity: activity,
-                                year,
-                                venue_of_activity: venue,
-                                starting_date: from,
-                                end_date: to,
-                                phone_number: mobile,
-                                remarks,
-                                email
-                            }
-
-                            doUpdateStudentDetail(obj, Number(id))
-                                .then((res) => {
-                                    console.log(res);
-                                    setLoading(false)
-                                    swal({
-                                        title: "Updated Successfully",
-                                        text: "",
-                                        icon: "success",
-                                        button: "OK",
-                                    });
-                                }).catch((e) => {
-                                    console.log(e);
-                                    if (e.status == 403) {
-                                        localStorage.clear();
-                                        navigate("/")
-                                    }
-                                    setLoading(false)
-                                    swal({
-                                        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                                        text: "",
-                                        icon: "error",
-                                        button: "OK",
-                                    });
-                                })
-                        } else {
-                            setEmailmessage(true);
-                        }
-
-                    } else {
-                        error.mobile = "invalid format"
-                        setMobileMessage(true);
-                    }
-                } else {
-                    error.name = "invalid format"
-                    setNameMessage(true);
+                let obj = {
+                    name,
+                    branch,
+                    section,
+                    number_of_days: duration,
+                    name_of_activity: activity,
+                    year,
+                    venue_of_activity: venue,
+                    starting_date: from,
+                    end_date: to,
+                    phone_number: mobile,
+                    remarks,
+                    email
                 }
+
+                doUpdateStudentDetail(obj, Number(id))
+                    .then((res) => {
+                        console.log(res);
+                        setLoading(false)
+                        swal({
+                            title: "Updated Successfully",
+                            text: "",
+                            icon: "success",
+                            button: "OK",
+                        });
+                    }).catch((e) => {
+                        console.log(e);
+                        if (e.status == 403) {
+                            localStorage.clear();
+                            navigate("/")
+                        }
+                        setLoading(false)
+                        swal({
+                            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                            text: "",
+                            icon: "error",
+                            button: "OK",
+                        });
+                    })
             }
         } else {
-            if (name && branch && section && duration && activity && year && venue && to && from && mobile) {
+            if (from && to) {
 
-                const nameRegex = /[a-zA-Z]{1,}/i
-                const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
-                const mobileRegex = /[6789]{1}[0-9]{9}/i
 
-                if (nameRegex.test(name)) {
-                    setNameMessage(false);
-                    if (mobileRegex.test(mobile)) {
-                        setMobileMessage(false);
-                        if (emailRegex.test(email)) {
-                            setEmailmessage(false);
-                            setLoading(true);
-                            var dArr = from.split("-"); 
-                            var Arr = to.split("-");
-                            setFrom(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
-                            setTo(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
-
-                            let obj = {
-                                name,
-                                branch,
-                                section,
-                                number_of_days: duration,
-                                name_of_activity: activity,
-                                year,
-                                venue_of_activity: venue,
-                                starting_date: from,
-                                end_date: to,
-                                phone_number: mobile,
-                                remarks,
-                                email   
-                            }
-
-                            doAddStudentDetail(obj)
-                                .then((res) => {
-                                    console.log(res);
-                                    setLoading(false)
-                                    swal({
-                                        title: "Student Added Successfully",
-                                        text: "",
-                                        icon: "success",
-                                        button: "OK",
-                                    });
-                                }).catch((e) => {
-                                    console.log(e);
-                                    setLoading(false)
-                                    swal({
-                                        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                                        text: "",
-                                        icon: "error",
-                                        button: "OK",
-                                    });
-                                })
-                        } else {
-                            setEmailmessage(true);
-                        }
-                    } else {
-                        error.mobile = "invalid format"
-                        setMobileMessage(true);
-                    }
-                } else {
-                    error.name = "invalid format"
-                    setNameMessage(true);
+                let obj = {
+                    name,
+                    branch,
+                    section,
+                    number_of_days: duration,
+                    name_of_activity: activity,
+                    year,
+                    venue_of_activity: venue,
+                    starting_date: from,
+                    end_date: to,
+                    phone_number: mobile,
+                    remarks,
+                    email
                 }
+
+                doAddStudentDetail(obj)
+                    .then((res) => {
+                        console.log(res);
+                        setLoading(false)
+                        swal({
+                            title: "Student Added Successfully",
+                            text: "",
+                            icon: "success",
+                            button: "OK",
+                        });
+                    }).catch((e) => {
+                        console.log(e);
+                        setLoading(false)
+                        swal({
+                            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                            text: "",
+                            icon: "error",
+                            button: "OK",
+                        });
+                    })
+
             }
         }
     }
+
+
     return (<>
         {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
         <Navbar />
@@ -253,27 +221,26 @@ function StudentForm() {
                 </Row>
                 <Card className='w-100 h-100 mt-3'>
                     <Card.Body className='w-100'>
-                        <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
+                        <Form onSubmit={handleSubmit(onSubmit)}>
                             <Row>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control autoFocus={true} type="text" value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
-                                        {namemessage ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>invaild format</p> : null}
+                                        <Form.Control type="text" placeholder="Enter your name" name="name" {...register("name", { required: "name is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid name" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.name?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Email</Form.Label>
-                                        <Form.Control autoFocus={true} type="text" value={email} placeholder="Enter your email" required onChange={(e) => setEmail(e.target.value)} />
-                                        {emailmessage ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>invaild format</p> : null}
+                                        <Form.Control type="email" name="email" {...register("email", { required: "email is required" })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.email?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={5}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Branch</Form.Label>
-                                        <Form.Select className='mb-3' value={branch} aria-label="Default select example" required onChange={(e) => setBranch(e.target.value)}>
-                                            <option>Select the Branch</option>
+                                        <Form.Select className='mb-3' aria-label="Default select example" name="branch" {...register("branch", { required: "branch is required", })}>
                                             <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                             <option value="Mechanical Engineering">Mechanical Engineering</option>
                                             <option value="Civil Engineering">Civil Engineering</option>
@@ -283,6 +250,7 @@ function StudentForm() {
                                             <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
                                             <option value="Master Of Computer Applications">Master Of Computer Applications</option>
                                         </Form.Select>
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.branch?.message}</p>
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -290,26 +258,29 @@ function StudentForm() {
                                 <Col xs={3} md={1}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Year</Form.Label>
-                                        <Form.Control type="number" value={year} required onChange={(e) => setYear(e.target.value)} />
+                                        <Form.Control type="number" name="year" {...register("year", { required: "required", pattern: { value: /[1-8]{1}/i, message: "invalid year" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.year?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={4} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Section</Form.Label>
-                                        <Form.Control type="text" value={section} required onChange={(e) => setSection(e.target.value)} />
+                                        <Form.Control type="text" name="section" {...register("section", { required: "section is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid section" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.section?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control autoFocus={true} type="text" value={mobile} placeholder="ex- 9956118026" required onChange={(e) => setMobile(e.target.value)} />
-                                        {mobilemessage ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>invaild format</p> : null}
+                                        <Form.Control autoFocus={true} type="number" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /[6789]{1}[0-9]{9}/i, message: "invalid phone number" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.mobile?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={5}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Name of Activity</Form.Label>
-                                        <Form.Control type="text" value={activity} placeholder="Activity Name" required onChange={(e) => setActivity(e.target.value)} />
+                                        <Form.Control type="text" placeholder="Activity Name" name="activity" {...register("activity", { required: "activity name is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid activity name" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.activity?.message}</p>
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -317,19 +288,20 @@ function StudentForm() {
                                 <Col xs={12} md={4}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>Venue</Form.Label>
-                                        <Form.Control type="text" value={venue} placeholder="Venue" required onChange={(e) => setVenue(e.target.value)} />
+                                        <Form.Control type="text" value={venue} placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid venue name" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.venue?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" value={from} min='01-01-2009' onChange={(e) => setFrom(e.target.value)} />
+                                        <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown showYearDropdown selected={from} onChange={(date) => setFrom(date)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>To</Form.Label>
-                                        <Form.Control type="date" value={to} min={from} disabled={from ? false : true} onChange={(e) => setTo(e.target.value)} />
+                                        <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown minDate={from} disabled={from ? false : true} selected={to} onChange={(date) => setTo(date)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={2}>

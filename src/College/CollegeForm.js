@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { logDOM } from '@testing-library/react';
 import { Container } from 'reactstrap';
-import {FormFeedback} from 'reactstrap';
 import "../App.css";
-import Breadcrumb from './Breadcrumb';
 import { doAddDetails, doUpdateDetails } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
 import { Navigate, useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
 import Spinner from '../Components/Spinner'
 import swal from 'sweetalert';
-import { SettingsEthernetRounded, StoreMallDirectory } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import "../App.css"
 import Navbar from "./Navbar"
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
+import { useForm } from 'react-hook-form'
 function CollegeForm() {
 
   const { id } = useParams();
@@ -40,20 +39,13 @@ function CollegeForm() {
   const [days, setDays] = useState("");
   const [venue, setVenue] = useState(null);
   const [state, setState] = useState(false);
-  const [namemessage,setNameMessage] = useState(false)
-  const [emailmessage,setEmailMessage] = useState(false)
-  const [mobilemessage,setMobileMessage] = useState(false)
-  const [designationmessage,setDesignationMessage] = useState(false)
+  const [namemessage, setNameMessage] = useState(false)
+  const [emailmessage, setEmailMessage] = useState(false)
+  const [mobilemessage, setMobileMessage] = useState(false)
+  const [designationmessage, setDesignationMessage] = useState(false)
   const [admin, setAdmin] = useState(false);
 
   const navigate = useNavigate();
-
-  let error = {
-    name: null,
-    email: null,
-    mobile: null,
-    designation: null,
-  }
 
   useEffect(() => {
     if (localStorage.getItem("admin") == "true") {
@@ -81,45 +73,52 @@ function CollegeForm() {
     }
   }
 
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    mode: "onTouched",
+    // certificate and remarks left 
+    defaultValues: {
+      name,
+      email,
+      department,
+      mobile,
+      designation,
+      venue,
+      certificatenumber,
+      incentive
+    },
+  });
 
   useEffect(() => {
     if (id) {
       getDetailByID();
       setFlag(true);
     }
-  }, [id]);
+  }, [id, reset]);
 
   const getDetailByID = () => {
     doGetDetailById(Number(id)).then((res) => {
       console.log(res);
-      setName(res.data.name);
-      setDepartment(res.data.department);
-      setEmail(res.data.college_email);
-      setMobile(res.data.phone_number);
-      setDesignation(res.data.designation);
-      setFtype(res.data.fdp_type);
       setOffline(res.data.face_to_face_fdp);
       setOnline(res.data.online_fdp);
-      setIncentive(res.data.incentive_detail);
-      setStart(res.data.starting_date);
-      setEnd(res.data.end_date);
-      setVenue(res.data.venue);
-      setCertificateNumber(res.data.certificate_number);
       setDays(res.data.number_of_days)
       setRemarks(res.data.remarks);
+      setFtype(res.data.fdp_type);
       setCertificate(res.data.certificate)
+      setStart(res.data.starting_date)
+      setEnd(res.data.end_date)
+      let obj = {
+        name: res.data.name,
+        email: res.data.college_email,
+        department: res.data.department,
+        mobile: res.data.phone_number,
+        venue: res.data.venue,
+        designation: res.data.designation,
+        incentive: res.data.incentive_detail,
+        certificatenumber: res.data.certificate_number,
+      }
+      reset(obj)
     }).catch((e) => {
       console.log(e);
-      if (e.status == 403) {
-        localStorage.clear();
-        navigate("/")
-      }
-      swal({
-        title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-        text: "",
-        icon: "error",
-        button: "OK",
-      });
     })
   }
 
@@ -129,201 +128,132 @@ function CollegeForm() {
       const date2 = new Date(end);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      setDays(diffDays+1);
+      setDays(diffDays + 1);
     }
   }, [start, end])
 
-  const today = new Date();
-  const handleSubmit = (e) => {
+
+  const onSubmit = (data, e) => {
     e.preventDefault();
-
+    setLoading(true)
     if (id) {
-      if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
-        const nameRegex = /[a-zA-Z]{1,}/i
-        const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
-        const mobileRegex = /[6789]{1}[0-9]{9}/i
-        const designationRegex = /[a-zA-Z]{1,}/i
+      if(certificate && ftype && start && end){
 
-        if (nameRegex.test(name)) {
-          setNameMessage(false);
-          if (emailRegex.test(email)) {
-            setEmailMessage(false);
-            if (mobileRegex.test(mobile)) {
-              setMobileMessage(false);
-              if (designationRegex.test(designation)) {
-                setDesignationMessage(false);
-                setLoading(true);
-                var dArr = start.split("-"); 
-                var Arr = end.split("-");
-                setEnd(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
-                setStart(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
-                
-                const myForm = new FormData();
+      
+      const myForm = new FormData();
 
-                myForm.set("name", name);
-                myForm.set("department", department);
-                myForm.set("college_email", email);
-                myForm.set("mobile", mobile);
-                myForm.set("designation", designation);
-                myForm.set("fdp_type", ftype);
-                myForm.set("face_to_face_fdp", offline);
-                myForm.set("incentive_detail", incentive);
-                myForm.set("phone_number", mobile);
-                myForm.set("remarks", remarks);
-                myForm.set("certificate", certificate);
-                myForm.set("starting_date", start);
-                myForm.set("end_date", end);
-                myForm.set("number_of_days", days);
-                myForm.set("online_fdp", online);
-                myForm.set("venue", venue);
-                myForm.set("certificate_number", certificatenumber);
+      myForm.set("name", data.name);
+      myForm.set("department", data.department);
+      myForm.set("college_email", data.email);
+      myForm.set("mobile", data.mobile);
+      myForm.set("designation", data.designation);
+      myForm.set("fdp_type",ftype);
+      myForm.set("face_to_face_fdp", offline);
+      myForm.set("incentive_detail", data.incentive);
+      myForm.set("phone_number", data.mobile);
+      myForm.set("remarks", remarks);
+      myForm.set("certificate", certificate);
+      myForm.set("starting_date", start);
+      myForm.set("end_date", end);
+      myForm.set("number_of_days", data.days);
+      myForm.set("online_fdp", online);
+      myForm.set("venue", data.venue);
+      myForm.set("certificate_number", data.certificatenumber);
 
-                console.log(myForm);
-
-                doUpdateDetails(myForm, id)
-                  .then((res) => {
-                    console.log(res);
-                    setLoading(false)
-                    swal({
-                      title: "Details Updated Successfully",
-                      text: "",
-                      icon: "success",
-                      button: "OK",
-                    });
-                  }).catch((e) => {
-                    console.log(e);
-                    if (e.status == 403) {
-                      localStorage.clear();
-                      navigate("/")
-                    }
-                    setLoading(false)
-                    swal({
-                      title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                      text: "",
-                      icon: "error",
-                      button: "OK",
-                    });
-                  })
-              } else {
-                error.designation = "invalid format"
-                setDesignationMessage(true);
-              }
-            } else {
-              error.mobile = "invalid format"
-              setMobileMessage(true);
-            }
-          } else {
-            error.email = "invalid format"
-            setEmailMessage(true);
+      doUpdateDetails(myForm, id)
+        .then((res) => {
+          console.log(res);
+          setLoading(false)
+          swal({
+            title: "Details Updated Successfully",
+            text: "",
+            icon: "success",
+            button: "OK",
+          });
+        }).catch((e) => {
+          console.log(e);
+          if (e.status == 403) {
+            localStorage.clear();
+            navigate("/")
           }
-        } else {
-          error.name = "invalid format"
-          setNameMessage(true);
-        }
+          setLoading(false)
+          swal({
+            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+            text: "",
+            icon: "error",
+            button: "OK",
+          });
+        })
       }
     } else {
-      if (name && department && email && mobile && designation && ftype && (online || offline) && incentive && certificate) {
+      if(certificate && ftype && start && end){
 
-        const nameRegex = /[a-zA-Z]{1,}/i
-        const emailRegex = /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i
-        const mobileRegex = /[6789]{1}[0-9]{9}/i
-        const designationRegex = /[a-zA-Z]{1,}/i
+      
+      const myForm = new FormData();
 
-        if (nameRegex.test(name)) {
-          setNameMessage(false)
-          if (emailRegex.test(email)) {
-            setEmailMessage(false)
-            if (mobileRegex.test(mobile)) {
-              setMobileMessage(false)
-              if (designationRegex.test(designation)) {
-                setDesignationMessage(false);
-                setLoading(true);
-                var dArr = start.split("-"); 
-                var Arr = end.split("-");
-                setEnd(Arr[2]+ "-" +Arr[1]+ "-" +Arr[0]);
-                setStart(dArr[2]+ "-" +dArr[1]+ "-" +dArr[0]);
-                
-                const myForm = new FormData();
+      myForm.set("name", data.name);
+      myForm.set("department", data.department);
+      myForm.set("college_email", data.email);
+      myForm.set("mobile", data.mobile);
+      myForm.set("designation", data.designation);
+      myForm.set("fdp_type", ftype);
+      myForm.set("face_to_face_fdp", offline);
+      myForm.set("incentive_detail", data.incentive);
+      myForm.set("phone_number", data.mobile);
+      myForm.set("remarks", remarks);
+      myForm.set("certificate", certificate);
+      myForm.set("starting_date", start);
+      myForm.set("end_date", end);
+      myForm.set("number_of_days", data.days);
+      myForm.set("online_fdp", online);
+      myForm.set("venue", data.venue);
+      myForm.set("certificate_number", data.certificatenumber);
 
-                myForm.set("name", name);
-                myForm.set("department", department);
-                myForm.set("college_email", email);
-                myForm.set("mobile", mobile);
-                myForm.set("designation", designation);
-                myForm.set("fdp_type", ftype);
-                myForm.set("face_to_face_fdp", offline);
-                myForm.set("incentive_detail", incentive);
-                myForm.set("phone_number", mobile);
-                myForm.set("remarks", remarks);
-                myForm.set("certificate", certificate);
-                myForm.set("starting_date", start);
-                myForm.set("end_date", end);
-                myForm.set("number_of_days", days);
-                myForm.set("online_fdp", online);
-                myForm.set("venue", venue);
-                myForm.set("certificate_number", certificatenumber);
 
-                console.log(myForm);
-
-                doAddDetails(myForm)
-                  .then((res) => {
-                    console.log(res);
-                    setLoading(false)
-                    swal({
-                      title: "Details Added Successfully",
-                      text: "",
-                      icon: "success",
-                      button: "OK",
-                    });
-                  }).catch((e) => {
-                    console.log(e);
-                    if (e.status == 403) {
-                      localStorage.clear();
-                      navigate("/")
-                    }
-                    setLoading(false)
-                    swal({
-                      title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                      text: "",
-                      icon: "error",
-                      button: "OK",
-                    });
-                  })
-              } else {
-                error.designation = "invalid format"
-                setDesignationMessage(true)
-              }
-            } else {
-              error.mobile = "invalid format"
-              setMobileMessage(true);
-            }
-          } else {
-            error.email = "invalid format"
-            setEmailMessage(true);
+      doAddDetails(myForm)
+        .then((res) => {
+          console.log(res);
+          setLoading(false)
+          swal({
+            title: "Details Added Successfully",
+            text: "",
+            icon: "success",
+            button: "OK",
+          });
+        }).catch((e) => {
+          console.log(e);
+          if (e.status == 403) {
+            localStorage.clear();
+            navigate("/")
           }
-        } else {
-          error.name = "invalid format"
-          setNameMessage(true);
-        }
-      }
+          setLoading(false)
+          swal({
+            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+            text: "",
+            icon: "error",
+            button: "OK",
+          });
+        })
+
     }
+  }
   }
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
-   <Navbar />
+    <Navbar />
     <div className='page-content'>
 
       <Container fluid>
         {
           loading ? <Spinner /> : null
         }
-         <Card.Title>
-                    Add FDP
-                </Card.Title>
+        <Card.Title>
+          Add FDP
+        </Card.Title>
 
         <Card className='w-100 h-100 mt-3'>
           <Card.Body className='w-100'>
-            <Form encType="multipart/form-data" onSubmit={(e) => handleSubmit(e)}>
+            <Form encType="multipart/form-data" onSubmit={handleSubmit(onSubmit)}>
               <Row className='mb-3 mt-3'>
                 <Card.Title>
                   Faculty Detail
@@ -333,15 +263,14 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" autoFocus={true} value={name} placeholder="Enter your name" required onChange={(e) => setName(e.target.value)} />
-                    {namemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                    <Form.Control type="text"  placeholder="Enter your name" name="name" {...register("name", { required: "name is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid name" } })} />
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.name?.message}</p>
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Department</Form.Label>
-                    <Form.Select className='mb-3' value={department} aria-label="Default select example" required onChange={(e) => setDepartment(e.target.value)}>
-                      <option>Select the Department</option>
+                    <Form.Select className='mb-3' aria-label="Default select example" name="department" {...register("department", { required: "department is required", })}>
                       <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                       <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                       <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -352,6 +281,7 @@ function CollegeForm() {
                       <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
                       <option value="Master Of Computer Applications">Master Of Computer Applications</option>
                     </Form.Select>
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.department?.message}</p>
                   </Form.Group>
                 </Col>
               </Row>
@@ -359,15 +289,15 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>College mail id</Form.Label>
-                    <Form.Control type="email" autoFocus={true}  value={email} placeholder="example@akgec.ac.in" required onChange={(e) => setEmail(e.target.value)} />
-                    {emailmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                    <Form.Control type="email"  placeholder="example@akgec.ac.in" name="email" {...register("email", { required: "email is required", pattern: { value: /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i, message: "invalid email" } })} />
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.email?.message}</p>
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number"  value={mobile} placeholder="9956118026" required onChange={(e) => setMobile(e.target.value)} />
-                    {mobilemessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}>invaild format</p> : null}
+                    <Form.Control type="number" placeholder="9956118026" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /[6789]{1}[0-9]{9}/i, message: "invalid phone number" } })} />
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.mobile?.message}</p>
                   </Form.Group>
 
                 </Col>
@@ -376,8 +306,8 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicDesignation">
                     <Form.Label>Designation</Form.Label>
-                    <Form.Control type="text" autoFocus={true}  value={designation} placeholder="Professor, Assistant Professor" required onChange={(e) => setDesignation(e.target.value)} />
-                    {designationmessage ? <p style={{color:"red",padding:"0px",margin:"0px"}}   >invaild format</p> : null}
+                    <Form.Control type="text" placeholder="Professor, Assistant Professor" name="designation" {...register("designation", { required: "designation is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid designation" } })} />
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.designation?.message}</p>
                   </Form.Group>
                 </Col>
               </Row>
@@ -390,7 +320,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>FDP type</Form.Label>
-                    <Form.Select className='mb-3' value={ftype} aria-label="Default select example" required onChange={(e) => setFtype(e.target.value)}>
+                    <Form.Select className='mb-3' aria-label="Default select example" value={ftype} required onChange={(e) => setFtype(e.target.value)}>
                       <option>Select the FDP type</option>
                       <option value="Online">Online</option>
                       <option value="Face to Face FDP">Face to Face FDP</option>
@@ -442,13 +372,15 @@ function CollegeForm() {
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <Form.Control type="date" min='01-01-2009'  value={start} onChange={(e) => setStart(e.target.value)} />
+                    <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown required onChange={(date) => setStart(date)} />
+                    
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
-                    <Form.Control type="date" disabled={start ? false : true} placeholder="YYYY-MM-DD" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
+                    <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} minDate={start} disabled={start ? false : true} required onChange={(date) => setEnd(date)} />
+                    
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={2}>
@@ -460,7 +392,8 @@ function CollegeForm() {
                 <Col xs={12} md={4}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Venue</Form.Label>
-                    <Form.Control type="text" value={venue} placeholder="Venue" required onChange={(e) => setVenue(e.target.value)} />
+                    <Form.Control type="text"  placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", })} />
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.venue?.message}</p>
                   </Form.Group>
                 </Col>
               </Row>
@@ -468,13 +401,15 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>AICTE/AKTU Certificate Number</Form.Label>
-                    <Form.Control type="text" value={certificatenumber} placeholder="Certificate Number" required onChange={(e) => setCertificateNumber(e.target.value)} />
+                    <Form.Control type="text" placeholder="Certificate Number" name="certificatenumber" {...register("certificatenumber", { required: "certificate number is required", })} />
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.certificatenumber?.message}</p>
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label >Upload Certificate copy</Form.Label>
-                    <Form.Control type="file" name='certificate' required onChange={handleFile} />
+                    <Form.Control type="file" name='certificate' accept="image/*" onChange={handleFile} />
+                    <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} >Preview</div>
                   </Form.Group>
                 </Col>
               </Row>
@@ -487,14 +422,14 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Incentive Detail</Form.Label>
-                    <Form.Select className='mb-3' value={incentive} aria-label="Default select example" required onChange={(e) => setIncentive(e.target.value)}>
-                      <option>Select the Incentive Details</option>
+                    <Form.Select className='mb-3' aria-label="Default select example" name="incentive" {...register("incentive", { required: "incentive is required", })}>
                       <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                       <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
                       <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
                       <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
                       <option value="Not Taken Yet">Not Taken Yet</option>
                     </Form.Select>
+                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.incentive?.message}</p>
                   </Form.Group>
                 </Col>
               </Row>

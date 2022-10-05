@@ -11,6 +11,8 @@ import moment from 'moment';
 import swal from 'sweetalert';
 import { doAddFacultyDetail, doGetFacultyDetailById, doUpdateFacultyDetail } from '../Services/ApiServices';
 import { useParams } from 'react-router-dom';
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
 const FacultyParticipation = () => {
 
     const [facultyname, setFacultyname] = useState("");
@@ -49,13 +51,6 @@ const FacultyParticipation = () => {
             const diffTime = Math.abs(date2 - date1);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             setDuration(diffDays + 1);
-        }
-    }, [from, to])
-
-    useEffect(() => {
-        if (from || to) {
-            setStarting(moment(from).format('YYYY-MM-DD'));
-            setEnding(moment(to).format('YYYY-MM-DD'));
         }
     }, [from, to])
 
@@ -99,8 +94,8 @@ const FacultyParticipation = () => {
                     name_of_event: data.event,
                     venue_of_activity: data.venue,
                     role: data.role,
-                    starting_date: starting,
-                    end_date: ending,
+                    starting_date,
+                    end_date,
                     duration,
                     remarks,
                 }
@@ -214,7 +209,7 @@ const FacultyParticipation = () => {
                                 <Col xs={12} md={6}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Department</Form.Label>
-                                        <Form.Select className='mb-3' placeholder='Select the Department' aria-label="Default select example" required name="department" {...register("department", { required: "department is required", })}>
+                                        <Form.Select className='mb-3' placeholder='Select the Department' aria-label="Default select example" name="department" {...register("department", { required: "department is required", })}>
                                             <option>Select the Department</option>
                                             <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                             <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
@@ -256,13 +251,13 @@ const FacultyParticipation = () => {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <Form.Control type="date" placeholder="DD-MM-YYYY" min='01-01-2009' value={from} onChange={(e) => { setFrom(e.target.value) }} />
+                                        <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange  dropdownMode="select" showMonthDropdown showYearDropdown  selected={from} onChange={(date) => setFrom(date)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>To</Form.Label>
-                                        <Form.Control type="date" value={to} placeholder="DD-MM-YYYY" min={from} disabled={from ? false : true} onChange={(e) => { setTo(e.target.value) }} />
+                                        <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown minDate={from} disabled={from ? false : true} selected={to} onChange={(date) => setTo(date)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={2}>
