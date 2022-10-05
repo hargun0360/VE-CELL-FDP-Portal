@@ -61,20 +61,20 @@ const ViewStudent = () => {
 
     }
 
-    useEffect(()=>{
-        if(start || end){
-            setStarting(moment(start).format('DD-MM-YYYY'));
-            setEnding(moment(end).format('DD-MM-YYYY'));
-        }
-    },[start,end])
+    // useEffect(()=>{
+    //     if(start || end){
+    //         setStarting(moment(start).format('DD-MM-YYYY'));
+    //         setEnding(moment(end).format('DD-MM-YYYY'));
+    //     }
+    // },[start,end])
     
     const handleSubmit = (e) => {
         e.preventDefault()
         let obj = {
             email,
             branch : branch == "Select the Branch" ? null : branch,
-            starting_date: starting == "Invalid date" ? null : starting,
-            end_date: ending == "Invalid date" ? null : ending
+            starting_date:start,
+            end_date:end
         }
         console.log(obj);
 
@@ -141,8 +141,8 @@ const ViewStudent = () => {
         let obj = {
             email,
             branch:branch == "Select the Branch" ? null : branch,
-            starting_date: starting == "Invalid date" ? null : starting,
-            end_date: ending == "Invalid date" ? null : ending
+            starting_date:start,
+            end_date:end
         }
         doGetAllStudent(obj).then((res) => {
             setStudentData(res.data);

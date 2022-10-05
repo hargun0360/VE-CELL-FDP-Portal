@@ -58,12 +58,12 @@ const ViewFDP = () => {
 
     const [admin, setAdmin] = useState(false);
 
-    useEffect(()=>{
-        if(start || end){
-            setStarting(moment(start).format('DD-MM-YYYY'));
-            setEnding(moment(end).format('DD-MM-YYYY'));
-        }
-    },[start,end])
+    // useEffect(()=>{
+    //     if(start || end){
+    //         setStarting(moment(start).format('DD-MM-YYYY'));
+    //         setEnding(moment(end).format('DD-MM-YYYY'));
+    //     }
+    // },[start,end])
 
     useEffect(() => {
         getFDP();
@@ -78,8 +78,8 @@ const ViewFDP = () => {
             college_email : email,
             department : department == "Select the Department" ? null : department,
             incentive_detail : incentive,
-            starting_date : starting == "Invalid date" ? null : starting,
-            end_date: ending == "Invalid date" ? null : ending,
+            starting_date:start ,
+            end_date:end,
             venue,
         }
         console.log(obj);
@@ -125,8 +125,8 @@ const ViewFDP = () => {
             college_email : email,
             department : department == "Select the Department" ? null : department,
             incentive_detail : incentive == "Select the Incentive Details" ? null : incentive,
-            starting_date : starting == "Invalid date" ? null : starting,
-            end_date: ending == "Invalid date" ? null : ending,
+            starting_date:start ,
+            end_date:end,
             venue,
         }
         doGetAllFDP(obj).then((res) => {

@@ -15,6 +15,7 @@ import Navbar from "./Navbar"
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom';
 function CollegeForm() {
 
   const { id } = useParams();
@@ -95,6 +96,12 @@ function CollegeForm() {
     }
   }, [id, reset]);
 
+  const handlePreview = () =>{
+    if(id){
+      navigate("/preview",{ state: id })  
+    }
+  }
+
   const getDetailByID = () => {
     doGetDetailById(Number(id)).then((res) => {
       console.log(res);
@@ -104,8 +111,8 @@ function CollegeForm() {
       setRemarks(res.data.remarks);
       setFtype(res.data.fdp_type);
       setCertificate(res.data.certificate)
-      setStart(res.data.starting_date)
-      setEnd(res.data.end_date)
+      setStart(new Date(res.data.starting_date))
+      setEnd(new Date(res.data.end_date))
       let obj = {
         name: res.data.name,
         email: res.data.college_email,
@@ -122,8 +129,23 @@ function CollegeForm() {
     })
   }
 
+  const convert = (selected) => {
+    const day = selected.getDate();
+    const month =
+      selected.getMonth() >=9
+        ? selected.getMonth() + 1
+        : `0${selected.getMonth() + 1}`;
+    const yearr = selected.getFullYear();
+
+    return `${day}-${month}-${yearr}`;
+  };
+
+
   useEffect(() => {
+    
     if (start && end) {
+      convert(start)
+      convert(end)
       const date1 = new Date(start);
       const date2 = new Date(end);
       const diffTime = Math.abs(date2 - date1);
@@ -137,9 +159,9 @@ function CollegeForm() {
     e.preventDefault();
     setLoading(true)
     if (id) {
-      if(certificate && ftype && start && end){
+      if(ftype && start && end){
 
-      
+
       const myForm = new FormData();
 
       myForm.set("name", data.name);
@@ -153,9 +175,9 @@ function CollegeForm() {
       myForm.set("phone_number", data.mobile);
       myForm.set("remarks", remarks);
       myForm.set("certificate", certificate);
-      myForm.set("starting_date", start);
-      myForm.set("end_date", end);
-      myForm.set("number_of_days", data.days);
+      myForm.set("starting_date", convert(start));
+      myForm.set("end_date", convert(end));
+      myForm.set("number_of_days", Number(days));
       myForm.set("online_fdp", online);
       myForm.set("venue", data.venue);
       myForm.set("certificate_number", data.certificatenumber);
@@ -187,7 +209,6 @@ function CollegeForm() {
       }
     } else {
       if(certificate && ftype && start && end){
-
       
       const myForm = new FormData();
 
@@ -202,9 +223,9 @@ function CollegeForm() {
       myForm.set("phone_number", data.mobile);
       myForm.set("remarks", remarks);
       myForm.set("certificate", certificate);
-      myForm.set("starting_date", start);
-      myForm.set("end_date", end);
-      myForm.set("number_of_days", data.days);
+      myForm.set("starting_date", convert(start));
+      myForm.set("end_date", convert(end));
+      myForm.set("number_of_days", Number(days));
       myForm.set("online_fdp", online);
       myForm.set("venue", data.venue);
       myForm.set("certificate_number", data.certificatenumber);
@@ -409,7 +430,7 @@ function CollegeForm() {
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label >Upload Certificate copy</Form.Label>
                     <Form.Control type="file" name='certificate' accept="image/*" onChange={handleFile} />
-                    <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} >Preview</div>
+                    <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} onClick={handlePreview}>Preview</div>
                   </Form.Group>
                 </Col>
               </Row>

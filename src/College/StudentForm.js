@@ -57,6 +57,16 @@ function StudentForm() {
         },
     });
 
+    const convert = (selected) => {
+        const day = selected.getDate();
+        const month =
+          selected.getMonth() >=9
+            ? selected.getMonth() + 1
+            : `0${selected.getMonth() + 1}`;
+        const yearr = selected.getFullYear();
+    
+        return `${day}-${month}-${yearr}`;
+      };
 
     useEffect(() => {
         if (id) {
@@ -71,8 +81,8 @@ function StudentForm() {
             console.log(res);
 
 
-            setFrom(res.data.starting_date.split(" ")[0]);
-            setTo(res.data.end_date.split(" ")[0]);
+            setFrom(new Date(res.data.starting_date));
+            setTo(new Date(res.data.end_date));
             setDuration(res.data.number_of_days)
             setRemarks(res.data.remarks);
 
@@ -104,6 +114,8 @@ function StudentForm() {
 
     useEffect(() => {
         if (from && to) {
+            convert(from)
+            convert(to)
             const date1 = new Date(from);
             const date2 = new Date(to);
             const diffTime = Math.abs(date2 - date1);
@@ -112,6 +124,7 @@ function StudentForm() {
         }
     }, [from, to])
 
+    
 
     const onSubmit = (data, e) => {
         e.preventDefault();
@@ -124,12 +137,12 @@ function StudentForm() {
                     name,
                     branch,
                     section,
-                    number_of_days: duration,
+                    number_of_days: Number(duration),
                     name_of_activity: activity,
                     year,
                     venue_of_activity: venue,
-                    starting_date: from,
-                    end_date: to,
+                    starting_date: convert(from),
+                    end_date: convert(to),
                     phone_number: mobile,
                     remarks,
                     email
@@ -168,12 +181,12 @@ function StudentForm() {
                     name,
                     branch,
                     section,
-                    number_of_days: duration,
+                    number_of_days: Number(duration),
                     name_of_activity: activity,
                     year,
                     venue_of_activity: venue,
-                    starting_date: from,
-                    end_date: to,
+                    starting_date: convert(from),
+                    end_date: convert(to),
                     phone_number: mobile,
                     remarks,
                     email

@@ -17,6 +17,7 @@ import AuthenticatedRoutes from "./Routes/AuthenticatedRoutes";
 import Logout from './College/Logout';
 import FacultyParticipation from './College/FacultyParticipation';
 import ViewFacultyParticipation from './College/ViewFacultyParticipation'
+import Preview from './College/Preview'
 function App() {
   return (
     <div className="App">
@@ -56,6 +57,10 @@ function App() {
         <Route exact path="/view" element={
           <PrivateRoute>
             <ViewDetail />
+          </PrivateRoute>} />
+        <Route exact path="/preview" element={
+          <PrivateRoute>
+            <Preview />
           </PrivateRoute>} />
         <Route exact path="/view/:id" element={<PrivateRoute>
           <ViewDetail />

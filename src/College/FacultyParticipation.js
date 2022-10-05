@@ -32,6 +32,17 @@ const FacultyParticipation = () => {
 
     const { id } = useParams();
 
+    const convert = (selected) => {
+        const day = selected.getDate();
+        const month =
+          selected.getMonth() >=9
+            ? selected.getMonth() + 1
+            : `0${selected.getMonth() + 1}`;
+        const yearr = selected.getFullYear();
+    
+        return `${day}-${month}-${yearr}`;
+      };
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         mode: "onTouched",
         defaultValues: {
@@ -65,9 +76,9 @@ const FacultyParticipation = () => {
             .then((res) => {
                 console.log(res);
                 setDuration(res.data.duration)
-                setTo(res.data.end_date)
+                setTo(new Date(res.data.end_date))
                 setRemarks(res.data.remarks)
-                setFrom(res.data.starting_date)
+                setFrom(new Date(res.data.starting_date))
                 let obj = {
                     facultyname : res.data.name,
                     email : res.data.email,
@@ -94,9 +105,9 @@ const FacultyParticipation = () => {
                     name_of_event: data.event,
                     venue_of_activity: data.venue,
                     role: data.role,
-                    starting_date,
-                    end_date,
-                    duration,
+                    starting_date:convert(from),
+                    end_date: convert(to),
+                    duration : Number(duration),
                     remarks,
                 }
 
@@ -133,9 +144,9 @@ const FacultyParticipation = () => {
                     name_of_event: data.event,
                     venue_of_activity: data.venue,
                     role: data.role,
-                    starting_date: starting,
-                    end_date: ending,
-                    duration,
+                    starting_date:convert(from),
+                    end_date: convert(to),
+                    duration : Number(duration),
                     remarks
                 }
 

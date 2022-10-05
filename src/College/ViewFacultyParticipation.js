@@ -50,12 +50,12 @@ const ViewFacultyParticipation = () => {
     const { val } = useSelector((state) => state.toggle);
 
 
-    useEffect(() => {
-        if (start || end) {
-            setStarting(moment(start).format('DD-MM-YYYY'));
-            setEnding(moment(end).format('DD-MM-YYYY'));
-        }
-    }, [start, end])
+    // useEffect(() => {
+    //     if (start || end) {
+    //         setStarting(moment(start).format('DD-MM-YYYY'));
+    //         setEnding(moment(end).format('DD-MM-YYYY'));
+    //     }
+    // }, [start, end])
 
 
     const handleSubmit = (e) => {
@@ -64,8 +64,8 @@ const ViewFacultyParticipation = () => {
         let obj = {
             email,
             department : department == "Select the Department" ? null : department,
-            start_date: starting == "Invalid date" ? null : starting,
-            end_date: ending == "Invalid date" ? null : ending
+            start_date:start  ,
+            end_date:end
         }
         console.log(obj);
 
@@ -108,8 +108,8 @@ const ViewFacultyParticipation = () => {
         let obj = {
             email,
             department:department == "Select the Department" ? null : department,
-            start_date: starting == "Invalid date" ? null : starting,
-            end_date: ending == "Invalid date" ? null : ending
+            start_date:start,
+            end_date:end
         }
         doGetAllFaculty(obj).then((res) => {
             setStudentData(res.data);
