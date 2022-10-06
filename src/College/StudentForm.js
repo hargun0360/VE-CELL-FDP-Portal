@@ -268,10 +268,10 @@ function StudentForm() {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={3} md={1}>
+                                <Col xs={3} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Year</Form.Label>
-                                        <Form.Control type="number" name="year" {...register("year", { required: "required", pattern: { value: /[1-8]{1}/i, message: "invalid year" } })} />
+                                        <Form.Control type="number" name="year" {...register("year", { required: "required year", pattern: { value: /[1-8]{1}/i, message: "invalid year" } })} />
                                         <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.year?.message}</p>
                                     </Form.Group>
                                 </Col>
@@ -285,11 +285,11 @@ function StudentForm() {
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control autoFocus={true} type="number" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /[6789]{1}[0-9]{9}/i, message: "invalid phone number" } })} />
+                                        <Form.Control type="number" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /[6789]{1}[0-9]{9}/i, message: "invalid phone number" } })} />
                                         <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.mobile?.message}</p>
                                     </Form.Group>
                                 </Col>
-                                <Col xs={6} md={5}>
+                                <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Name of Activity</Form.Label>
                                         <Form.Control type="text" placeholder="Activity Name" name="activity" {...register("activity", { required: "activity name is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid activity name" } })} />

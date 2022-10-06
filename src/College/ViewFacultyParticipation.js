@@ -22,6 +22,7 @@ import * as action from "../Redux/action";
 import { useDispatch, useSelector } from 'react-redux'
 import Navbar from "./Navbar"
 import swal from 'sweetalert';
+import Spinner from '../Components/Spinner'
 import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 const ViewFacultyParticipation = () => {
     const [show, setShow] = useState(false);
@@ -261,7 +262,7 @@ const ViewFacultyParticipation = () => {
                                                         </td>
                                                     </tr>
                                                 </>
-                                            )) : null
+                                            )) : <Spinner />
                                         }
                                     </tbody>
                                 </Table>

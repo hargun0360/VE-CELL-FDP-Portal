@@ -159,7 +159,7 @@ function CollegeForm() {
     e.preventDefault();
     setLoading(true)
     if (id) {
-      if(ftype && start && end){
+      if(ftype && start && end && (online!="" || offline!="")){
 
 
       const myForm = new FormData();
@@ -208,7 +208,7 @@ function CollegeForm() {
         })
       }
     } else {
-      if(certificate && ftype && start && end){
+      if(certificate && ftype && start && end && (online!="" || offline!="")){
       
       const myForm = new FormData();
 
@@ -284,7 +284,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text"  placeholder="Enter your name" name="name" {...register("name", { required: "name is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid name" } })} />
+                    <Form.Control type="text" autoFocus={true}  placeholder="Enter your name" name="name" {...register("name", { required: "name is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid name" } })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.name?.message}</p>
                   </Form.Group>
                 </Col>

@@ -42,6 +42,7 @@ const ViewFDP = () => {
     const [type,setType] = useState(null)
     const [venue,setVenue] = useState(null)
     const [change,setChange] = useState(false)
+    const [loading,setLoading] = useState(false)
     const componentRef = useRef();
 
     const [menu, setMenu] = useState({
@@ -129,10 +130,13 @@ const ViewFDP = () => {
             end_date:end,
             venue,
         }
+        setLoading(true)
         doGetAllFDP(obj).then((res) => {
             setDetails(res.data);
+            setLoading(false)
         }).catch((e) => {
             console.log(e);
+            setLoading(false)
             if (e.status == 403) {
                 localStorage.clear();
                 navigate("/")
@@ -274,7 +278,7 @@ const ViewFDP = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                            details.map((item) => (
+                                           details.length > 0 ? details.map((item) => (
                                                 <>
                                                     <tr>
                                                         <td className="text-center">{++cnt}</td>
@@ -314,9 +318,9 @@ const ViewFDP = () => {
                                                             </UncontrolledDropdown>
                                                         </td> : null}
                                                     </tr>
-                                                </>
+                                                </> 
                                             ))
-                                        }
+                                            : <Spinner />}
                                     </tbody>
                                 </Table>
                             </div>
