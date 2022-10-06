@@ -11,6 +11,8 @@ import {
 
 } from "reactstrap"
 import { Card } from "react-bootstrap"
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
 import moment from 'moment'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ModeSharpIcon from '@mui/icons-material/ModeSharp';
@@ -50,6 +52,17 @@ const ViewFacultyParticipation = () => {
     });
     const { val } = useSelector((state) => state.toggle);
 
+    const convert = (selected) => {
+        const day = selected.getDate();
+        const month =
+          selected.getMonth() >=9
+            ? selected.getMonth() + 1
+            : `0${selected.getMonth() + 1}`;
+        const yearr = selected.getFullYear();
+    
+        return `${day}-${month}-${yearr}`;
+      };
+
 
     // useEffect(() => {
     //     if (start || end) {
@@ -65,8 +78,8 @@ const ViewFacultyParticipation = () => {
         let obj = {
             email,
             department : department == "Select the Department" ? null : department,
-            start_date:start  ,
-            end_date:end
+            start_date:convert(start)  ,
+            end_date:convert(end)
         }
         console.log(obj);
 
@@ -171,13 +184,13 @@ const ViewFacultyParticipation = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={start} min={'01-01-2009'} onChange={(e) => setStart(e.target.value)} />
+                                                <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown onChange={(date) => setStart(date)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
-                                            <Form.Group controlId="formBasicName">``
+                                            <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
+                                                <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} onChange={(date) => setEnd(date)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2} >
@@ -262,7 +275,7 @@ const ViewFacultyParticipation = () => {
                                                         </td>
                                                     </tr>
                                                 </>
-                                            )) : <Spinner />
+                                            )) : null
                                         }
                                     </tbody>
                                 </Table>

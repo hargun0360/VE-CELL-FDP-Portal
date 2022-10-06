@@ -25,6 +25,8 @@ import Breadcrumb from './Breadcrumb';
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Navbar from "./Navbar"
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
 import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 const ViewFDP = () => {
     const [loader, setLoader] = useState(false)
@@ -59,6 +61,17 @@ const ViewFDP = () => {
 
     const [admin, setAdmin] = useState(false);
 
+    const convert = (selected) => {
+        const day = selected.getDate();
+        const month =
+          selected.getMonth() >=9
+            ? selected.getMonth() + 1
+            : `0${selected.getMonth() + 1}`;
+        const yearr = selected.getFullYear();
+    
+        return `${day}-${month}-${yearr}`;
+      };
+
     // useEffect(()=>{
     //     if(start || end){
     //         setStarting(moment(start).format('DD-MM-YYYY'));
@@ -79,8 +92,8 @@ const ViewFDP = () => {
             college_email : email,
             department : department == "Select the Department" ? null : department,
             incentive_detail : incentive,
-            starting_date:start ,
-            end_date:end,
+            starting_date:convert(start) ,
+            end_date:convert(end),
             venue,
         }
         console.log(obj);
@@ -211,13 +224,13 @@ const ViewFDP = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={start} min='01-01-2009' onChange={(e) => setStart(e.target.value)} />
+                                                <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown onChange={(date) => setStart(date)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
+                                                <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} onChange={(date) => setEnd(date)} />
                                             </Form.Group>
                                         </Col>
                                     </Row>
@@ -238,7 +251,7 @@ const ViewFDP = () => {
                                         <Col xs={12} md={3}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Venue</Form.Label>
-                                                <Form.Control autoFocus={true} type="text" value={venue} placeholder="Venue" onChange={(e) => setVenue(e.target.value)} />
+                                                <Form.Control type="text" value={venue} placeholder="Venue" onChange={(e) => setVenue(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={3} >
@@ -320,7 +333,7 @@ const ViewFDP = () => {
                                                     </tr>
                                                 </> 
                                             ))
-                                            : <Spinner />}
+                                            : null}
                                     </tbody>
                                 </Table>
                             </div>

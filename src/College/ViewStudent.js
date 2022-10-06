@@ -25,6 +25,8 @@ import Modal from 'react-bootstrap/Modal';
 import Breadcrumb from './Breadcrumb';
 import * as XLSX from "xlsx"
 import Navbar from "./Navbar"
+import DatePicker from "react-datepicker"
+import 'react-datepicker/dist/react-datepicker.css'
 import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import swal from 'sweetalert';
 const ViewStudent = () => {
@@ -61,6 +63,17 @@ const ViewStudent = () => {
 
     }
 
+    const convert = (selected) => {
+        const day = selected.getDate();
+        const month =
+          selected.getMonth() >=9
+            ? selected.getMonth() + 1
+            : `0${selected.getMonth() + 1}`;
+        const yearr = selected.getFullYear();
+    
+        return `${day}-${month}-${yearr}`;
+      };
+
     // useEffect(()=>{
     //     if(start || end){
     //         setStarting(moment(start).format('DD-MM-YYYY'));
@@ -73,8 +86,8 @@ const ViewStudent = () => {
         let obj = {
             email,
             branch : branch == "Select the Branch" ? null : branch,
-            starting_date:start,
-            end_date:end
+            starting_date:convert(start) ,
+            end_date:convert(end),
         }
         console.log(obj);
 
@@ -282,13 +295,13 @@ const ViewStudent = () => {
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Start Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={start} min='01-01-2009' onChange={(e) => setStart(e.target.value)} />
+                                                <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown onChange={(date) => setStart(date)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>End Date</Form.Label>
-                                                <Form.Control autoFocus={true} type="date" value={end} min={start} onChange={(e) => setEnd(e.target.value)} />
+                                                <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} onChange={(date) => setEnd(date)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2} >
