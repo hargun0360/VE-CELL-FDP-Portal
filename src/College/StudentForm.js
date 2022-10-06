@@ -134,18 +134,18 @@ function StudentForm() {
 
 
                 let obj = {
-                    name,
-                    branch,
-                    section,
+                    name:data.name,
+                    branch:data.branch,
+                    section:data.section,
                     number_of_days: Number(duration),
-                    name_of_activity: activity,
-                    year,
-                    venue_of_activity: venue,
+                    name_of_activity: data.activity,
+                    year:Number(data.year),
+                    venue_of_activity: data.venue,
                     starting_date: convert(from),
                     end_date: convert(to),
-                    phone_number: mobile,
+                    phone_number: data.mobile,
                     remarks,
-                    email
+                    email:data.email
                 }
 
                 doUpdateStudentDetail(obj, Number(id))
@@ -178,19 +178,21 @@ function StudentForm() {
 
 
                 let obj = {
-                    name,
-                    branch,
-                    section,
+                    name:data.name,
+                    branch:data.branch,
+                    section:data.section,
                     number_of_days: Number(duration),
-                    name_of_activity: activity,
-                    year,
-                    venue_of_activity: venue,
+                    name_of_activity: data.activity,
+                    year:Number(data.year),
+                    venue_of_activity: data.venue,
                     starting_date: convert(from),
                     end_date: convert(to),
-                    phone_number: mobile,
+                    phone_number: data.mobile,
                     remarks,
-                    email
+                    email:data.email
                 }
+
+                console.log(obj);
 
                 doAddStudentDetail(obj)
                     .then((res) => {
@@ -301,7 +303,7 @@ function StudentForm() {
                                 <Col xs={12} md={4}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>Venue</Form.Label>
-                                        <Form.Control type="text" value={venue} placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid venue name" } })} />
+                                        <Form.Control type="text" placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid venue name" } })} />
                                         <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.venue?.message}</p>
                                     </Form.Group>
                                 </Col>
