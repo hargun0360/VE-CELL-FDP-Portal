@@ -5,7 +5,8 @@ import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP
   GET_FACULTY_PARTICIPATION_BY_ID,UPDATE_FACULTY_PARTICIPATION_URL,
   GET_ALL_FACULTY_PARTICIPATION,DELETE_FACULTY_PARTICIPATION_URL,
   STUDENT_FILTER_URL,FDP_FILTER_URL,
-  FACULTY_PARTICIPATION_FILTER_URL} from "./ApiUrls"
+  FACULTY_PARTICIPATION_FILTER_URL,
+  FACULTY_DATA_URL} from "./ApiUrls"
 import { getAuthToken,RestAxiosService } from "./RestApiService"
 
 // Function To Get The Refresh Token from Local Storage
@@ -517,5 +518,24 @@ export function  doAddFDPFilter(details) {
         reject(err)
       }
     )
+  })
+}
+
+//------------------------ Faculty Data ----------------------------------------
+
+// Get Faculty Data 
+
+export function doGetFacultyData() {
+  let headers = {
+    Authorization: "Bearer " + getAuthToken(),
+    "Content-Type": "application/json",
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(FACULTY_DATA_URL, "GET", false , headers).then((res) => {
+      console.log("Get Users Response :- ", res);
+      resolve(res)
+    }, (err) => {
+      reject(err);
+    })
   })
 }

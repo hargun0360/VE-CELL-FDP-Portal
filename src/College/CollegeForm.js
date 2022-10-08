@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'reactstrap';
 import "../App.css";
-import { doAddDetails, doUpdateDetails } from '../Services/ApiServices';
+import { doAddDetails, doUpdateDetails, doGetFacultyData } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
 import { Navigate, useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
@@ -110,6 +110,28 @@ function CollegeForm() {
       navigate("/preview", { state: id })
     }
   }
+
+  useEffect(() => {
+    FacultyData();
+  }, [])
+
+  const FacultyData = () =>{
+      doGetFacultyData()
+      .then((res)=>{
+        console.log(res);
+        let obj = {
+          name:res.data.name == null ? "" : res.data.name,
+          department:res.data.department == null ? "" : res.data.department,
+          email:res.data.college_email == null ? "" : res.data.college_email,
+          mobile:res.data.phone_number == null ? "" : res.data.phone_number,
+          designation:res.data.designation == null ? "" : res.data.designation,
+        }
+        reset(obj);
+      }).catch((e)=>{
+          console.log(e);
+      })
+  }
+
 
   const getDetailByID = () => {
     doGetDetailById(Number(id)).then((res) => {
