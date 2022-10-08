@@ -36,15 +36,15 @@ const ViewFDP = () => {
     const [email, setEmail] = useState(null)
     const [department, setDepartment] = useState(null)
     const [incentive, setIncentive] = useState(null)
-    const [state,setState] = useState(true)
+    const [state, setState] = useState(true)
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
     const [start, setStart] = useState(null)
     const [end, setEnd] = useState(null)
-    const [type,setType] = useState(null)
-    const [venue,setVenue] = useState(null)
-    const [change,setChange] = useState(false)
-    const [loading,setLoading] = useState(false)
+    const [type, setType] = useState(null)
+    const [venue, setVenue] = useState(null)
+    const [change, setChange] = useState(false)
+    const [loading, setLoading] = useState(false)
     const componentRef = useRef();
 
     const [menu, setMenu] = useState({
@@ -64,13 +64,13 @@ const ViewFDP = () => {
     const convert = (selected) => {
         const day = selected.getDate();
         const month =
-          selected.getMonth() >=9
-            ? selected.getMonth() + 1
-            : `0${selected.getMonth() + 1}`;
+            selected.getMonth() >= 9
+                ? selected.getMonth() + 1
+                : `0${selected.getMonth() + 1}`;
         const yearr = selected.getFullYear();
-    
+
         return `${day}-${month}-${yearr}`;
-      };
+    };
 
     // useEffect(()=>{
     //     if(start || end){
@@ -81,47 +81,47 @@ const ViewFDP = () => {
 
     useEffect(() => {
         getFDP();
-        if(change){
+        if (change) {
             setChange(false)
         }
-    }, [val,change]);
+    }, [val, change]);
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
         e.preventDefault();
         let obj = {
-            college_email : email,
-            department : department == "Select the Department" ? null : department,
-            incentive_detail : incentive,
-            starting_date:convert(start) ,
-            end_date:convert(end),
+            college_email: email,
+            department: department == "Select the Department" ? null : department,
+            incentive_detail: incentive,
+            starting_date: convert(start),
+            end_date: convert(end),
             venue,
         }
         console.log(obj);
         doAddFDPFilter(obj)
-        .then((res) => {
-            console.log(res);
-            setChange(true);
-            swal({
-                title: "Filter Added Successfully",
-                text: "",
-                icon: "success",
-                button: "OK",
-            });
-        }).catch((e) => {
-            console.log(e);
-            setChange(false);
-            if (e.status == 403) {
-                localStorage.clear();
-                navigate("/")
-            }
-            swal({
-                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                text: "",
-                icon: "error",
-                button: "OK",
-            });
-        })
-        
+            .then((res) => {
+                console.log(res);
+                setChange(true);
+                swal({
+                    title: "Filter Added Successfully",
+                    text: "",
+                    icon: "success",
+                    button: "OK",
+                });
+            }).catch((e) => {
+                console.log(e);
+                setChange(false);
+                if (e.status == 403) {
+                    localStorage.clear();
+                    navigate("/")
+                }
+                swal({
+                    title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                    text: "",
+                    icon: "error",
+                    button: "OK",
+                });
+            })
+
     }
 
     useEffect(() => {
@@ -129,18 +129,18 @@ const ViewFDP = () => {
             setAdmin(true);
         }
     }, [])
-    
+
 
 
     // Get All FDP
 
     const getFDP = () => {
         let obj = {
-            college_email : email,
-            department : department == "Select the Department" ? null : department,
-            incentive_detail : incentive == "Select the Incentive Details" ? null : incentive,
-            starting_date:start ,
-            end_date:end,
+            college_email: email,
+            department: department == "Select the Department" ? null : department,
+            incentive_detail: incentive == "Select the Incentive Details" ? null : incentive,
+            starting_date: start,
+            end_date: end,
             venue,
         }
         setLoading(true)
@@ -166,7 +166,7 @@ const ViewFDP = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         documentTitle: "FDP report",
-        onBeforePrint : () => setState(false),
+        onBeforePrint: () => setState(false),
         onAfterPrint: () => setState(true),
     });
 
@@ -194,7 +194,7 @@ const ViewFDP = () => {
 
 
                     <div className="py-2">
-                        <Card >
+                        { admin ? <Card >
                             <Card.Body>
                                 <Form onSubmit={(e) => handleSubmit(e)}>
                                     <Row>
@@ -263,7 +263,7 @@ const ViewFDP = () => {
                                     </Row>
                                 </Form>
                             </Card.Body>
-                        </Card>
+                        </Card> : null}
                         <div className="py-2 mt-2">
                             <Button type='button' className="px-3" variant="success" onClick={handlePrint}>
                                 Generate Report
@@ -291,7 +291,7 @@ const ViewFDP = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                           details.length > 0 ? details.map((item) => (
+                                            details.length > 0 ? details.map((item) => (
                                                 <>
                                                     <tr>
                                                         <td className="text-center">{++cnt}</td>
@@ -331,9 +331,9 @@ const ViewFDP = () => {
                                                             </UncontrolledDropdown>
                                                         </td> : null}
                                                     </tr>
-                                                </> 
+                                                </>
                                             ))
-                                            : null}
+                                                : null}
                                     </tbody>
                                 </Table>
                             </div>

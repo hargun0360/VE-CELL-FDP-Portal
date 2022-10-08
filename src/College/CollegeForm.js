@@ -12,6 +12,7 @@ import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
 import "../App.css"
 import Navbar from "./Navbar"
+import moment from "moment"
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
 import { useForm } from 'react-hook-form'
@@ -74,18 +75,26 @@ function CollegeForm() {
     }
   }
 
+  const converting = (selected) => {
+    var date = selected;
+    var datearray = date.split("-");
+
+    var newdate = datearray[1] + '-' + datearray[0] + '-' + datearray[2];
+    return newdate
+  };
+
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     mode: "onTouched",
     // certificate and remarks left 
     defaultValues: {
-      name,
-      email,
-      department,
-      mobile,
-      designation,
-      venue,
-      certificatenumber,
-      incentive
+      name:"",
+      email:"",
+      department:"",
+      mobile:"",
+      designation:"",
+      venue:"",
+      certificatenumber:"",
+      incentive:""
     },
   });
 
@@ -96,9 +105,9 @@ function CollegeForm() {
     }
   }, [id, reset]);
 
-  const handlePreview = () =>{
-    if(id){
-      navigate("/preview",{ state: id })  
+  const handlePreview = () => {
+    if (id) {
+      navigate("/preview", { state: id })
     }
   }
 
@@ -111,8 +120,9 @@ function CollegeForm() {
       setRemarks(res.data.remarks);
       setFtype(res.data.fdp_type);
       setCertificate(res.data.certificate)
-      setStart(new Date(res.data.starting_date))
-      setEnd(new Date(res.data.end_date))
+      setStart(new Date(converting(res.data.starting_date)))
+      setEnd(new Date(converting(res.data.end_date)))
+      // console.log(res.data.end_date,new Date("04-10-2022"),res.data.starting_date,new Date(res.data.starting_date));
       let obj = {
         name: res.data.name,
         email: res.data.college_email,
@@ -129,10 +139,11 @@ function CollegeForm() {
     })
   }
 
+
   const convert = (selected) => {
     const day = selected.getDate();
     const month =
-      selected.getMonth() >=9
+      selected.getMonth() >= 9
         ? selected.getMonth() + 1
         : `0${selected.getMonth() + 1}`;
     const yearr = selected.getFullYear();
@@ -142,7 +153,7 @@ function CollegeForm() {
 
 
   useEffect(() => {
-    
+
     if (start && end) {
       convert(start)
       convert(end)
@@ -159,105 +170,124 @@ function CollegeForm() {
     e.preventDefault();
     setLoading(true)
     if (id) {
-      if(ftype && start && end && (online!="" || offline!="")){
+      if (ftype && start && end && (online != "" || offline != "")) {
 
 
-      const myForm = new FormData();
+        const myForm = new FormData();
 
-      myForm.set("name", data.name);
-      myForm.set("department", data.department);
-      myForm.set("college_email", data.email);
-      myForm.set("mobile", data.mobile);
-      myForm.set("designation", data.designation);
-      myForm.set("fdp_type",ftype);
-      myForm.set("face_to_face_fdp", offline);
-      myForm.set("incentive_detail", data.incentive);
-      myForm.set("phone_number", data.mobile);
-      myForm.set("remarks", remarks);
-      myForm.set("certificate", certificate);
-      myForm.set("starting_date", convert(start));
-      myForm.set("end_date", convert(end));
-      myForm.set("number_of_days", Number(days));
-      myForm.set("online_fdp", online);
-      myForm.set("venue", data.venue);
-      myForm.set("certificate_number", data.certificatenumber);
+        myForm.set("name", data.name);
+        myForm.set("department", data.department);
+        myForm.set("college_email", data.email);
+        myForm.set("mobile", data.mobile);
+        myForm.set("designation", data.designation);
+        myForm.set("fdp_type", ftype);
+        myForm.set("face_to_face_fdp", offline);
+        myForm.set("incentive_detail", data.incentive);
+        myForm.set("phone_number", data.mobile);
+        myForm.set("remarks", remarks);
+        myForm.set("certificate", certificate);
+        myForm.set("starting_date", convert(start));
+        myForm.set("end_date", convert(end));
+        myForm.set("number_of_days", Number(days));
+        myForm.set("online_fdp", online);
+        myForm.set("venue", data.venue);
+        myForm.set("certificate_number", data.certificatenumber);
 
-      doUpdateDetails(myForm, id)
-        .then((res) => {
-          console.log(res);
-          setLoading(false)
-          swal({
-            title: "Details Updated Successfully",
-            text: "",
-            icon: "success",
-            button: "OK",
-          });
-        }).catch((e) => {
-          console.log(e);
-          if (e.status == 403) {
-            localStorage.clear();
-            navigate("/")
-          }
-          setLoading(false)
-          swal({
-            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-            text: "",
-            icon: "error",
-            button: "OK",
-          });
-        })
+        doUpdateDetails(myForm, id)
+          .then((res) => {
+            console.log(res);
+            setLoading(false)
+            setLoading(false)
+            setFtype("Select the FDP type")
+            setOffline("Select the Face to Face FDP")
+            setOnline("Select the Online FDP type")
+            setRemarks("")
+            setCertificate(null)
+            setStart(null)
+            setEnd(null)
+            setDays("")
+            reset()
+            swal({
+              title: "Details Updated Successfully",
+              text: "",
+              icon: "success",
+              button: "OK",
+            });
+          }).catch((e) => {
+            console.log(e);
+            if (e.status == 403) {
+              localStorage.clear();
+              navigate("/")
+            }
+            setLoading(false)
+            swal({
+              title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+              text: "",
+              icon: "error",
+              button: "OK",
+            });
+          })
       }
     } else {
-      if(certificate && ftype && start && end && (online!="" || offline!="")){
-      
-      const myForm = new FormData();
+      if (certificate && ftype && start && end && (online != "" || offline != "")) {
 
-      myForm.set("name", data.name);
-      myForm.set("department", data.department);
-      myForm.set("college_email", data.email);
-      myForm.set("mobile", data.mobile);
-      myForm.set("designation", data.designation);
-      myForm.set("fdp_type", ftype);
-      myForm.set("face_to_face_fdp", offline);
-      myForm.set("incentive_detail", data.incentive);
-      myForm.set("phone_number", data.mobile);
-      myForm.set("remarks", remarks);
-      myForm.set("certificate", certificate);
-      myForm.set("starting_date", convert(start));
-      myForm.set("end_date", convert(end));
-      myForm.set("number_of_days", Number(days));
-      myForm.set("online_fdp", online);
-      myForm.set("venue", data.venue);
-      myForm.set("certificate_number", data.certificatenumber);
+        const myForm = new FormData();
+
+        myForm.set("name", data.name);
+        myForm.set("department", data.department);
+        myForm.set("college_email", data.email);
+        myForm.set("mobile", data.mobile);
+        myForm.set("designation", data.designation);
+        myForm.set("fdp_type", ftype);
+        myForm.set("face_to_face_fdp", offline);
+        myForm.set("incentive_detail", data.incentive);
+        myForm.set("phone_number", data.mobile);
+        myForm.set("remarks", remarks);
+        myForm.set("certificate", certificate);
+        myForm.set("starting_date", convert(start));
+        myForm.set("end_date", convert(end));
+        myForm.set("number_of_days", Number(days));
+        myForm.set("online_fdp", online);
+        myForm.set("venue", data.venue);
+        myForm.set("certificate_number", data.certificatenumber);
 
 
-      doAddDetails(myForm)
-        .then((res) => {
-          console.log(res);
-          setLoading(false)
-          swal({
-            title: "Details Added Successfully",
-            text: "",
-            icon: "success",
-            button: "OK",
-          });
-        }).catch((e) => {
-          console.log(e);
-          if (e.status == 403) {
-            localStorage.clear();
-            navigate("/")
-          }
-          setLoading(false)
-          swal({
-            title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-            text: "",
-            icon: "error",
-            button: "OK",
-          });
-        })
+        doAddDetails(myForm)
+          .then((res) => {
+            console.log(res);
+            setLoading(false)
+            setFtype("Select the FDP type")
+            setOffline("Select the Face to Face FDP")
+            setOnline("Select the Online FDP type")
+            setRemarks("")
+            setCertificate(null)
+            setStart(null)
+            setEnd(null)
+            setDays("")
+            reset()
+            swal({
+              title: "Details Added Successfully",
+              text: "",
+              icon: "success",
+              button: "OK",
+            });
+          }).catch((e) => {
+            console.log(e);
+            if (e.status == 403) {
+              localStorage.clear();
+              navigate("/")
+            }
+            setLoading(false)
+            swal({
+              title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+              text: "",
+              icon: "error",
+              button: "OK",
+            });
+          })
 
+      }
     }
-  }
   }
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
@@ -284,7 +314,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicName">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" autoFocus={true}  placeholder="Enter your name" name="name" {...register("name", { required: "name is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid name" } })} />
+                    <Form.Control type="text" autoFocus={true} placeholder="Enter your name" name="name" {...register("name", { required: "name is required", pattern: { value: /[a-zA-Z]{1,}/i, message: "invalid name" } })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.name?.message}</p>
                   </Form.Group>
                 </Col>
@@ -310,7 +340,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>College mail id</Form.Label>
-                    <Form.Control type="email"  placeholder="example@akgec.ac.in" name="email" {...register("email", { required: "email is required", pattern: { value: /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i, message: "invalid email" } })} />
+                    <Form.Control type="email" placeholder="example@akgec.ac.in" name="email" {...register("email", { required: "email is required", pattern: { value: /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i, message: "invalid email" } })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.email?.message}</p>
                   </Form.Group>
                 </Col>
@@ -355,12 +385,12 @@ function CollegeForm() {
                     <Form.Label>Face to Face FDP</Form.Label>
                     <Form.Select className='mb-3' value={offline} aria-label="Default select example" disabled={flag1} onChange={(e) => setOffline(e.target.value)}>
                       <option>Select the Face to Face FDP</option>
-                      <option value="AKTU Level-1 (UHV-II)">AKTU Level-1 (UHV-II)</option>
+                      <option value="AKTU Level-1">AKTU Level-1</option>
                       <option value="AKTU Refresher">AKTU Refresher</option>
-                      <option value="AKTU Level-2 (UHV-III)">AKTU Level-2 (UHV-III)</option>
-                      <option value="AKTU Level-3 (UHV-III)">AKTU Level-3 (UHV-III)</option>
-                      <option value="AKTU 10 days FDP on UHBC (UHV-III)">AKTU 10 days FDP on UHBC (UHV-III)</option>
-                      <option value="AKTU 10 days FDP on VREHC (UHV-III)">AKTU 10 days FDP on VREHC (UHV-III)</option>
+                      <option value="AKTU Level-2">AKTU Level-2</option>
+                      <option value="AKTU Level-3">AKTU Level-3</option>
+                      <option value="AKTU 10 days FDP on UHBC">AKTU 10 days FDP on UHBC</option>
+                      <option value="AKTU 10 days FDP on VREHC">AKTU 10 days FDP on VREHC</option>
                       <option value="AKTU 10 days FDP on HVMD">AKTU 10 days FDP on HVMD</option>
                       <option value="AICTE UHV-II">AICTE UHV-II</option>
                       <option value="AICTE UHV-III">AICTE UHV-III</option>
@@ -373,7 +403,6 @@ function CollegeForm() {
                     <Form.Label>Online FDP</Form.Label>
                     <Form.Select className='mb-3' value={online} aria-label="Default select example" disabled={flag2} onChange={(e) => setOnline(e.target.value)}>
                       <option>Select the Online FDP type</option>
-                      <option value="AICTE-Five Days Introductory FDP">AICTE-Five Days Introductory FDP</option>
                       <option value="AICTE-UHV Refresher Part-I">AICTE-UHV Refresher Part-I</option>
                       <option value="AICTE-UHV Refresher Part-II">AICTE-UHV Refresher Part-II</option>
                       <option value="AICTE-5 Day Online UHV-I">AICTE-5 Day Online UHV-I</option>
@@ -394,29 +423,29 @@ function CollegeForm() {
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
                     <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown required onChange={(date) => setStart(date)} />
-                    
+
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
                     <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} minDate={start} disabled={start ? false : true} required onChange={(date) => setEnd(date)} />
-                    
+
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={2}>
+                <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Number of Days</Form.Label>
                     <Form.Control type="number" value={days} placeholder="No. of Days" disabled />
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={4}>
+                {ftype == "Face to Face FDP" ? <Col xs={12} md={3}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>Venue</Form.Label>
-                    <Form.Control type="text"  placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", })} />
+                    <Form.Control type="text" placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.venue?.message}</p>
                   </Form.Group>
-                </Col>
+                </Col> : null}
               </Row>
               <Row className='mb-4'>
                 <Col xs={12} md={6}>
@@ -429,8 +458,8 @@ function CollegeForm() {
                 <Col xs={12} md={4}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label >Upload Certificate copy</Form.Label>
-                    <Form.Control type="file" name='certificate' accept="image/*" onChange={handleFile} />
-                    <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} onClick={handlePreview}>Preview</div>
+                    <Form.Control type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
+                    {id ? <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} onClick={handlePreview}>Preview</div> : null}
                   </Form.Group>
                 </Col>
               </Row>

@@ -29,6 +29,13 @@ const FacultyParticipation = () => {
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
 
+    const converting = (selected) => {
+        var date = selected;
+        var datearray = date.split("-");
+    
+        var newdate = datearray[1] + '-' + datearray[0] + '-' + datearray[2];
+        return newdate
+      };
 
     const { id } = useParams();
 
@@ -46,12 +53,12 @@ const FacultyParticipation = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         mode: "onTouched",
         defaultValues: {
-            facultyname,
-            email,
-            department,
-            event,
-            venue,
-            role,
+            facultyname:"",
+            email:"",
+            department:"",
+            event:"",
+            venue:"",
+            role:"",
         },
     });
 
@@ -76,9 +83,9 @@ const FacultyParticipation = () => {
             .then((res) => {
                 console.log(res);
                 setDuration(res.data.duration)
-                setTo(new Date(res.data.end_date))
+                setTo(new Date(converting(res.data.end_date)))
                 setRemarks(res.data.remarks)
-                setFrom(new Date(res.data.starting_date))
+                setFrom(new Date(converting(res.data.starting_date)))
                 let obj = {
                     facultyname : res.data.name,
                     email : res.data.email,
@@ -115,6 +122,11 @@ const FacultyParticipation = () => {
                     .then((res) => {
                         console.log(res);
                         setLoading(false)
+                        setRemarks("")
+                        setDuration("")
+                        setFrom(null)
+                        setTo(null)
+                        reset()
                         swal({
                             title: "Added Successfully",
                             text: "",
@@ -154,6 +166,11 @@ const FacultyParticipation = () => {
                     .then((res) => {
                         console.log(res);
                         setLoading(false)
+                        setRemarks("")
+                        setDuration("")
+                        setFrom(null)
+                        setTo(null)
+                        reset()
                         swal({
                             title: "Added Successfully",
                             text: "",

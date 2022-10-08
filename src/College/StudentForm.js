@@ -22,6 +22,8 @@ function StudentForm() {
     const [name, setName] = useState("");
     const [branch, setBranch] = useState("");
     const [year, setYear] = useState("");
+    const [roll,setRoll] = useState("")
+    const [course,setCourse] = useState("")
     const [section, setSection] = useState("");
     const [mobile, setMobile] = useState("");
     const [activity, setActivity] = useState("");
@@ -42,18 +44,27 @@ function StudentForm() {
         }
     }, []);
 
+    const converting = (selected) => {
+        var date = selected;
+        var datearray = date.split("-");
+    
+        var newdate = datearray[1] + '-' + datearray[0] + '-' + datearray[2];
+        return newdate
+      };
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         mode: "onTouched",
         // certificate and remarks left 
         defaultValues: {
-            name,
-            email,
-            branch,
-            mobile,
-            year,
-            section,
-            venue,
-            activity,
+            name:"",
+            email:"",
+            branch:"",
+            mobile:"",
+            year:"",
+            section:"",
+            venue:"",
+            activity:"",
+            roll:""
         },
     });
 
@@ -81,11 +92,11 @@ function StudentForm() {
             console.log(res);
 
 
-            setFrom(new Date(res.data.starting_date));
-            setTo(new Date(res.data.end_date));
+            setFrom(new Date(converting(res.data.starting_date)));
+            setTo(new Date(converting(res.data.end_date)));
             setDuration(res.data.number_of_days)
             setRemarks(res.data.remarks);
-
+            setCourse(res.data,course)
             let obj = {
                 name: res.data.name,
                 email: res.data.college_email,
@@ -95,6 +106,7 @@ function StudentForm() {
                 branch: res.data.branch,
                 year: res.data.year,
                 section: res.data.section,
+                roll:res.data.university_roll_number
             }
             reset(obj)
         }).catch((e) => {
@@ -145,13 +157,21 @@ function StudentForm() {
                     end_date: convert(to),
                     phone_number: data.mobile,
                     remarks,
-                    email:data.email
+                    email:data.email,
+                    roll:data.roll,
+                    course
                 }
 
                 doUpdateStudentDetail(obj, Number(id))
                     .then((res) => {
                         console.log(res);
                         setLoading(false)
+                        setDuration("")
+                        setFrom(null)
+                        setTo(null)
+                        setCourse("")
+                        setRemarks("")
+                        reset()
                         swal({
                             title: "Updated Successfully",
                             text: "",
@@ -189,7 +209,9 @@ function StudentForm() {
                     end_date: convert(to),
                     phone_number: data.mobile,
                     remarks,
-                    email:data.email
+                    email:data.email,
+                    roll:data.roll,
+                    course
                 }
 
                 console.log(obj);
@@ -198,6 +220,12 @@ function StudentForm() {
                     .then((res) => {
                         console.log(res);
                         setLoading(false)
+                        setDuration("")
+                        setFrom(null)
+                        setTo(null)
+                        setCourse("")
+                        setRemarks("")
+                        reset()
                         swal({
                             title: "Student Added Successfully",
                             text: "",
@@ -270,6 +298,21 @@ function StudentForm() {
                                 </Col>
                             </Row>
                             <Row>
+                            <Col xs={12} md={6}>
+                                    <Form.Group className="mb-3" controlId="formBasicName">
+                                        <Form.Label>University Roll Number</Form.Label>
+                                        <Form.Control type="number" placeholder="Enter University Roll Number" name="roll" {...register("roll", { required: "roll number is required", pattern: { value: /[2]{1}[0-9]{9}/i, message: "invalid roll number" } })} />
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.roll?.message}</p>
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={12} md={5}>
+                                    <Form.Group className="mb-3" controlId="formBasicName">
+                                        <Form.Label>Course</Form.Label>
+                                        <Form.Control type="text" placeholder="Enter the Course" required value={course} onChange={(e)=>setCourse(e.target.value)} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
                                 <Col xs={3} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Year</Form.Label>
@@ -322,7 +365,7 @@ function StudentForm() {
                                 <Col xs={12} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>Duration</Form.Label>
-                                        <Form.Control type="number" value={duration} placeholder="Duration" disabled />
+                                        <Form.Control type="text" value={duration} placeholder="Duration" onChange={(e)=>setDuration(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                             </Row>

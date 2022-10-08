@@ -336,6 +336,9 @@ const ViewStudent = () => {
                                         <tr>
                                             <th className="text-center">#</th>
                                             <th className="text-center">Name</th>
+                                            <th className="text-center">College Mail ID</th>
+                                            <th className="text-center">University Roll Number</th>
+                                            <th className="text-center">Course</th>
                                             <th className="text-center">Branch</th>
                                             <th className="text-center">Year</th>
                                             <th className="text-center">Section</th>
@@ -356,6 +359,9 @@ const ViewStudent = () => {
                                                     <tr>
                                                         <td className="text-center">{++cnt}</td>
                                                         <td className="text-center"> {item.name === "" ? "" : item.name} </td>
+                                                        <td className="text-center"> {item.college_mail_id === "" ? "" : item.college_mail_id} </td>
+                                                        <td className="text-center"> {item.university_roll_number === "" ? "" : item.university_roll_number} </td>
+                                                        <td className="text-center"> {item.course === "" ? "" : item.course} </td>
                                                         <td className="text-center"> {item.branch === "" ? "" : item.branch} </td>
                                                         <td className="text-center"> {item.year === "" ? "" : item.year} </td>
                                                         <td className="text-center"> {item.section === "" ? "" : item.section} </td>

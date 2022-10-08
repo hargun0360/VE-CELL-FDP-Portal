@@ -270,7 +270,7 @@ const ViewDetail = () => {
                         </Row>
                         </Container>
                          <Button variant="primary" style={{ float: "right" }} type="submit" className='mt-2  w-sm-100' onClick={handleClick}>
-                            Update
+                            Edit
                         </Button> 
                     </Card.Body>
                 </Card>
