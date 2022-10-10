@@ -46,6 +46,8 @@ function CollegeForm() {
   const [mobilemessage, setMobileMessage] = useState(false)
   const [designationmessage, setDesignationMessage] = useState(false)
   const [admin, setAdmin] = useState(false);
+  const [states, setStates] = useState(false)
+  const [size, setSize] = useState(false)
 
   const navigate = useNavigate();
 
@@ -87,14 +89,14 @@ function CollegeForm() {
     mode: "onTouched",
     // certificate and remarks left 
     defaultValues: {
-      name:"",
-      email:"",
-      department:"",
-      mobile:"",
-      designation:"",
-      venue:"",
-      certificatenumber:"",
-      incentive:""
+      name: "",
+      email: "",
+      department: "",
+      mobile: "",
+      designation: "",
+      venue: "",
+      certificatenumber: "",
+      incentive: null
     },
   });
 
@@ -113,24 +115,39 @@ function CollegeForm() {
 
   useEffect(() => {
     FacultyData();
-  }, [])
+    if (states) {
+      setStates(false)
+    }
+  }, [reset, states])
 
-  const FacultyData = () =>{
-      doGetFacultyData()
-      .then((res)=>{
+  const FacultyData = () => {
+    doGetFacultyData()
+      .then((res) => {
         console.log(res);
         let obj = {
-          name:res.data.name == null ? "" : res.data.name,
-          department:res.data.department == null ? "" : res.data.department,
-          email:res.data.college_email == null ? "" : res.data.college_email,
-          mobile:res.data.phone_number == null ? "" : res.data.phone_number,
-          designation:res.data.designation == null ? "" : res.data.designation,
+          name: res.data.name == null ? "" : res.data.name,
+          department: res.data.department == null ? "" : res.data.department,
+          email: res.data.college_email == null ? "" : res.data.college_email,
+          mobile: res.data.phone_number == null ? "" : res.data.phone_number,
+          designation: res.data.designation == null ? "" : res.data.designation,
         }
         reset(obj);
-      }).catch((e)=>{
-          console.log(e);
+      }).catch((e) => {
+        console.log(e);
       })
   }
+
+  useEffect(()=>{
+    if(certificate){
+      let file_size = certificate.size;
+      if (file_size <= 2000000) {
+        setSize(true);
+      } else {
+        setSize(false);
+      }
+    }
+    
+  },[certificate])
 
 
   const getDetailByID = () => {
@@ -188,126 +205,128 @@ function CollegeForm() {
   }, [start, end])
 
 
+
   const onSubmit = (data, e) => {
     e.preventDefault();
-    setLoading(true)
-    if (id) {
-      if (ftype && start && end && (online != "" || offline != "")) {
+    
+    if (size) {
+      setLoading(true)
+      if (id) {
+        if (ftype && start && end && (online != "" || offline != "")) {
 
 
-        const myForm = new FormData();
+          const myForm = new FormData();
 
-        myForm.set("name", data.name);
-        myForm.set("department", data.department);
-        myForm.set("college_email", data.email);
-        myForm.set("mobile", data.mobile);
-        myForm.set("designation", data.designation);
-        myForm.set("fdp_type", ftype);
-        myForm.set("face_to_face_fdp", offline);
-        myForm.set("incentive_detail", data.incentive);
-        myForm.set("phone_number", data.mobile);
-        myForm.set("remarks", remarks);
-        myForm.set("certificate", certificate);
-        myForm.set("starting_date", convert(start));
-        myForm.set("end_date", convert(end));
-        myForm.set("number_of_days", Number(days));
-        myForm.set("online_fdp", online);
-        myForm.set("venue", data.venue);
-        myForm.set("certificate_number", data.certificatenumber);
+          myForm.set("name", data.name);
+          myForm.set("department", data.department);
+          myForm.set("college_email", data.email);
+          myForm.set("mobile", data.mobile);
+          myForm.set("designation", data.designation);
+          myForm.set("fdp_type", ftype);
+          myForm.set("face_to_face_fdp", offline);
+          myForm.set("incentive_detail", data.incentive);
+          myForm.set("phone_number", data.mobile);
+          myForm.set("remarks", remarks);
+          myForm.set("certificate", certificate);
+          myForm.set("starting_date", convert(start));
+          myForm.set("end_date", convert(end));
+          myForm.set("number_of_days", Number(days));
+          myForm.set("online_fdp", online);
+          myForm.set("venue", data.venue);
+          myForm.set("certificate_number", data.certificatenumber);
 
-        doUpdateDetails(myForm, id)
-          .then((res) => {
-            console.log(res);
-            setLoading(false)
-            setLoading(false)
-            setFtype("Select the FDP type")
-            setOffline("Select the Face to Face FDP")
-            setOnline("Select the Online FDP type")
-            setRemarks("")
-            setCertificate(null)
-            setStart(null)
-            setEnd(null)
-            setDays("")
-            reset()
-            swal({
-              title: "Details Updated Successfully",
-              text: "",
-              icon: "success",
-              button: "OK",
-            });
-          }).catch((e) => {
-            console.log(e);
-            if (e.status == 403) {
-              localStorage.clear();
-              navigate("/")
-            }
-            setLoading(false)
-            swal({
-              title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-              text: "",
-              icon: "error",
-              button: "OK",
-            });
-          })
-      }
-    } else {
-      if (certificate && ftype && start && end && (online != "" || offline != "")) {
+          doUpdateDetails(myForm, id)
+            .then((res) => {
+              setStates(true);
+              console.log(res);
+              setLoading(false)
+              setFtype(null)
+              setOffline("")
+              setOnline("")
+              setRemarks("")
+              setStart(null)
+              setEnd(null)
+              setDays("")
+              reset()
+              swal({
+                title: "Details Updated Successfully",
+                text: "",
+                icon: "success",
+                button: "OK",
+              });
+            }).catch((e) => {
+              console.log(e);
+              if (e.status == 403) {
+                localStorage.clear();
+                navigate("/")
+              }
+              setLoading(false)
+              swal({
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                text: "",
+                icon: "error",
+                button: "OK",
+              });
+            })
+        }
+      } else {
+        if (certificate && ftype && start && end && (online != "" || offline != "") && size) {
 
-        const myForm = new FormData();
+          const myForm = new FormData();
 
-        myForm.set("name", data.name);
-        myForm.set("department", data.department);
-        myForm.set("college_email", data.email);
-        myForm.set("mobile", data.mobile);
-        myForm.set("designation", data.designation);
-        myForm.set("fdp_type", ftype);
-        myForm.set("face_to_face_fdp", offline);
-        myForm.set("incentive_detail", data.incentive);
-        myForm.set("phone_number", data.mobile);
-        myForm.set("remarks", remarks);
-        myForm.set("certificate", certificate);
-        myForm.set("starting_date", convert(start));
-        myForm.set("end_date", convert(end));
-        myForm.set("number_of_days", Number(days));
-        myForm.set("online_fdp", online);
-        myForm.set("venue", data.venue);
-        myForm.set("certificate_number", data.certificatenumber);
+          myForm.set("name", data.name);
+          myForm.set("department", data.department);
+          myForm.set("college_email", data.email);
+          myForm.set("mobile", data.mobile);
+          myForm.set("designation", data.designation);
+          myForm.set("fdp_type", ftype);
+          myForm.set("face_to_face_fdp", offline);
+          myForm.set("incentive_detail", data.incentive);
+          myForm.set("phone_number", data.mobile);
+          myForm.set("remarks", remarks);
+          myForm.set("certificate", certificate);
+          myForm.set("starting_date", convert(start));
+          myForm.set("end_date", convert(end));
+          myForm.set("number_of_days", Number(days));
+          myForm.set("online_fdp", online);
+          myForm.set("venue", data.venue);
+          myForm.set("certificate_number", data.certificatenumber);
 
+          doAddDetails(myForm)
+            .then((res) => {
+              setStates(true);
+              console.log(res);
+              setLoading(false)
+              setFtype(null)
+              setOffline("")
+              setOnline("")
+              setRemarks("")
+              setStart(null)
+              setEnd(null)
+              setDays("")
+              reset()
+              swal({
+                title: "Details Added Successfully",
+                text: "",
+                icon: "success",
+                button: "OK",
+              });
+            }).catch((e) => {
+              console.log(e);
+              if (e.status == 403) {
+                localStorage.clear();
+                navigate("/")
+              }
+              setLoading(false)
+              swal({
+                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+                text: "",
+                icon: "error",
+                button: "OK",
+              });
+            })
 
-        doAddDetails(myForm)
-          .then((res) => {
-            console.log(res);
-            setLoading(false)
-            setFtype("Select the FDP type")
-            setOffline("Select the Face to Face FDP")
-            setOnline("Select the Online FDP type")
-            setRemarks("")
-            setCertificate(null)
-            setStart(null)
-            setEnd(null)
-            setDays("")
-            reset()
-            swal({
-              title: "Details Added Successfully",
-              text: "",
-              icon: "success",
-              button: "OK",
-            });
-          }).catch((e) => {
-            console.log(e);
-            if (e.status == 403) {
-              localStorage.clear();
-              navigate("/")
-            }
-            setLoading(false)
-            swal({
-              title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-              text: "",
-              icon: "error",
-              button: "OK",
-            });
-          })
-
+        }
       }
     }
   }
@@ -481,6 +500,7 @@ function CollegeForm() {
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label >Upload Certificate copy</Form.Label>
                     <Form.Control type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
+                    {size == false ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>file size must be less than 2MB </p> : null}
                     {id ? <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} onClick={handlePreview}>Preview</div> : null}
                   </Form.Group>
                 </Col>

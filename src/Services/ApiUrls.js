@@ -42,4 +42,4 @@ export const FACULTY_PARTICIPATION_FILTER_URL = BASE_URL + 'faculty-form/list/'
 
 //---------------- Faculty Data -------------------------------------------------
 
-export const FACULTY_DATA_URL = BASE_URL  + '';
+export const FACULTY_DATA_URL = BASE_URL  + 'form/';
