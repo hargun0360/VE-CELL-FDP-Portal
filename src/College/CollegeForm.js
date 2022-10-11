@@ -132,7 +132,7 @@ function CollegeForm() {
           designation: res.data.designation == null ? "" : res.data.designation,
         }
         reset(obj);
-      }).catch((e) => {
+      }).catch((e) => { 
         console.log(e);
       })
   }

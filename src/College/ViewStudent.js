@@ -62,6 +62,14 @@ const ViewStudent = () => {
         setShow(true);
 
     }
+    
+    const converting = (selected) => {
+        var date = selected;
+        var datearray = date.split("-");
+    
+        var newdate = datearray[2] + '-' + datearray[1] + '-' + datearray[0];
+        return newdate
+      };
 
     const convert = (selected) => {
         const day = selected.getDate();
@@ -86,11 +94,9 @@ const ViewStudent = () => {
         let obj = {
             email,
             branch : branch == "Select the Branch" ? null : branch,
-            starting_date:convert(start) ,
-            end_date:convert(end),
+            starting_date:start ? convert(start) : "",
+            end_date:end ? convert(end) : "",
         }
-        console.log(obj);
-
         doAddStudentFilter(obj)
             .then((res) => {
                 console.log(res);
@@ -151,21 +157,38 @@ const ViewStudent = () => {
     }, [val, flag,change])
 
     const getAllStudents = () => {
-        let obj = {
-            email,
-            branch:branch == "Select the Branch" ? null : branch,
-            starting_date:start,
-            end_date:end
-        }
-        doGetAllStudent(obj).then((res) => {
-            setStudentData(res.data);
-        }).catch((e) => {
-            console.log(e);
-            if (e.status == 403) {
-                localStorage.clear();
-                navigate("/")
+        
+        if(email==null && branch==null && start=="" && end==""){
+            doGetAllStudent().then((res) => {
+                console.log(res);
+                setStudentData(res.data);
+            }).catch((e) => {
+                console.log(e);
+                if (e.status == 403) {
+                    localStorage.clear();
+                    navigate("/")
+                }
+            })
+        }else{
+            let obj = {
+                email,
+                branch:branch == "Select the Branch" ? null : branch,
+                starting_date:convert(start),
+                end_date:convert(end)
             }
-        })
+            console.log(obj);
+            doGetAllStudent(obj).then((res) => {
+                console.log(res);
+                setStudentData(res.data);
+            }).catch((e) => {
+                console.log(e);
+                if (e.status == 403) {
+                    localStorage.clear();
+                    navigate("/")
+                }
+            })
+        }
+        
     }
 
     
@@ -359,8 +382,8 @@ const ViewStudent = () => {
                                                     <tr>
                                                         <td className="text-center">{++cnt}</td>
                                                         <td className="text-center"> {item.name === "" ? "" : item.name} </td>
-                                                        <td className="text-center"> {item.college_mail_id === "" ? "" : item.college_mail_id} </td>
-                                                        <td className="text-center"> {item.university_roll_number === "" ? "" : item.university_roll_number} </td>
+                                                        <td className="text-center"> {item.email === "" ? "" : item.email} </td>
+                                                        <td className="text-center"> {item.roll_no === "" ? "" : item.roll_no} </td>
                                                         <td className="text-center"> {item.course === "" ? "" : item.course} </td>
                                                         <td className="text-center"> {item.branch === "" ? "" : item.branch} </td>
                                                         <td className="text-center"> {item.year === "" ? "" : item.year} </td>
@@ -369,8 +392,8 @@ const ViewStudent = () => {
                                                         <td className="text-center"> {item.name_of_activity === "" ? "" : item.name_of_activity} </td>
                                                         <td className="text-center"> {item.venue_of_activity === "" ? "" : item.venue_of_activity} </td>
                                                         <td className="text-center"> {item.number_of_days === "" ? "" : item.number_of_days} </td>
-                                                        <td className="text-center"> {item.starting_date.split(" ")[0] === "" ? "" : item.starting_date.split(" ")[0]} </td>
-                                                        <td className="text-center"> {item.end_date.split(" ")[0] === "" ? "" : item.end_date.split(" ")[0]} </td>
+                                                        <td className="text-center"> {item.starting_date.split(" ")[0] === "" ? "" : (item.starting_date.split(" ")[0])} </td>
+                                                        <td className="text-center"> {item.end_date.split(" ")[0] === "" ? "" : (item.end_date.split(" ")[0])} </td>
                                                         <td className="text-center"> {item.remarks === "" ? "" : item.remarks} </td>
                                                         <td className="text-center">
                                                             <UncontrolledDropdown>
