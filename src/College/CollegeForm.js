@@ -132,13 +132,13 @@ function CollegeForm() {
           designation: res.data.designation == null ? "" : res.data.designation,
         }
         reset(obj);
-      }).catch((e) => { 
+      }).catch((e) => {
         console.log(e);
       })
   }
 
-  useEffect(()=>{
-    if(certificate){
+  useEffect(() => {
+    if (certificate) {
       let file_size = certificate.size;
       if (file_size <= 2000000) {
         setSize(true);
@@ -146,8 +146,8 @@ function CollegeForm() {
         setSize(false);
       }
     }
-    
-  },[certificate])
+
+  }, [certificate])
 
 
   const getDetailByID = () => {
@@ -208,82 +208,84 @@ function CollegeForm() {
 
   const onSubmit = (data, e) => {
     e.preventDefault();
-    
-    if (size) {
-      setLoading(true)
-      if (id) {
-        if (ftype && start && end && (online != "" || offline != "")) {
 
 
-          const myForm = new FormData();
 
-          
-          if(ftype == "Online"){
-            setOffline("");
-          }else{
-            setOnline("");
-          }
+    if (id) {
+      if (ftype && start && end && (online != "" || offline != "")) {
+        setLoading(true)
 
-          myForm.set("name", data.name);
-          myForm.set("department", data.department);
-          myForm.set("college_email", data.email);
-          myForm.set("mobile", data.mobile);
-          myForm.set("designation", data.designation);
-          myForm.set("fdp_type", ftype);
-          myForm.set("face_to_face_fdp", offline);
-          myForm.set("incentive_detail", data.incentive);
-          myForm.set("phone_number", data.mobile);
-          myForm.set("remarks", remarks);
-          myForm.set("certificate", certificate);
-          myForm.set("starting_date", convert(start));
-          myForm.set("end_date", convert(end));
-          myForm.set("number_of_days", Number(days));
-          myForm.set("online_fdp", online);
-          myForm.set("venue", data.venue);
-          myForm.set("certificate_number", data.certificatenumber);
+        const myForm = new FormData();
 
-          doUpdateDetails(myForm, id)
-            .then((res) => {
-              setStates(true);
-              console.log(res);
-              setLoading(false)
-              setFtype(null)
-              setOffline("")
-              setOnline("")
-              setRemarks("")
-              setStart(null)
-              setEnd(null)
-              setDays("")
-              reset()
-              swal({
-                title: "Details Updated Successfully",
-                text: "",
-                icon: "success",
-                button: "OK",
-              });
-            }).catch((e) => {
-              console.log(e);
-              if (e.status == 403) {
-                localStorage.clear();
-                navigate("/")
-              }
-              setLoading(false)
-              swal({
-                title: e.data.status ? e.data.status : e.data.non_field_errors[0],
-                text: "",
-                icon: "error",
-                button: "OK",
-              });
-            })
+
+        if (ftype == "Online") {
+          setOffline("");
+        } else {
+          setOnline("");
         }
-      } else {
-        if (certificate && ftype && start && end && (online != "" || offline != "") && size) {
 
+        myForm.set("name", data.name);
+        myForm.set("department", data.department);
+        myForm.set("college_email", data.email);
+        myForm.set("mobile", data.mobile);
+        myForm.set("designation", data.designation);
+        myForm.set("fdp_type", ftype);
+        myForm.set("face_to_face_fdp", offline);
+        myForm.set("incentive_detail", data.incentive);
+        myForm.set("phone_number", data.mobile);
+        myForm.set("remarks", remarks);
+        myForm.set("certificate", certificate);
+        myForm.set("starting_date", convert(start));
+        myForm.set("end_date", convert(end));
+        myForm.set("number_of_days", Number(days));
+        myForm.set("online_fdp", online);
+        myForm.set("venue", data.venue);
+        myForm.set("certificate_number", data.certificatenumber);
+
+        doUpdateDetails(myForm, id)
+          .then((res) => {
+            setStates(true);
+            console.log(res);
+            setLoading(false)
+            setFtype(null)
+            setOffline("")
+            setOnline("")
+            setRemarks("")
+            setStart(null)
+            setEnd(null)
+            setDays("")
+            reset()
+            swal({
+              title: "Details Updated Successfully",
+              text: "",
+              icon: "success",
+              button: "OK",
+            });
+          }).catch((e) => {
+            console.log(e);
+            if (e.status == 403) {
+              localStorage.clear();
+              navigate("/")
+            }
+            setLoading(false)
+            swal({
+              title: e.data.status ? e.data.status : e.data.non_field_errors[0],
+              text: "",
+              icon: "error",
+              button: "OK",
+            });
+          })
+      }
+    } else {
+      if (size) {
+        setLoading(true)
+        if (certificate && ftype && start && end && (online != "" || offline != "") && size) {
+          
           const myForm = new FormData();
 
-          if(ftype == "Online"){
+          if (ftype == "Online") {
             setOffline("");
-          }else{
+          } else {
             setOnline("");
           }
 
@@ -388,7 +390,7 @@ function CollegeForm() {
                     </Form.Select>
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.department?.message}</p>
                   </Form.Group>
-                </Col>  
+                </Col>
               </Row>
               <Row>
                 <Col xs={12} md={6}>
