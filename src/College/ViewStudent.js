@@ -94,8 +94,8 @@ const ViewStudent = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         let obj = {
-            email,
-            branch : branch == "Select the Branch" ? null : branch,
+            college_email : email ? email : null,
+            branch : branch == "Select the Branch" || branch == "" ? null : branch,
             starting_date: start ? convert(start) : null,
             end_date:end ? convert(end) : null,
         }
@@ -174,10 +174,10 @@ const ViewStudent = () => {
             })
         }else{
             let obj = {
-                email,
-                branch:branch == "Select the Branch" ? null : branch,
-                starting_date:convert(start),
-                end_date:convert(end)
+                email: email ? email : null,
+                branch:branch == "Select the Branch" || branch == "" ? null : branch,
+                starting_date: start ? convert(start) : null,
+                end_date: end ? convert(end) : null,
             }
             console.log(obj);
             doGetAllStudent(obj).then((res) => {

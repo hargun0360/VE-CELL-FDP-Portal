@@ -98,10 +98,10 @@ const ViewFDP = () => {
         e.preventDefault();
         let obj = {
             college_email: email,
-            department: department == "Select the Department" ? "" : department,
-            incentive_detail: incentive,
+            department: department == "Select the Department" || department == "" ? null : department,
+            incentive_detail: incentive == "Select the Incentive Details" || incentive=="" ? incentive : null,
             starting_date: start ? convert(start) : null,
-            end_date:end ? convert(end) : null,
+            end_date: end ? convert(end) : null,
             venue,
         }
         console.log(obj);
@@ -145,8 +145,8 @@ const ViewFDP = () => {
     const getFDP = () => {
         let obj = {
             college_email: email ? email : null,
-            department: department == "Select the Department" ? null : department,
-            incentive_detail: incentive == "Select the Incentive Details" ? null : incentive,
+            department: department == "Select the Department" || department == "" ? null : department,
+            incentive_detail: incentive == "Select the Incentive Details" || incentive=="" ? null : incentive,
             starting_date:start ? convert(start) : null,
             end_date:end ? convert(end) : null,
             venue,

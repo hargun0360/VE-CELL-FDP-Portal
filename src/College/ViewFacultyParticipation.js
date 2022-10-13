@@ -52,6 +52,8 @@ const ViewFacultyParticipation = () => {
     });
     const { val } = useSelector((state) => state.toggle);
 
+    
+
     const convert = (selected) => {
         const day = selected.getDate();
         const month =
@@ -76,10 +78,10 @@ const ViewFacultyParticipation = () => {
 
         e.preventDefault()
         let obj = {
-            email,
-            department : department == "Select the Department" ? null : department,
-            start_date:convert(start)  ,
-            end_date:convert(end)
+            email: email ? email : null,
+            department : department == "Select the Department" || department == "" ? null : department,
+            start_date: start ? convert(start) : null  ,
+            end_date: end  ? convert(end) : null
         }
         console.log(obj);
 
@@ -117,11 +119,12 @@ const ViewFacultyParticipation = () => {
             setChange(false);
         }
     }, [val, flag,change])
-
+    // ham avgun bhare ek gun nahi amrit chaadh bikhe bikh khayi maya moh bharam bhai bhoole sut daara seyon 
+    // preet lagayi isk uttam panth sunyo gur sangat teh milant jam traas mitayi ik ardaas bhaat keerat ki gur ramdas rakho sharnayi
     const getAllFaculty = () => {
         let obj = {
-            email,
-            department:department == "Select the Department" ? null : department,
+            email : email ? email : null,
+            department:department == "Select the Department" || department == "" ? null : department,
             starting_date: start ? convert(start) : null,
             end_date:end ? convert(end) : null,
         }
