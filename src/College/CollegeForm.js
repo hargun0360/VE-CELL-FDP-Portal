@@ -48,6 +48,7 @@ function CollegeForm() {
   const [admin, setAdmin] = useState(false);
   const [states, setStates] = useState(false)
   const [size, setSize] = useState(false)
+  const [isFileSend,setIsFileSend] = useState(false)
 
   const navigate = useNavigate();
 
@@ -161,6 +162,15 @@ function CollegeForm() {
       setCertificate(res.data.certificate)
       setStart(new Date(converting(res.data.starting_date)))
       setEnd(new Date(converting(res.data.end_date)))
+
+
+      const regex = /^[https://]/i;
+
+          if(regex.test(res.data.certificate)){
+            setIsFileSend(false);
+          }else{
+            setIsFileSend(true);
+          }
       // console.log(res.data.end_date,new Date("04-10-2022"),res.data.starting_date,new Date(res.data.starting_date));
       let obj = {
         name: res.data.name,
@@ -234,7 +244,9 @@ function CollegeForm() {
         myForm.set("incentive_detail", data.incentive);
         myForm.set("phone_number", data.mobile);
         myForm.set("remarks", remarks);
-        myForm.set("certificate", certificate);
+        if(isFileSend==true){
+          myForm.set("certificate", certificate);
+        }
         myForm.set("starting_date", convert(start));
         myForm.set("end_date", convert(end));
         myForm.set("number_of_days", Number(days));
@@ -283,11 +295,14 @@ function CollegeForm() {
           
           const myForm = new FormData();
 
+         
+
           if (ftype == "Online") {
             setOffline("");
           } else {
             setOnline("");
           }
+
 
           myForm.set("name", data.name);
           myForm.set("department", data.department);
@@ -299,10 +314,10 @@ function CollegeForm() {
           myForm.set("incentive_detail", data.incentive);
           myForm.set("phone_number", data.mobile);
           myForm.set("remarks", remarks);
-          myForm.set("certificate", certificate);
           myForm.set("starting_date", convert(start));
           myForm.set("end_date", convert(end));
           myForm.set("number_of_days", Number(days));
+          myForm.set("certificate", certificate);
           myForm.set("online_fdp", online);
           myForm.set("venue", data.venue);
           myForm.set("certificate_number", data.certificatenumber);
