@@ -122,8 +122,8 @@ const ViewFacultyParticipation = () => {
         let obj = {
             email,
             department:department == "Select the Department" ? null : department,
-            start_date:start,
-            end_date:end
+            starting_date: start ? convert(start) : null,
+            end_date:end ? convert(end) : null,
         }
         doGetAllFaculty(obj).then((res) => {
             setStudentData(res.data);

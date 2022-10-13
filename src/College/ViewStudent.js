@@ -82,6 +82,8 @@ const ViewStudent = () => {
         return `${day}-${month}-${yearr}`;
       };
 
+      
+
     // useEffect(()=>{
     //     if(start || end){
     //         setStarting(moment(start).format('DD-MM-YYYY'));
@@ -94,9 +96,10 @@ const ViewStudent = () => {
         let obj = {
             email,
             branch : branch == "Select the Branch" ? null : branch,
-            starting_date:start ? convert(start) : "",
-            end_date:end ? convert(end) : "",
+            starting_date: start ? convert(start) : null,
+            end_date:end ? convert(end) : null,
         }
+        console.log(obj);
         doAddStudentFilter(obj)
             .then((res) => {
                 console.log(res);

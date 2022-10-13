@@ -85,15 +85,23 @@ const ViewFDP = () => {
             setChange(false)
         }
     }, [val, change]);
+    const converting = (selected) => {
+        var date = selected;
+        var datearray = date.split("-");
+    
+        var newdate = datearray[1] + '-' + datearray[0] + '-' + datearray[2];
+        return newdate
+      };
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
         let obj = {
             college_email: email,
-            department: department == "Select the Department" ? null : department,
+            department: department == "Select the Department" ? "" : department,
             incentive_detail: incentive,
-            starting_date: convert(start),
-            end_date: convert(end),
+            starting_date: start ? convert(start) : null,
+            end_date:end ? convert(end) : null,
             venue,
         }
         console.log(obj);
@@ -136,11 +144,11 @@ const ViewFDP = () => {
 
     const getFDP = () => {
         let obj = {
-            college_email: email,
+            college_email: email ? email : null,
             department: department == "Select the Department" ? null : department,
             incentive_detail: incentive == "Select the Incentive Details" ? null : incentive,
-            starting_date: start,
-            end_date: end,
+            starting_date:start ? convert(start) : null,
+            end_date:end ? convert(end) : null,
             venue,
         }
         setLoading(true)

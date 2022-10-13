@@ -217,6 +217,13 @@ function CollegeForm() {
 
           const myForm = new FormData();
 
+          
+          if(ftype == "Online"){
+            setOffline("");
+          }else{
+            setOnline("");
+          }
+
           myForm.set("name", data.name);
           myForm.set("department", data.department);
           myForm.set("college_email", data.email);
@@ -273,6 +280,12 @@ function CollegeForm() {
         if (certificate && ftype && start && end && (online != "" || offline != "") && size) {
 
           const myForm = new FormData();
+
+          if(ftype == "Online"){
+            setOffline("");
+          }else{
+            setOnline("");
+          }
 
           myForm.set("name", data.name);
           myForm.set("department", data.department);
@@ -375,7 +388,7 @@ function CollegeForm() {
                     </Form.Select>
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.department?.message}</p>
                   </Form.Group>
-                </Col>
+                </Col>  
               </Row>
               <Row>
                 <Col xs={12} md={6}>

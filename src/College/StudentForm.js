@@ -96,17 +96,17 @@ function StudentForm() {
             setTo(new Date(converting(res.data.end_date)));
             setDuration(res.data.number_of_days)
             setRemarks(res.data.remarks);
-            setCourse(res.data,course)
+            setCourse(res.data.course)
             let obj = {
                 name: res.data.name,
-                email: res.data.college_email,
+                email: res.data.email,
                 mobile: res.data.phone_number,
                 venue: res.data.venue_of_activity,
                 activity: res.data.name_of_activity,
                 branch: res.data.branch,
                 year: res.data.year,
                 section: res.data.section,
-                roll:res.data.university_roll_number
+                roll:res.data.roll_no
             }
             reset(obj)
         }).catch((e) => {
@@ -158,7 +158,7 @@ function StudentForm() {
                     phone_number: data.mobile,
                     remarks,
                     email:data.email,
-                    roll:data.roll,
+                    roll_no:data.roll,
                     course
                 }
 
@@ -210,7 +210,7 @@ function StudentForm() {
                     phone_number: data.mobile,
                     remarks,
                     email:data.email,
-                    roll:data.roll,
+                    roll_no:data.roll,
                     course
                 }
 
