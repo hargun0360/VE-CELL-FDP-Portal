@@ -240,7 +240,6 @@ function CollegeForm() {
         myForm.set("mobile", data.mobile);
         myForm.set("designation", data.designation);
         myForm.set("fdp_type", ftype);
-        myForm.set("face_to_face_fdp", offline);
         myForm.set("incentive_detail", data.incentive);
         myForm.set("phone_number", data.mobile);
         myForm.set("remarks", remarks);
@@ -250,7 +249,8 @@ function CollegeForm() {
         myForm.set("starting_date", convert(start));
         myForm.set("end_date", convert(end));
         myForm.set("number_of_days", Number(days));
-        myForm.set("online_fdp", online);
+        {offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline)}
+          {online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online)}
         myForm.set("venue", data.venue);
         myForm.set("certificate_number", data.certificatenumber);
 
@@ -310,7 +310,8 @@ function CollegeForm() {
           myForm.set("mobile", data.mobile);
           myForm.set("designation", data.designation);
           myForm.set("fdp_type", ftype);
-          myForm.set("face_to_face_fdp", offline);
+          {offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline)}
+          {online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online)}
           myForm.set("incentive_detail", data.incentive);
           myForm.set("phone_number", data.mobile);
           myForm.set("remarks", remarks);
@@ -318,7 +319,6 @@ function CollegeForm() {
           myForm.set("end_date", convert(end));
           myForm.set("number_of_days", Number(days));
           myForm.set("certificate", certificate);
-          myForm.set("online_fdp", online);
           myForm.set("venue", data.venue);
           myForm.set("certificate_number", data.certificatenumber);
 
