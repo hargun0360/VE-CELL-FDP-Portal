@@ -564,7 +564,7 @@ function CollegeForm() {
               </Row>
               <Form.Group className="mb-5" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
                 <Form.Label>Remarks</Form.Label>
-                <Form.Control value={(remarks == "null" || remarks == "undefined") ? "--" : remarks} as="textarea" rows={2} />
+                <Form.Control value={(remarks == "null" || remarks == "undefined") ? "" : remarks} as="textarea" rows={2} />
               </Form.Group>
               <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
                 {id ? "Update" :  "Submit"}
