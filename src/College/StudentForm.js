@@ -91,7 +91,7 @@ function StudentForm() {
         doGetStudentDetailById(Number(id)).then((res) => {
             console.log(res);
 
-
+            let arr = res.data.branch.split('-');
             setFrom(new Date(converting(res.data.starting_date)));
             setTo(new Date(converting(res.data.end_date)));
             setDuration(res.data.number_of_days)
@@ -103,9 +103,9 @@ function StudentForm() {
                 mobile: res.data.phone_number,
                 venue: res.data.venue_of_activity,
                 activity: res.data.name_of_activity,
-                branch: res.data.branch,
+                branch: arr.length > 0 ? arr[0] : "",
                 year: res.data.year,
-                section: res.data.section,
+                section: arr.length > 0 ? arr[1] : "",
                 roll:res.data.roll_no
             }
             reset(obj)
@@ -147,7 +147,7 @@ function StudentForm() {
 
                 let obj = {
                     name:data.name,
-                    branch:data.branch,
+                    branch:data.branch + '-' + data.section,
                     section:data.section,
                     number_of_days: Number(duration),
                     name_of_activity: data.activity,
@@ -199,7 +199,7 @@ function StudentForm() {
 
                 let obj = {
                     name:data.name,
-                    branch:data.branch,
+                    branch:data.branch + '-' + data.section,
                     section:data.section,
                     number_of_days: Number(duration),
                     name_of_activity: data.activity,
@@ -283,16 +283,7 @@ function StudentForm() {
                                 <Col xs={12} md={5}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Branch</Form.Label>
-                                        <Form.Select className='mb-3' aria-label="Default select example" name="branch" {...register("branch", { required: "branch is required", })}>
-                                            <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
-                                            <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                            <option value="Civil Engineering">Civil Engineering</option>
-                                            <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
-                                            <option value="Computer Science And Engineering">Computer Science And Engineering</option>
-                                            <option value="Information Technology">Information Technology</option>
-                                            <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
-                                            <option value="Master Of Computer Applications">Master Of Computer Applications</option>
-                                        </Form.Select>
+                                        <Form.Control type="text" name="branch" {...register("branch", { required: "branch is required" })} />
                                         <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.branch?.message}</p>
                                     </Form.Group>
                                 </Col>

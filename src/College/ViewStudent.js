@@ -48,6 +48,7 @@ const ViewStudent = () => {
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
     const [change,setChange] = useState(false)
+    const [call,setCall] = useState(false)
 
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -157,7 +158,10 @@ const ViewStudent = () => {
         if(change){
             setChange(false);
         }
-    }, [val, flag,change])
+        if(call){
+            setCall(false);
+        }
+    }, [val, flag,change,call])
 
     const getAllStudents = () => {
         
@@ -192,6 +196,15 @@ const ViewStudent = () => {
             })
         }
         
+    }
+
+    const handleRemove = (e) =>{
+        e.preventDefault();
+        setEmail("");
+        setBranch("");
+        setEnd(null);
+        setStart(null);
+        setCall(true);
     }
 
     
@@ -295,27 +308,16 @@ const ViewStudent = () => {
                             <Card.Body>
                                 <Form onSubmit={(e) => { handleSubmit(e) }}>
                                     <Row>
-                                        <Col xs={12} md={2}>
+                                        <Col xs={12} md={4}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Email</Form.Label>
-                                                <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
+                                                <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter Email" onChange={(e) => setEmail(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={4}>
                                             <Form.Group className="mb-3">
-                                                <Form.Label>Branch</Form.Label>
-                                                <Form.Select className='mb-3' value={branch} aria-label="Default select example" onChange={(e) => setBranch(e.target.value)}>
-                                                    <option value="Select the Branch">Select the Branch</option>
-                                                    <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
-                                                    <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
-                                                    <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                                    <option value="Civil Engineering">Civil Engineering</option>
-                                                    <option value="Electrical And Electronics Engineering">Electrical And Electronics Engineering</option>
-                                                    <option value="Computer Science And Engineering">Computer Science And Engineering</option>
-                                                    <option value="Information Technology">Information Technology</option>
-                                                    <option value="Master of Business Administration (MBA)">Master of Business Administration (MBA)</option>
-                                                    <option value="Master Of Computer Applications">Master Of Computer Applications</option>
-                                                </Form.Select>
+                                                <Form.Label>Section</Form.Label>
+                                                <Form.Control  type="text" value={branch} placeholder="Enter the Section" onChange={(e) => setBranch(e.target.value)} />
                                             </Form.Group>
                                         </Col>
                                         <Col xs={12} md={2}>
@@ -330,8 +332,16 @@ const ViewStudent = () => {
                                                 <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} onChange={(date) => setEnd(date)} />
                                             </Form.Group>
                                         </Col>
-                                        <Col xs={12} md={2} >
-                                            <div className='mb-4 py-1'></div>
+                                    </Row>
+                                    <Row style={{ display: "flex", justifyContent: "flex-end" }} >
+                                        <Col xs={12} style={{ width: "fit-content" }}>
+                                            <div className='mb-4 px-3'></div>
+                                            <Button type='button' variant="secondary" onClick={handleRemove} >
+                                                Remove Filter
+                                            </Button>
+                                        </Col>
+                                        <Col xs={12} style={{ width: "fit-content" }}>
+                                            <div className='mb-4'></div>
                                             <Button type='submit' variant="success">
                                                 Add Filter
                                             </Button>
@@ -365,7 +375,6 @@ const ViewStudent = () => {
                                             <th className="text-center">College Mail ID</th>
                                             <th className="text-center">University Roll Number</th>
                                             <th className="text-center">Course</th>
-                                            <th className="text-center">Branch</th>
                                             <th className="text-center">Year</th>
                                             <th className="text-center">Section</th>
                                             <th className="text-center">Mobile Number</th>
@@ -388,9 +397,8 @@ const ViewStudent = () => {
                                                         <td className="text-center"> {item.email === "" ? "" : item.email} </td>
                                                         <td className="text-center"> {item.roll_no === "" ? "" : item.roll_no} </td>
                                                         <td className="text-center"> {item.course === "" ? "" : item.course} </td>
-                                                        <td className="text-center"> {item.branch === "" ? "" : item.branch} </td>
                                                         <td className="text-center"> {item.year === "" ? "" : item.year} </td>
-                                                        <td className="text-center"> {item.section === "" ? "" : item.section} </td>
+                                                        <td className="text-center"> {(item.branch === "") ? "" : item.branch} </td>
                                                         <td className="text-center"> {item.phone_number === "" ? "" : item.phone_number} </td>
                                                         <td className="text-center"> {item.name_of_activity === "" ? "" : item.name_of_activity} </td>
                                                         <td className="text-center"> {item.venue_of_activity === "" ? "" : item.venue_of_activity} </td>

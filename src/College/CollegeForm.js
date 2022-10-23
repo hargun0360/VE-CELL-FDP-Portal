@@ -259,7 +259,7 @@ function CollegeForm() {
             setStates(true);
             console.log(res);
             setLoading(false)
-            setFtype(null)
+            setFtype("")
             setOffline("")
             setOnline("")
             setRemarks("")
@@ -327,7 +327,7 @@ function CollegeForm() {
               setStates(true);
               console.log(res);
               setLoading(false)
-              setFtype(null)
+              setFtype("")
               setOffline("")
               setOnline("")
               setRemarks("")
@@ -369,6 +369,13 @@ function CollegeForm() {
         {
           loading ? <Spinner /> : null
         }
+         <div className="p-2">
+                    <div
+                      className="alert alert-success mb-4"
+                      role="alert"
+                    > <p style={{margin:"0",padding:"0",fontWeight:"500"}}>* FDP's can be added by this form
+                    </p><p style={{margin:"0",padding:"0",fontWeight:"500"}}>* After submission, you can add another FDP as well!</p> </div>
+                    </div>
         <Card.Title>
           Add FDP
         </Card.Title>
@@ -560,7 +567,7 @@ function CollegeForm() {
                 <Form.Control value={remarks} as="textarea" rows={2} />
               </Form.Group>
               <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
-                Submit
+                {id ? "Update" :  "Submit"}
               </Button>
             </Form>
           </Card.Body>

@@ -45,6 +45,7 @@ const ViewFacultyParticipation = () => {
     const [start, setStart] = useState("")
     const [change, setChange] = useState(false)
     const [end, setEnd] = useState("")
+    const [call,setCall] = useState(false)
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -118,7 +119,10 @@ const ViewFacultyParticipation = () => {
         if(change){
             setChange(false);
         }
-    }, [val, flag,change])
+        if(call){
+            setCall(false);
+        }
+    }, [val, flag,change,call])
     // ham avgun bhare ek gun nahi amrit chaadh bikhe bikh khayi maya moh bharam bhai bhoole sut daara seyon 
     // preet lagayi isk uttam panth sunyo gur sangat teh milant jam traas mitayi ik ardaas bhaat keerat ki gur ramdas rakho sharnayi
     const getAllFaculty = () => {
@@ -140,6 +144,14 @@ const ViewFacultyParticipation = () => {
     }
 
 
+    const handleRemove = (e) =>{
+        e.preventDefault();
+        setEmail("");
+        setDepartment("");
+        setEnd(null);
+        setStart(null);
+        setCall(true);
+    }
 
 
 
@@ -161,7 +173,7 @@ const ViewFacultyParticipation = () => {
                             <Card.Body>
                                 <Form onSubmit={(e) => handleSubmit(e)}>
                                     <Row>
-                                        <Col xs={12} md={2}>
+                                        <Col xs={12} md={4}>
                                             <Form.Group controlId="formBasicName">
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control autoFocus={true} type="email" value={email} placeholder="Enter your Email" onChange={(e) => setEmail(e.target.value)} />
@@ -196,8 +208,16 @@ const ViewFacultyParticipation = () => {
                                                 <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} onChange={(date) => setEnd(date)} />
                                             </Form.Group>
                                         </Col>
-                                        <Col xs={12} md={2} >
-                                            <div className='mb-4 py-1'></div>
+                                    </Row>
+                                    <Row style={{ display: "flex", justifyContent: "flex-end" }} >
+                                        <Col xs={12} style={{ width: "fit-content" }}>
+                                            <div className='mb-4 px-3'></div>
+                                            <Button type='button' variant="secondary" onClick={handleRemove}>
+                                                Remove Filter
+                                            </Button>
+                                        </Col>
+                                        <Col xs={12} style={{ width: "fit-content" }}>
+                                            <div className='mb-4'></div>
                                             <Button type='submit' variant="success">
                                                 Add Filter
                                             </Button>

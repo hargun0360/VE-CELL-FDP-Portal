@@ -45,6 +45,10 @@ const ViewFDP = () => {
     const [venue, setVenue] = useState(null)
     const [change, setChange] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [fdp, setFdp] = useState("");
+    const [online, setOnline] = useState("");
+    const [offline, setOffline] = useState("");
+    const [call, setcall] = useState(false);
     const componentRef = useRef();
 
     const [menu, setMenu] = useState({
@@ -72,34 +76,35 @@ const ViewFDP = () => {
         return `${day}-${month}-${yearr}`;
     };
 
-    // useEffect(()=>{
-    //     if(start || end){
-    //         setStarting(moment(start).format('DD-MM-YYYY'));
-    //         setEnding(moment(end).format('DD-MM-YYYY'));
-    //     }
-    // },[start,end])
 
     useEffect(() => {
         getFDP();
         if (change) {
             setChange(false)
         }
-    }, [val, change]);
+        if (call) {
+            setcall(false)
+        }
+    }, [val, change, call]);
+
     const converting = (selected) => {
         var date = selected;
         var datearray = date.split("-");
-    
+
         var newdate = datearray[1] + '-' + datearray[0] + '-' + datearray[2];
         return newdate
-      };
-    
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         let obj = {
             college_email: email,
             department: department == "Select the Department" || department == "" ? null : department,
-            incentive_detail: incentive == "Select the Incentive Details" || incentive=="" ? incentive : null,
+            fdp_type: fdp == "Select the FDP type" || fdp == "" ? null : fdp,
+            face_to_face_fdp: offline == "Select the Face to Face FDP" || offline == "" ? null : offline,
+            online_fdp: online == "Select the Online FDP type" || online == "" ? null : online,
+            incentive_detail: incentive == "Select the Incentive Details" || incentive == "" ? incentive : null,
             starting_date: start ? convert(start) : null,
             end_date: end ? convert(end) : null,
             venue,
@@ -138,6 +143,19 @@ const ViewFDP = () => {
         }
     }, [])
 
+    const handleRemove = (e) => {
+        e.preventDefault();
+        setEmail("");
+        setDepartment("");
+        setStart("");
+        setEnd("");
+        setIncentive("");
+        setFdp("");
+        setOnline("");
+        setOffline("");
+        setcall(true);
+    }
+
 
 
     // Get All FDP
@@ -146,9 +164,12 @@ const ViewFDP = () => {
         let obj = {
             college_email: email ? email : null,
             department: department == "Select the Department" || department == "" ? null : department,
-            incentive_detail: incentive == "Select the Incentive Details" || incentive=="" ? null : incentive,
-            starting_date:start ? convert(start) : null,
-            end_date:end ? convert(end) : null,
+            fdp_type: fdp == "Select the FDP type" || fdp == "" ? null : fdp,
+            face_to_face_fdp: offline == "Select the Face to Face FDP" || offline == "" ? null : offline,
+            online_fdp: online == "Select the Online FDP type" || online == "" ? null : online,
+            incentive_detail: incentive == "Select the Incentive Details" || incentive == "" ? null : incentive,
+            starting_date: start ? convert(start) : null,
+            end_date: end ? convert(end) : null,
             venue,
         }
         setLoading(true)
@@ -202,7 +223,7 @@ const ViewFDP = () => {
 
 
                     <div className="py-2">
-                        { admin ? <Card >
+                        {admin ? <Card >
                             <Card.Body>
                                 <Form onSubmit={(e) => handleSubmit(e)}>
                                     <Row>
@@ -243,7 +264,7 @@ const ViewFDP = () => {
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col xs={12} md={4}>
+                                        <Col xs={12} md={3}>
                                             <Form.Group className="mb-3">
                                                 <Form.Label>Incentive Detail</Form.Label>
                                                 <Form.Select className='mb-3' value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
@@ -256,14 +277,58 @@ const ViewFDP = () => {
                                                 </Form.Select>
                                             </Form.Group>
                                         </Col>
-                                        <Col xs={12} md={3}>
-                                            <Form.Group controlId="formBasicName">
-                                                <Form.Label>Venue</Form.Label>
-                                                <Form.Control type="text" value={venue} placeholder="Venue" onChange={(e) => setVenue(e.target.value)} />
+                                        <Col xs={12} md={2}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>FDP type</Form.Label>
+                                                <Form.Select className='mb-3' value={fdp} aria-label="Default select example" onChange={(e) => setFdp(e.target.value)} >
+                                                    <option>Select the FDP type</option>
+                                                    <option value="Online">Online</option>
+                                                    <option value="Face to Face FDP">Face to Face FDP</option>
+                                                </Form.Select>
                                             </Form.Group>
                                         </Col>
-                                        <Col xs={12} md={3} >
-                                            <div className='mb-4 py-1'></div>
+                                        <Col xs={12} md={3}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Face to Face FDP</Form.Label>
+                                                <Form.Select className='mb-3' value={offline} aria-label="Default select example" onChange={(e) => setOffline(e.target.value)}  >
+                                                    <option>Select the Face to Face FDP</option>
+                                                    <option value="AKTU Level-1">AKTU Level-1</option>
+                                                    <option value="AKTU Refresher">AKTU Refresher</option>
+                                                    <option value="AKTU Level-2">AKTU Level-2</option>
+                                                    <option value="AKTU Level-3">AKTU Level-3</option>
+                                                    <option value="AKTU 10 days FDP on UHBC">AKTU 10 days FDP on UHBC</option>
+                                                    <option value="AKTU 10 days FDP on VREHC">AKTU 10 days FDP on VREHC</option>
+                                                    <option value="AKTU 10 days FDP on HVMD">AKTU 10 days FDP on HVMD</option>
+                                                    <option value="AICTE UHV-II">AICTE UHV-II</option>
+                                                    <option value="AICTE UHV-III">AICTE UHV-III</option>
+                                                    <option value="AICTE UHV-IV">AICTE UHV-IV</option>
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Col>
+                                        <Col xs={12} md={4}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>Online FDP</Form.Label>
+                                                <Form.Select className='mb-3' value={online} aria-label="Default select example" onChange={(e) => setOnline(e.target.value)} >
+                                                    <option>Select the Online FDP type</option>
+                                                    <option value="AICTE-UHV Refresher Part-I">AICTE-UHV Refresher Part-I</option>
+                                                    <option value="AICTE-UHV Refresher Part-II">AICTE-UHV Refresher Part-II</option>
+                                                    <option value="AICTE-5 Day Online UHV-I">AICTE-5 Day Online UHV-I</option>
+                                                    <option value="AICTE-6 Day Online UHV-II">AICTE-6 Day Online UHV-II</option>
+                                                    <option value="AKTU-HV in Shankya and Vedant Darshan (eight days)">AKTU-HV in Shankya and Vedant Darshan (eight days)</option>
+                                                    <option value="AKTU-HV in Jain and Baudh Darshan (eight days)">AKTU-HV in Jain and Baudh Darshan (eight days)</option>
+                                                </Form.Select>
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+                                    <Row style={{ display: "flex", justifyContent: "flex-end" }} >
+                                        <Col xs={12} style={{ width: "fit-content" }}>
+                                            <div className='mb-4 px-3'></div>
+                                            <Button type='button' variant="secondary" onClick={handleRemove}>
+                                                Remove Filter
+                                            </Button>
+                                        </Col>
+                                        <Col xs={12} style={{ width: "fit-content" }}>
+                                            <div className='mb-4'></div>
                                             <Button type='submit' variant="success">
                                                 Add Filter
                                             </Button>
@@ -288,6 +353,7 @@ const ViewFDP = () => {
                                         <tr>
                                             <th className="text-center">#</th>
                                             <th className="text-center">Name</th>
+                                            <th className="text-center">Department</th>
                                             <th className="text-center">FDP Type</th>
                                             <th className="text-center">FDP Name</th>
                                             <th className="text-center">Start Date</th>
@@ -304,6 +370,7 @@ const ViewFDP = () => {
                                                     <tr>
                                                         <td className="text-center">{++cnt}</td>
                                                         <td className="text-center"> {item.name === null ? "" : item.name} </td>
+                                                        <td className="text-center"> {item.department === null ? "" : item.department} </td>
                                                         <td className="text-center"> {item.fdp_type === null ? "" : item.fdp_type} </td>
                                                         <td className="text-center"> {item.face_to_face_fdp === "" ? item.online_fdp : item.face_to_face_fdp} </td>
                                                         <td className="text-center"> {item.starting_date === null ? "" : item.starting_date} </td>
