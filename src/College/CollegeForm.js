@@ -49,6 +49,7 @@ function CollegeForm() {
   const [states, setStates] = useState(false)
   const [size, setSize] = useState(false)
   const [isFileSend,setIsFileSend] = useState(false)
+  const [call, setCall] = useState(false)
 
   const navigate = useNavigate();
 
@@ -73,6 +74,7 @@ function CollegeForm() {
 
   const handleFile = (e) => {
     console.log(e.target.files[0]);
+    setCall(true);
     if (e.target.files && e.target.files[0]) {
       setCertificate(e.target.files[0]);
     }
@@ -151,6 +153,21 @@ function CollegeForm() {
   }, [certificate])
 
 
+  useEffect(()=>{
+    const regex = /^[https://]/i;
+
+          if(regex.test(certificate)){
+            setIsFileSend(false);
+          }else{
+            setIsFileSend(true);
+          }
+
+          if(call){
+            setCall(false);
+          }
+  },[call])
+
+
   const getDetailByID = () => {
     doGetDetailById(Number(id)).then((res) => {
       console.log(res);
@@ -160,17 +177,12 @@ function CollegeForm() {
       setRemarks(res.data.remarks);
       setFtype(res.data.fdp_type);
       setCertificate(res.data.certificate)
+      setCall(true);
       setStart(new Date(converting(res.data.starting_date)))
       setEnd(new Date(converting(res.data.end_date)))
 
 
-      const regex = /^[https://]/i;
-
-          if(regex.test(res.data.certificate)){
-            setIsFileSend(false);
-          }else{
-            setIsFileSend(true);
-          }
+      
       // console.log(res.data.end_date,new Date("04-10-2022"),res.data.starting_date,new Date(res.data.starting_date));
       let obj = {
         name: res.data.name,
@@ -234,6 +246,7 @@ function CollegeForm() {
           setOnline("");
         }
 
+
         myForm.set("name", data.name);
         myForm.set("department", data.department);
         myForm.set("college_email", data.email);
@@ -266,6 +279,7 @@ function CollegeForm() {
             setStart(null)
             setEnd(null)
             setDays("")
+            setCertificate(null)
             reset()
             swal({
               title: "Details Updated Successfully",
@@ -538,7 +552,7 @@ function CollegeForm() {
                     <Form.Label >Upload Certificate copy</Form.Label>
                     <Form.Control type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
                     {size == false ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>file size must be less than 2MB </p> : null}
-                    {id ? <div style={{ margin: "2% 0 0 0", padding: "0", color: "blue", textDecoration: "underline", cursor: "pointer" }} onClick={handlePreview}>Preview</div> : null}
+                    {(id && certificate )? <a href={certificate} target="_blank" style={{textDecoration:"none"}} download="My_File.pdf"> Preview Here </a> : null}
                   </Form.Group>
                 </Col>
               </Row>
