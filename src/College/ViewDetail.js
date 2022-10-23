@@ -261,7 +261,7 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>Remarks</Th>
-                                                <Td>{(remarks == null || remarks == undefined) ? "--" : remarks}</Td>
+                                                <Td>{(remarks == "null" || remarks == "undefined") ? "--" : remarks}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
