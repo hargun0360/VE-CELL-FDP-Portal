@@ -552,7 +552,7 @@ function CollegeForm() {
                     <Form.Label >Upload Certificate copy</Form.Label>
                     <Form.Control type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
                     {size == false ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>file size must be less than 2MB </p> : null}
-                    {(id && certificate )? <a href={certificate} target="_blank" style={{textDecoration:"none"}} download="My_File.pdf"> Preview Here </a> : null}
+                    {(id && certificate )? <a href={certificate} target="_blank" style={{textDecoration:"none"}} download="My_File.pdf"> Preview Previous Certificate </a> : null}
                   </Form.Group>
                 </Col>
               </Row>
