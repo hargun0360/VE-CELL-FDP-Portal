@@ -367,7 +367,7 @@ function StudentForm() {
                                 </Form.Group>
                             </Row>
                             <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
-                                Submit
+                              {id ? "Edit" : "Submit"}  
                             </Button>
                         </Form>
                     </Card.Body>
