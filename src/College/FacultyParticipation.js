@@ -303,7 +303,7 @@ const FacultyParticipation = () => {
                                 </Form.Group>
                             </Row>
                             <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
-                            {id ? "Edit" : "Submit"} 
+                            {id ? "Update" : "Submit"} 
                             </Button>
                         </Form>
                     </Card.Body>
