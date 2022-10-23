@@ -177,7 +177,7 @@ function CollegeForm() {
         email: res.data.college_email,
         department: res.data.department,
         mobile: res.data.phone_number,
-        venue: res.data.venue,
+        venue:  (res.data.venue == "undefined" || res.data.venue == "null") ? "" : res.data.venue,
         designation: res.data.designation,
         incentive: res.data.incentive_detail,
         certificatenumber: res.data.certificate_number,
@@ -564,7 +564,7 @@ function CollegeForm() {
               </Row>
               <Form.Group className="mb-5" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
                 <Form.Label>Remarks</Form.Label>
-                <Form.Control value={remarks} as="textarea" rows={2} />
+                <Form.Control value={(remarks == "null" || remarks == "undefined") ? "--" : remarks} as="textarea" rows={2} />
               </Form.Group>
               <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
                 {id ? "Update" :  "Submit"}
