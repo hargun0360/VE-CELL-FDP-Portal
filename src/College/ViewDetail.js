@@ -207,7 +207,7 @@ const ViewDetail = () => {
                                             </Tr>
                                             <Tr>
                                                 <Th>Venue</Th>
-                                                <Td>{venue}</Td>
+                                                <Td>{venue=="undefined" || venue == null ? "" : venue}</Td>
                                             </Tr>
                                             <Tr>
                                                 <Th>AICTE/AKTU Certificate Number</Th>
@@ -261,7 +261,7 @@ const ViewDetail = () => {
                                         <Tbody>
                                             <Tr>
                                                 <Th>Remarks</Th>
-                                                <Td>{remarks}</Td>
+                                                <Td>{remarks == null || remarks == "undefined" ? "" : remarks}</Td>
                                             </Tr>
                                         </Tbody>
                                     </Table>
