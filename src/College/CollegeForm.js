@@ -363,7 +363,7 @@ function CollegeForm() {
               }else if(e.status == 500){
                 setLoading(false)
                 swal({
-                  title: "This FDP Detail is already Registered",
+                  title: "This FDP Detail is already Entered",
                   text: "",
                   icon: "error",
                   button: "OK",
