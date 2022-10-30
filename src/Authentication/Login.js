@@ -107,7 +107,15 @@ const Login = props => {
                 </div>
                 <CardBody className="pt-0">
 
+                
                   <div className="p-2">
+
+                  <div
+                      className="alert alert-success text-center mb-4"
+                      role="alert"
+                      style={{fontWeight:"500"}}
+                    > If you are a new user, please signup </div>
+
                     <Form
                       className="form-horizontal"
                       onSubmit={(e) => {

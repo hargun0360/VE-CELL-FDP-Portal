@@ -216,13 +216,22 @@ const ViewFDP = () => {
                 show={deleteModal} setShow={setDeleteModal} setLoading={setLoader} id={id}
             />
             <div className="w-100 h-100 pb-3">
+
                 <Container fluid>
                     <Card.Title className="pt-3">
                         View FDP
                     </Card.Title>
 
 
+
                     <div className="py-2">
+
+                        <div
+                            className="alert alert-success text-center mb-4"
+                            role="alert"
+                            style={{ fontWeight: "500", display: "flex", justifyContent: "flex-start" }}
+                        > * You can add another FDP as well! Please click on (Add FDP)</div>
+
                         {admin ? <Card >
                             <Card.Body>
                                 <Form onSubmit={(e) => handleSubmit(e)}>

@@ -10,9 +10,10 @@ import "../App.css";
 import moment from 'moment';
 import swal from 'sweetalert';
 import { doAddFacultyDetail, doGetFacultyDetailById, doUpdateFacultyDetail } from '../Services/ApiServices';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
+
 const FacultyParticipation = () => {
 
     const [facultyname, setFacultyname] = useState("");
@@ -28,37 +29,37 @@ const FacultyParticipation = () => {
     const [loading, setLoading] = useState(false)
     const [starting, setStarting] = useState(null)
     const [ending, setEnding] = useState(null)
-
+    const navigate = useNavigate();
     const converting = (selected) => {
         var date = selected;
         var datearray = date.split("-");
-    
+
         var newdate = datearray[1] + '-' + datearray[0] + '-' + datearray[2];
         return newdate
-      };
+    };
 
     const { id } = useParams();
 
     const convert = (selected) => {
         const day = selected.getDate();
         const month =
-          selected.getMonth() >=9
-            ? selected.getMonth() + 1
-            : `0${selected.getMonth() + 1}`;
+            selected.getMonth() >= 9
+                ? selected.getMonth() + 1
+                : `0${selected.getMonth() + 1}`;
         const yearr = selected.getFullYear();
-    
+
         return `${day}-${month}-${yearr}`;
-      };
+    };
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         mode: "onTouched",
         defaultValues: {
-            facultyname:"",
-            email:"",
-            department:"",
-            event:"",
-            venue:"",
-            role:"",
+            facultyname: "",
+            email: "",
+            department: null,
+            event: "",
+            venue: "",
+            role: "",
         },
     });
 
@@ -73,10 +74,10 @@ const FacultyParticipation = () => {
     }, [from, to])
 
     useEffect(() => {
-        
+
         loadFaculty();
-        
-    }, [id , reset]);
+
+    }, [id, reset]);
 
     const loadFaculty = () => {
         doGetFacultyDetailById(Number(id))
@@ -87,12 +88,12 @@ const FacultyParticipation = () => {
                 setRemarks(res.data.remarks)
                 setFrom(new Date(converting(res.data.starting_date)))
                 let obj = {
-                    facultyname : res.data.name,
-                    email : res.data.email,
-                    department : res.data.department,
-                    event : res.data.name_of_event,
-                    venue : res.data.venue_of_activity,
-                    role : res.data.role,
+                    facultyname: res.data.name,
+                    email: res.data.email,
+                    department: res.data.department,
+                    event: res.data.name_of_event,
+                    venue: res.data.venue_of_activity,
+                    role: res.data.role,
                 }
                 reset(obj)
             }).catch((e) => {
@@ -112,9 +113,9 @@ const FacultyParticipation = () => {
                     name_of_event: data.event,
                     venue_of_activity: data.venue,
                     role: data.role,
-                    starting_date:convert(from),
+                    starting_date: convert(from),
                     end_date: convert(to),
-                    duration : Number(duration),
+                    duration: Number(duration),
                     remarks,
                 }
 
@@ -131,7 +132,10 @@ const FacultyParticipation = () => {
                             title: "Added Successfully",
                             text: "",
                             icon: "success",
-                            button: "OK",
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            navigate("/viewparticipation");
                         });
                     }).catch((e) => {
                         setLoading(false)
@@ -156,9 +160,9 @@ const FacultyParticipation = () => {
                     name_of_event: data.event,
                     venue_of_activity: data.venue,
                     role: data.role,
-                    starting_date:convert(from),
+                    starting_date: convert(from),
                     end_date: convert(to),
-                    duration : Number(duration),
+                    duration: Number(duration),
                     remarks
                 }
 
@@ -175,7 +179,11 @@ const FacultyParticipation = () => {
                             title: "Added Successfully",
                             text: "",
                             icon: "success",
-                            button: "OK",
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            console.log("hello");
+                            navigate("/viewparticipation");
                         });
                     }).catch((e) => {
                         if (e.status == 403) {
@@ -238,8 +246,7 @@ const FacultyParticipation = () => {
                                 <Col xs={12} md={6}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Department</Form.Label>
-                                        <Form.Select className='mb-3' placeholder='Select the Department' aria-label="Default select example" name="department" {...register("department", { required: "department is required", })}>
-                                            <option>Select the Department</option>
+                                        <Form.Select className='mb-3' aria-label="Default select example" name="department" {...register("department", { required: "department is required", })}>
                                             <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                             <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                             <option value="Mechanical Engineering">Mechanical Engineering</option>
@@ -264,7 +271,7 @@ const FacultyParticipation = () => {
                                     <Form.Group className="mb-3" controlId="formBasicName">
                                         <Form.Label>Venue</Form.Label>
                                         <Form.Control type="text" placeholder="Venue" name="venue" {...register("venue", { required: "venue is required", })} />
-                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.event?.message}</p>
+                                        <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.venue?.message}</p>
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -280,7 +287,7 @@ const FacultyParticipation = () => {
                                 <Col xs={12} md={3}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
                                         <Form.Label>From</Form.Label>
-                                        <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange  dropdownMode="select" showMonthDropdown showYearDropdown  selected={from} onChange={(date) => setFrom(date)} />
+                                        <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown showYearDropdown selected={from} onChange={(date) => setFrom(date)} />
                                     </Form.Group>
                                 </Col>
                                 <Col xs={12} md={3}>
@@ -303,7 +310,7 @@ const FacultyParticipation = () => {
                                 </Form.Group>
                             </Row>
                             <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
-                            {id ? "Update" : "Submit"} 
+                                {id ? "Update" : "Submit"}
                             </Button>
                         </Form>
                     </Card.Body>

@@ -48,7 +48,7 @@ function CollegeForm() {
   const [admin, setAdmin] = useState(false);
   const [states, setStates] = useState(false)
   const [size, setSize] = useState(false)
-  const [isFileSend,setIsFileSend] = useState(false)
+  const [isFileSend, setIsFileSend] = useState(false)
   const [call, setCall] = useState(false)
 
   const navigate = useNavigate();
@@ -99,7 +99,6 @@ function CollegeForm() {
       designation: "",
       venue: "",
       certificatenumber: "",
-      incentive: null
     },
   });
 
@@ -153,19 +152,19 @@ function CollegeForm() {
   }, [certificate])
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const regex = /^[https://]/i;
 
-          if(regex.test(certificate)){
-            setIsFileSend(false);
-          }else{
-            setIsFileSend(true);
-          }
+    if (regex.test(certificate)) {
+      setIsFileSend(false);
+    } else {
+      setIsFileSend(true);
+    }
 
-          if(call){
-            setCall(false);
-          }
-  },[call])
+    if (call) {
+      setCall(false);
+    }
+  }, [call])
 
 
   const getDetailByID = () => {
@@ -180,18 +179,17 @@ function CollegeForm() {
       setCall(true);
       setStart(new Date(converting(res.data.starting_date)))
       setEnd(new Date(converting(res.data.end_date)))
+      setIncentive(res.data.incentive_detail)
 
 
-      
       // console.log(res.data.end_date,new Date("04-10-2022"),res.data.starting_date,new Date(res.data.starting_date));
       let obj = {
         name: res.data.name,
         email: res.data.college_email,
         department: res.data.department,
         mobile: res.data.phone_number,
-        venue:  (res.data.venue == "undefined" || res.data.venue == "null") ? "" : res.data.venue,
+        venue: (res.data.venue == "undefined" || res.data.venue == "null") ? "" : res.data.venue,
         designation: res.data.designation,
-        incentive: res.data.incentive_detail,
         certificatenumber: res.data.certificate_number,
       }
       reset(obj)
@@ -234,7 +232,7 @@ function CollegeForm() {
 
 
     if (id) {
-      if (ftype && start && end && (online != "" || offline != "")) {
+      if (ftype && start && end && (online != "" || offline != "") && incentive) {
         setLoading(true)
 
         const myForm = new FormData();
@@ -253,17 +251,17 @@ function CollegeForm() {
         myForm.set("mobile", data.mobile);
         myForm.set("designation", data.designation);
         myForm.set("fdp_type", ftype);
-        myForm.set("incentive_detail", data.incentive);
+        { incentive == "Select the Incentive Detail" ? myForm.set("incentive_detail", null) : myForm.set("incentive_detail", incentive) }
         myForm.set("phone_number", data.mobile);
         myForm.set("remarks", remarks);
-        if(isFileSend==true){
+        if (isFileSend == true) {
           myForm.set("certificate", certificate);
         }
         myForm.set("starting_date", convert(start));
         myForm.set("end_date", convert(end));
         myForm.set("number_of_days", Number(days));
-        {offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline)}
-          {online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online)}
+        { offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline) }
+        { online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online) }
         myForm.set("venue", data.venue);
         myForm.set("certificate_number", data.certificatenumber);
 
@@ -280,12 +278,16 @@ function CollegeForm() {
             setEnd(null)
             setDays("")
             setCertificate(null)
+            setIncentive("");
             reset()
             swal({
               title: "Details Updated Successfully",
               text: "",
               icon: "success",
-              button: "OK",
+              confirmButtonColor: '#3085d6',
+              confirmButtonText: 'OK'
+            }).then(() => {
+              navigate("/viewall");
             });
           }).catch((e) => {
             console.log(e);
@@ -305,11 +307,11 @@ function CollegeForm() {
     } else {
       if (size) {
         setLoading(true)
-        if (certificate && ftype && start && end && (online != "" || offline != "") && size) {
-          
+        if (certificate && ftype && start && end && (online != "" || offline != "") && size && incentive) {
+
           const myForm = new FormData();
 
-         
+
 
           if (ftype == "Online") {
             setOffline("");
@@ -324,9 +326,9 @@ function CollegeForm() {
           myForm.set("mobile", data.mobile);
           myForm.set("designation", data.designation);
           myForm.set("fdp_type", ftype);
-          {offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline)}
-          {online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online)}
-          myForm.set("incentive_detail", data.incentive);
+          { offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline) }
+          { online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online) }
+          { incentive == "Select the Incentive Detail" ? myForm.set("incentive_detail", null) : myForm.set("incentive_detail", incentive) }
           myForm.set("phone_number", data.mobile);
           myForm.set("remarks", remarks);
           myForm.set("starting_date", convert(start));
@@ -347,20 +349,24 @@ function CollegeForm() {
               setRemarks("")
               setStart(null)
               setEnd(null)
+              setIncentive("")
               setDays("")
               reset()
               swal({
                 title: "Details Added Successfully",
                 text: "",
                 icon: "success",
-                button: "OK",
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+              }).then(() => {
+                navigate("/viewall");
               });
             }).catch((e) => {
               console.log(e);
               if (e.status == 403) {
                 localStorage.clear();
                 navigate("/")
-              }else if(e.status == 500){
+              } else if (e.status == 500) {
                 setLoading(false)
                 swal({
                   title: "This FDP Detail is already Entered",
@@ -391,13 +397,13 @@ function CollegeForm() {
         {
           loading ? <Spinner /> : null
         }
-         <div className="p-2">
-                    <div
-                      className="alert alert-success mb-4"
-                      role="alert"
-                    > <p style={{margin:"0",padding:"0",fontWeight:"500"}}>* FDP's can be added by this form
-                    </p><p style={{margin:"0",padding:"0",fontWeight:"500"}}>* After submission, you can add another FDP as well!</p> </div>
-                    </div>
+        <div className="p-2">
+          <div
+            className="alert alert-success mb-4"
+            role="alert"
+          > <p style={{ margin: "0", padding: "0", fontWeight: "500" }}>* FDP's can be added by this form
+            </p><p style={{ margin: "0", padding: "0", fontWeight: "500" }}>* After submission, you can add another FDP as well!</p> </div>
+        </div>
         <Card.Title>
           Add FDP
         </Card.Title>
@@ -560,7 +566,7 @@ function CollegeForm() {
                     <Form.Label >Upload Certificate copy</Form.Label>
                     <Form.Control type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
                     {size == false ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>file size must be less than 2MB </p> : null}
-                    {(id && certificate )? <a href={certificate} target="_blank" style={{textDecoration:"none"}} download="My_File.pdf"> Preview Previous Certificate </a> : null}
+                    {(id && certificate) ? <a href={certificate} target="_blank" style={{ textDecoration: "none" }} download="My_File.pdf"> Preview Previous Certificate </a> : null}
                   </Form.Group>
                 </Col>
               </Row>
@@ -573,7 +579,8 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Incentive Detail</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" name="incentive" {...register("incentive", { required: "incentive is required", })}>
+                    <Form.Select className='mb-3' value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
+                      <option>Select the Incentive Detail</option>
                       <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                       <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
                       <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
@@ -589,7 +596,7 @@ function CollegeForm() {
                 <Form.Control value={(remarks == "null" || remarks == "undefined") ? "" : remarks} as="textarea" rows={2} />
               </Form.Group>
               <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
-                {id ? "Update" :  "Submit"}
+                {id ? "Update" : "Submit"}
               </Button>
             </Form>
           </Card.Body>
