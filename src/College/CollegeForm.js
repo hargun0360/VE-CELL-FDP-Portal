@@ -360,6 +360,14 @@ function CollegeForm() {
               if (e.status == 403) {
                 localStorage.clear();
                 navigate("/")
+              }else if(e.status == 500){
+                setLoading(false)
+                swal({
+                  title: "This FDP Detail is already Registered",
+                  text: "",
+                  icon: "error",
+                  button: "OK",
+                });
               }
               setLoading(false)
               swal({
