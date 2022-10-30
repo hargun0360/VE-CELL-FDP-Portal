@@ -97,7 +97,7 @@ function CollegeForm() {
       department: "",
       mobile: "",
       designation: "",
-      venue: "",
+      venue: null,
       certificatenumber: "",
     },
   });

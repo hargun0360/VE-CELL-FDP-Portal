@@ -6,6 +6,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import logo from "./logo.jpg"
 function CollapsibleExample() {
 
     const [admin, setAdmin] = useState(false);
@@ -21,7 +22,17 @@ function CollapsibleExample() {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="#/form">VE Cell</Navbar.Brand>
+
+                <Navbar.Brand href="#/form">
+                   
+                        <img style={{border:"0px solid transparent",borderRadius:"50%"}} height={"50px"} width={"50px"} src={logo} alt='logo' />
+                    
+                </Navbar.Brand>
+                <Navbar.Brand href="#/form">
+                   
+                        VE CELL
+                    
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive -navbar-nav">
                     <Nav activeKey={'#' + location.pathname} className="me-auto">
