@@ -50,7 +50,7 @@ const Signup = () => {
       setLoading(true);
       doSignupUser(values)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setLoading(false)
           swal({
             title: "OTP is Sent Successfully",

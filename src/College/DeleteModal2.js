@@ -13,11 +13,11 @@ const DeleteModal2 = ({ show, setShow, setLoading, id }) => {
     const navigate = useNavigate()
     const onDeleteClick = () => {
         setLoading(true)
-        console.log(id);
+        // console.log(id);
         setShow(false);
         doDeleteStudentById(Number(id))
         .then((res)=>{
-            console.log(res);
+            // console.log(res);
             setLoading(false)
             dispatch(action.flag(true))
             swal({

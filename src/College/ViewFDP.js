@@ -112,7 +112,7 @@ const ViewFDP = () => {
         console.log(obj);
         doAddFDPFilter(obj)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setChange(true);
                 swal({
                     title: "Filter Added Successfully",
@@ -200,7 +200,7 @@ const ViewFDP = () => {
     });
 
     if (details.length) {
-        console.log(details);
+        // console.log(details);
     }
 
 

@@ -34,7 +34,7 @@ const OTP = () => {
         } else {
             doSignupUser({ email: location.state.email, })
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     swal({
                         title: "OTP resent successfully",
                         text: "",
@@ -55,7 +55,7 @@ const OTP = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(location.state.otp);
+        // console.log(location.state.otp);
         if (otp) {
             setLoading(true);
             let obj = {
@@ -66,7 +66,7 @@ const OTP = () => {
             if (location.state.otp == "forgot") {
                 doVerifyResetOtp(obj)
                     .then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         setLoading(false);
                         swal({
                             title: "OTP is Verified",
@@ -88,7 +88,7 @@ const OTP = () => {
             } else {
                 doVerifyUser(obj)
                     .then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         swal({
                             title: "Password will sent in Your Email",
                             text: "",

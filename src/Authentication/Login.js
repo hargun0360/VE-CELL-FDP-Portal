@@ -41,10 +41,10 @@ const Login = props => {
     }),
     onSubmit: (values) => {
       setLoading(true);
-      console.log(values);
+      // console.log(values);
       doLoginUser(values)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           setLoading(false)
           localStorage.setItem("token", res.data.access);
           localStorage.setItem("rtoken", res.data.refresh);

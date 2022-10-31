@@ -42,11 +42,11 @@ const Forgot = () => {
       email: Yup.string().required("please enter your email"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
     
       doVerifyOtp(values)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           swal({
             title: "OTP will be Sent Successfully",
             text: "",

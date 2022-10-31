@@ -73,7 +73,7 @@ function CollegeForm() {
   }, [flag1, ftype, flag2])
 
   const handleFile = (e) => {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     setCall(true);
     if (e.target.files && e.target.files[0]) {
       setCertificate(e.target.files[0]);
@@ -125,7 +125,7 @@ function CollegeForm() {
   const FacultyData = () => {
     doGetFacultyData()
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         let obj = {
           name: res.data.name == null ? "" : res.data.name,
           department: res.data.department == null ? "" : res.data.department,
@@ -169,7 +169,7 @@ function CollegeForm() {
 
   const getDetailByID = () => {
     doGetDetailById(Number(id)).then((res) => {
-      console.log(res);
+      // console.log(res);
       setOffline(res.data.face_to_face_fdp);
       setOnline(res.data.online_fdp);
       setDays(res.data.number_of_days)
@@ -268,7 +268,7 @@ function CollegeForm() {
         doUpdateDetails(myForm, id)
           .then((res) => {
             setStates(true);
-            console.log(res);
+            // console.log(res);
             setLoading(false)
             setFtype("")
             setOffline("")
@@ -341,7 +341,7 @@ function CollegeForm() {
           doAddDetails(myForm)
             .then((res) => {
               setStates(true);
-              console.log(res);
+              // console.log(res);
               setLoading(false)
               setFtype("")
               setOffline("")

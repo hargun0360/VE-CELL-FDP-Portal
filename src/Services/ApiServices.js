@@ -21,16 +21,16 @@ export function doGetRefreshToken() {
       return RestAxiosService(REFRESH_TOKEN, "POST", data, headers).then(
         res => {
           resolve(res)
-          console.log("In Refresh Token", res)
+          // console.log("In Refresh Token", res)
           if (res.status === 200) {
-            console.log(res.data.access);
+            // console.log(res.data.access);
             localStorage.setItem("token", res.data.access)
           } else if (res.status === 401) {
             window.location.href = "/"
             localStorage.clear();
             return
           } else return
-          console.log("response in Refresh Token :- ", res)
+          // console.log("response in Refresh Token :- ", res)
         },
         err => {
           reject(err)
@@ -153,7 +153,7 @@ export function doGetAllFDP(data) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(GET_ALL_FDP, "POST", data, headers).then((res) => {
-      console.log("Get Users Response :- ", res);
+      // console.log("Get Users Response :- ", res);
       resolve(res)
     }, (err) => {
       reject(err);
@@ -209,7 +209,7 @@ export function doGetDetailById(id) {
       headers
     ).then(
       res => {
-        console.log("Get User Response :- ", res)
+        // console.log("Get User Response :- ", res)
         resolve(res)
       },
       err => {
@@ -271,7 +271,7 @@ export function doGetAllStudent(data) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(GET_ALL_STUDENT, "POST", data, headers).then((res) => {
-      console.log("Get Users Response :- ", res);
+      // console.log("Get Users Response :- ", res);
       resolve(res)
     }, (err) => {
       reject(err);
@@ -352,7 +352,7 @@ export function doGetStudentDetailById(id) {
       headers
     ).then(
       res => {
-        console.log("Get User Response :- ", res)
+        // console.log("Get User Response :- ", res)
         resolve(res)
       },
       err => {
@@ -372,7 +372,7 @@ export function doGetAllFaculty(data) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(GET_ALL_FACULTY_PARTICIPATION, "POST", data, headers).then((res) => {
-      console.log("Get Users Response :- ", res);
+      // console.log("Get Users Response :- ", res);
       resolve(res)
     }, (err) => {
       reject(err);
@@ -453,7 +453,7 @@ export function doGetFacultyDetailById(id) {
       headers
     ).then(
       res => {
-        console.log("Get User Response :- ", res)
+        // console.log("Get User Response :- ", res)
         resolve(res)
       },
       err => {
@@ -532,7 +532,7 @@ export function doGetFacultyData() {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(FACULTY_DATA_URL, "GET", false , headers).then((res) => {
-      console.log("Get Users Response :- ", res);
+      // console.log("Get Users Response :- ", res);
       resolve(res)
     }, (err) => {
       reject(err);

@@ -92,7 +92,7 @@ function StudentForm() {
 
     const getDetailByID = () => {
         doGetStudentDetailById(Number(id)).then((res) => {
-            console.log(res);
+            // console.log(res);
 
             let arr = res.data.branch.split('-');
             setFrom(new Date(converting(res.data.starting_date)));
@@ -167,7 +167,7 @@ function StudentForm() {
 
                 doUpdateStudentDetail(obj, Number(id))
                     .then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         setLoading(false)
                         setDuration("")
                         setFrom(null)
@@ -217,11 +217,11 @@ function StudentForm() {
                     course
                 }
 
-                console.log(obj);
+                // console.log(obj);
 
                 doAddStudentDetail(obj)
                     .then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         setLoading(false)
                         setDuration("")
                         setFrom(null)
@@ -285,7 +285,7 @@ function StudentForm() {
 
             doAddBulkStudentDetails(myForm)
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     
                     swal({
                         title: "Added Successfully",

@@ -28,10 +28,10 @@ const RecoverPass = props => {
       Npassword: Yup.string().oneOf([Yup.ref('password'), null], 'password must match')
     }),
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       doResetPassword({new_password:values.Npassword})
       .then((res)=>{
-        console.log(res);
+        // console.log(res);
         navigate("/")
         swal({
           title: "Password Reset Successfully",

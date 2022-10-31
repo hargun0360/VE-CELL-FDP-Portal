@@ -48,7 +48,7 @@ const ViewDetail = () => {
 
     const getDetailByID = () =>{
         doGetDetailById(Number(id)).then((res) => {
-           console.log(res);
+        //    console.log(res);
            setName(res.data.name);
            setDepartment(res.data.department);
            setEmail(res.data.college_email);

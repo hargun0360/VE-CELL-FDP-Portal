@@ -84,11 +84,11 @@ const ViewFacultyParticipation = () => {
             start_date: start ? convert(start) : null  ,
             end_date: end  ? convert(end) : null
         }
-        console.log(obj);
+        // console.log(obj);
 
         doAddFacultyFilter(obj)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setChange(true);
                 swal({
                     title: "Filter Added Successfully",

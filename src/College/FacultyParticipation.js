@@ -82,7 +82,7 @@ const FacultyParticipation = () => {
     const loadFaculty = () => {
         doGetFacultyDetailById(Number(id))
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setDuration(res.data.duration)
                 setTo(new Date(converting(res.data.end_date)))
                 setRemarks(res.data.remarks)
@@ -121,7 +121,7 @@ const FacultyParticipation = () => {
 
                 doUpdateFacultyDetail(obj, Number(id))
                     .then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         setLoading(false)
                         setRemarks("")
                         setDuration("")
@@ -168,7 +168,7 @@ const FacultyParticipation = () => {
 
                 doAddFacultyDetail(obj)
                     .then((res) => {
-                        console.log(res);
+                        // console.log(res);
                         setLoading(false)
                         setRemarks("")
                         setDuration("")
@@ -182,7 +182,7 @@ const FacultyParticipation = () => {
                             confirmButtonColor: '#3085d6',
                             confirmButtonText: 'OK'
                         }).then(() => {
-                            console.log("hello");
+                            // console.log("hello");
                             navigate("/viewparticipation");
                         });
                     }).catch((e) => {

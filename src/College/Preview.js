@@ -12,7 +12,7 @@ const Preview = () => {
     const [arr, setArr] = useState([])
     let id = location.state;
     useEffect(() => {
-        console.log(id);
+        // console.log(id);
         if (id) {
             getDetailByID();
         }
@@ -30,7 +30,7 @@ const Preview = () => {
 
     const getDetailByID = () => {
         doGetDetailById(Number(id)).then((res) => {
-            console.log(res);
+            // console.log(res);
             setCertificate(res.data.certificate)
 
             const str = res.data.certificate;
@@ -41,7 +41,7 @@ const Preview = () => {
         })
     }
     if (certificate) {
-        console.log(certificate);
+        // console.log(certificate);
     }
 
     const [numPages, setNumPages] = useState(null);

@@ -94,10 +94,10 @@ const ViewStudent = () => {
             starting_date: start ? convert(start) : null,
             end_date:end ? convert(end) : null,
         }
-        console.log(obj);
+        // console.log(obj);
         doAddStudentFilter(obj)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setChange(true);
                 swal({
                     title: "Filter Added Successfully",
@@ -160,9 +160,9 @@ const ViewStudent = () => {
     const getAllStudents = () => {
         
         if(email==null && branch==null && start=="" && end==""){
-            console.log("waah bhai");
+            // console.log("waah bhai");
             doGetAllStudent().then((res) => {
-                console.log(res);
+                // console.log(res);
                 setStudentData(res.data);
             }).catch((e) => {
                 console.log(e);
@@ -178,9 +178,9 @@ const ViewStudent = () => {
                 starting_date: start ? convert(start) : null,
                 end_date: end ? convert(end) : null,
             }
-            console.log(obj);
+            // console.log(obj);
             doGetAllStudent(obj).then((res) => {
-                console.log(res);
+                // console.log(res);
                 setStudentData(res.data);
             }).catch((e) => {
                 console.log(e);
