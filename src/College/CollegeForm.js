@@ -48,6 +48,7 @@ function CollegeForm() {
   const [admin, setAdmin] = useState(false);
   const [states, setStates] = useState(false)
   const [size, setSize] = useState(false)
+  const [inc, setInc] = useState(false)
   const [isFileSend, setIsFileSend] = useState(false)
   const [call, setCall] = useState(false)
 
@@ -150,6 +151,17 @@ function CollegeForm() {
     }
 
   }, [certificate])
+  useEffect(() => {
+   
+      
+      if (incentive === null || incentive === "" || incentive === "Select the Incentive Detail") {
+        setInc(true);
+      } else {
+        setInc(false);
+      }
+    
+
+  }, [incentive])
 
 
   useEffect(() => {
@@ -218,11 +230,11 @@ function CollegeForm() {
       convert(end)
       const date1 = new Date(start);
       const date2 = new Date(end);
-      const diffTime = Math.abs(date2 - date1);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffTime = (date2.getTime() - date1.getTime());
+      const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
       setDays(diffDays + 1);
     }
-  }, [start, end])
+  }, [start, end]) 
 
 
 
@@ -232,7 +244,8 @@ function CollegeForm() {
 
 
     if (id) {
-      if (ftype && start && end && (online != "" || offline != "") && incentive) {
+      
+      if (ftype && start && end && (online != "" || offline != "") && (incentive !== null && incentive !== "" && incentive !== "Select the Incentive Detail")) {
         setLoading(true)
 
         const myForm = new FormData();
@@ -306,9 +319,9 @@ function CollegeForm() {
       }
     } else {
       if (size) {
-        setLoading(true)
-        if (certificate && ftype && start && end && (online != "" || offline != "") && size && incentive) {
-
+       
+        if (certificate && ftype && start && end && (online != "" || offline != "") && size && (incentive !== null && incentive !== "" && incentive !== "Select the Incentive Detail")  ) {
+          setLoading(true)
           const myForm = new FormData();
 
 
@@ -587,7 +600,7 @@ function CollegeForm() {
                       <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
                       <option value="Not Taken Yet">Not Taken Yet</option>
                     </Form.Select>
-                    <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.incentive?.message}</p>
+                    {inc === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> incentive details are required </p> : null}
                   </Form.Group>
                 </Col>
               </Row>

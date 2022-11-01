@@ -67,8 +67,8 @@ const FacultyParticipation = () => {
         if (from && to) {
             const date1 = new Date(from);
             const date2 = new Date(to);
-            const diffTime = Math.abs(date2 - date1);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffTime = (date2.getTime() - date1.getTime());
+      const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
             setDuration(diffDays + 1);
         }
     }, [from, to])
