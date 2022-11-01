@@ -231,7 +231,7 @@ function CollegeForm() {
       const date1 = new Date(start);
       const date2 = new Date(end);
       const diffTime = (date2.getTime() - date1.getTime());
-      const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
+      const diffDays = parseInt(diffTime / (1000 * 3600 * 24));
       setDays(diffDays + 1);
     }
   }, [start, end]) 
@@ -599,6 +599,7 @@ function CollegeForm() {
                       <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
                       <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
                       <option value="Not Taken Yet">Not Taken Yet</option>
+                      <option value="Not Eligible">Not Eligible</option>
                     </Form.Select>
                     {inc === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> incentive details are required </p> : null}
                   </Form.Group>

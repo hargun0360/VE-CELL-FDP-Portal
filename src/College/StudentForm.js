@@ -134,7 +134,7 @@ function StudentForm() {
             const date1 = new Date(from);
             const date2 = new Date(to);
             const diffTime = (date2.getTime() - date1.getTime());
-            const diffDays = Math.floor(diffTime / (1000 * 3600 * 24));
+            const diffDays = parseInt(diffTime / (1000 * 3600 * 24));
             setDuration(diffDays + 1);
         }
     }, [from, to])

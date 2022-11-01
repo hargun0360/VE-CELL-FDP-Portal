@@ -283,6 +283,7 @@ const ViewFDP = () => {
                                                     <option value="AICTE UHV-III (10,000)">AICTE UHV-III (10,000)</option>
                                                     <option value="AICTE UHV-IV (15,000)">AICTE UHV-IV (15,000)</option>
                                                     <option value="Not Taken Yet">Not Taken Yet</option>
+                                                    <option value="Not Eligible">Not Eligible</option>
                                                 </Form.Select>
                                             </Form.Group>
                                         </Col>
