@@ -82,6 +82,8 @@ function CollegeForm() {
       setOnmess(false);
       setFlag2(true)
       setOffmess(false);
+      setOffline("");
+      setOnline("");
     }
   }, [flag1, ftype, flag2])
 
