@@ -49,9 +49,13 @@ function CollegeForm() {
   const [states, setStates] = useState(false)
   const [size, setSize] = useState(false)
   const [inc, setInc] = useState(false)
+  const [fmess, setFmess] = useState(false)
   const [isFileSend, setIsFileSend] = useState(false)
   const [call, setCall] = useState(false)
-
+  const [onmess, setOnmess] = useState(false)
+  const [offmess, setOffmess] = useState(false)
+  const [startmess, setStartmess] = useState(false)
+  const [endmess, setEndmess] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,12 +68,20 @@ function CollegeForm() {
     if (ftype === "Online") {
       setFlag2(false)
       setFlag1(true)
+      setOffline("");
+      setOnmess(true);
+      setOffmess(false);
     } else if (ftype === "Face to Face FDP") {
       setFlag1(false)
       setFlag2(true)
+      setOnline("");
+      setOffmess(true);
+      setOnmess(false);
     } else {
       setFlag1(true)
+      setOnmess(false);
       setFlag2(true)
+      setOffmess(false);
     }
   }, [flag1, ftype, flag2])
 
@@ -151,17 +163,79 @@ function CollegeForm() {
     }
 
   }, [certificate])
+
+
   useEffect(() => {
-   
-      
-      if (incentive === null || incentive === "" || incentive === "Select the Incentive Detail") {
-        setInc(true);
-      } else {
-        setInc(false);
-      }
-    
+
+    if (incentive === null || incentive === "" || incentive === "Select the Incentive Detail") {
+      setInc(true);
+    } else {
+      setInc(false);
+    }
 
   }, [incentive])
+
+
+  useEffect(() => {
+
+    if (ftype == "Online") {
+      if (online === null || online === "" || online === "Select the Online FDP type") {
+        setOnmess(true);
+      } else {
+        setOnmess(false);
+      }
+    }
+
+  }, [online])
+
+
+  useEffect(() => {
+
+    if (ftype == "Face to Face FDP") {
+      if (offline === null || offline === "" || offline === "Select the Face to Face FDP") {
+        setOffmess(true);
+      } else {
+        setOffmess(false);
+      }
+    }
+
+  }, [offline])
+
+
+  useEffect(() => {
+
+    if (ftype === null || ftype === "" || ftype === "Select the FDP type") {
+      setFmess(true);
+    } else {
+      setFmess(false);
+    }
+
+  }, [ftype])
+
+
+  useEffect(() => {
+
+    if (start === null || start === "") {
+      setStartmess(true);
+    } else {
+      setStartmess(false);
+    }
+
+  }, [start])
+
+
+  useEffect(() => {
+   
+
+      if (end === null || end === "") {
+        setEndmess(true);
+      } else {
+        setEndmess(false);
+      }
+
+    
+
+  }, [end])
 
 
   useEffect(() => {
@@ -234,7 +308,7 @@ function CollegeForm() {
       const diffDays = parseInt(diffTime / (1000 * 3600 * 24));
       setDays(diffDays + 1);
     }
-  }, [start, end]) 
+  }, [start, end])
 
 
 
@@ -244,8 +318,8 @@ function CollegeForm() {
 
 
     if (id) {
-      
-      if (ftype && start && end && (online != "" || offline != "") && (incentive !== null && incentive !== "" && incentive !== "Select the Incentive Detail")) {
+
+      if ((ftype !== null && ftype !== "" && ftype !== "Select the FDP type") && start && end && (online != "" || offline != "") && (incentive !== null && incentive !== "" && incentive !== "Select the Incentive Detail")) {
         setLoading(true)
 
         const myForm = new FormData();
@@ -319,8 +393,8 @@ function CollegeForm() {
       }
     } else {
       if (size) {
-       
-        if (certificate && ftype && start && end && (online != "" || offline != "") && size && (incentive !== null && incentive !== "" && incentive !== "Select the Incentive Detail")  ) {
+
+        if (certificate && (ftype !== null && ftype !== "" && ftype !== "Select the FDP type") && start && end && (online != "" || offline != "") && size && (incentive !== null && incentive !== "" && incentive !== "Select the Incentive Detail")) {
           setLoading(true)
           const myForm = new FormData();
 
@@ -490,11 +564,12 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>FDP type</Form.Label>
-                    <Form.Select className='mb-3' aria-label="Default select example" value={ftype} required onChange={(e) => setFtype(e.target.value)}>
+                    <Form.Select aria-label="Default select example" value={ftype} required onChange={(e) => setFtype(e.target.value)}>
                       <option>Select the FDP type</option>
                       <option value="Online">Online</option>
                       <option value="Face to Face FDP">Face to Face FDP</option>
                     </Form.Select>
+                    {fmess === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> FDP type is required </p> : null}
                   </Form.Group>
                 </Col>
               </Row>
@@ -502,7 +577,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Face to Face FDP</Form.Label>
-                    <Form.Select className='mb-3' value={offline} aria-label="Default select example" disabled={flag1} onChange={(e) => setOffline(e.target.value)}>
+                    <Form.Select value={offline} aria-label="Default select example" disabled={flag1} onChange={(e) => setOffline(e.target.value)}>
                       <option>Select the Face to Face FDP</option>
                       <option value="AKTU Level-1">AKTU Level-1</option>
                       <option value="AKTU Refresher">AKTU Refresher</option>
@@ -515,12 +590,13 @@ function CollegeForm() {
                       <option value="AICTE UHV-III">AICTE UHV-III</option>
                       <option value="AICTE UHV-IV">AICTE UHV-IV</option>
                     </Form.Select>
+                    {offmess === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> face to face FDP is required </p> : null}
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Online FDP</Form.Label>
-                    <Form.Select className='mb-3' value={online} aria-label="Default select example" disabled={flag2} onChange={(e) => setOnline(e.target.value)}>
+                    <Form.Select value={online} aria-label="Default select example" disabled={flag2} onChange={(e) => setOnline(e.target.value)}>
                       <option>Select the Online FDP type</option>
                       <option value="AICTE-UHV Refresher Part-I">AICTE-UHV Refresher Part-I</option>
                       <option value="AICTE-UHV Refresher Part-II">AICTE-UHV Refresher Part-II</option>
@@ -529,6 +605,7 @@ function CollegeForm() {
                       <option value="AKTU-HV in Shankya and Vedant Darshan (eight days)">AKTU-HV in Shankya and Vedant Darshan (eight days)</option>
                       <option value="AKTU-HV in Jain and Baudh Darshan (eight days)">AKTU-HV in Jain and Baudh Darshan (eight days)</option>
                     </Form.Select>
+                    {onmess === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> online FDP is required </p> : null}
                   </Form.Group>
                 </Col>
               </Row>
@@ -538,18 +615,18 @@ function CollegeForm() {
                 </Card.Title>
               </Row>
               <Row>
-                <Col xs={12} md={3}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                <Col xs={12} md={3} className="mb-3">
+                  <Form.Group  controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
                     <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown required onChange={(date) => setStart(date)} />
-
+                    {startmess === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> starting date is required </p> : null}
                   </Form.Group>
                 </Col>
-                <Col xs={12} md={3}>
-                  <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
+                <Col xs={12} md={3} className="mb-3">
+                  <Form.Group controlId="exampleForm.ControlInput3">
                     <Form.Label>End Date</Form.Label>
                     <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown selected={end} minDate={start} disabled={start ? false : true} required onChange={(date) => setEnd(date)} />
-
+                    {endmess === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> end date is required </p> : null}
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={3}>
@@ -592,7 +669,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Incentive Detail</Form.Label>
-                    <Form.Select className='mb-3' value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
+                    <Form.Select value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
                       <option>Select the Incentive Detail</option>
                       <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                       <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>

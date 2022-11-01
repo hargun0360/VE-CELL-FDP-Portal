@@ -246,7 +246,7 @@ const FacultyParticipation = () => {
                                 <Col xs={12} md={6}>
                                     <Form.Group className="mb-3">
                                         <Form.Label>Department</Form.Label>
-                                        <Form.Select className='mb-3' aria-label="Default select example" name="department" {...register("department", { required: "department is required", })}>
+                                        <Form.Select aria-label="Default select example" name="department" {...register("department", { required: "department is required", })}>
                                             <option value="Applied Sciences & Humanities">Applied Sciences & Humanities</option>
                                             <option value="Electronics And Communication Engineering">Electronics And Communication Engineering</option>
                                             <option value="Mechanical Engineering">Mechanical Engineering</option>
