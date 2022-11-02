@@ -69,13 +69,17 @@ function CollegeForm() {
       setFlag2(false)
       setFlag1(true)
       setOffline("");
-      setOnmess(true);
+      if (online === null || online === "" || online === "Select the Online FDP type") {
+        setOnmess(true);
+      } 
       setOffmess(false);
     } else if (ftype === "Face to Face FDP") {
       setFlag1(false)
       setFlag2(true)
       setOnline("");
-      setOffmess(true);
+      if (offline === null || offline === "" || offline === "Select the Face to Face FDP") {
+        setOffmess(true);
+      } 
       setOnmess(false);
     } else {
       setFlag1(true)
@@ -179,7 +183,6 @@ function CollegeForm() {
 
 
   useEffect(() => {
-
     if (ftype == "Online") {
       if (online === null || online === "" || online === "Select the Online FDP type") {
         setOnmess(true);
@@ -312,6 +315,7 @@ function CollegeForm() {
   }, [start, end])
 
 
+  
 
   const onSubmit = (data, e) => {
     e.preventDefault();
