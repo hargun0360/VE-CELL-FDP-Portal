@@ -302,8 +302,7 @@ function CollegeForm() {
   useEffect(() => {
 
     if (start && end) {
-      convert(start)
-      convert(end)
+      
       const date1 = new Date(start);
       const date2 = new Date(end);
       const diffTime = (date2.getTime() - date1.getTime());
