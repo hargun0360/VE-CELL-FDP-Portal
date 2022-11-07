@@ -317,7 +317,7 @@ const ViewStudent = () => {
                                                         <td className="text-center"> {item.number_of_days === "" ? "" : item.number_of_days} </td>
                                                         <td className="text-center"> {item.starting_date.split(" ")[0] === "" ? "" : (item.starting_date.split(" ")[0])} </td>
                                                         <td className="text-center"> {item.end_date.split(" ")[0] === "" ? "" : (item.end_date.split(" ")[0])} </td>
-                                                        <td className="text-center"> {item.remarks === "" ? "" : item.remarks} </td>
+                                                        <td className="text-center"> {item.remarks === "" || item.remarks == "nan" || item.remarks == "Nan" ? "" : item.remarks} </td>
                                                         <td className="text-center">
                                                             <UncontrolledDropdown>
                                                                 <DropdownToggle href="#" className="card-drop" tag="i">

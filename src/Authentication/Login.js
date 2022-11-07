@@ -16,7 +16,7 @@ const Login = props => {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
-  const regex = /^[a-zA-Z0-9_\-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
+  const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{4,}[@][a][k][g][e][c][\.][a][c][\.][i][n]$/i
   const dispatch = useDispatch();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
