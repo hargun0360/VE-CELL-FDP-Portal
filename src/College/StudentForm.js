@@ -38,6 +38,7 @@ function StudentForm() {
     const [admin, setAdmin] = useState(false);
     const [show, setShow] = useState(false);
     const [file, setFile] = useState(null);
+
     const navigate = useNavigate()
 
 
@@ -260,6 +261,7 @@ function StudentForm() {
     const handleFileSubmit = (e) => {
         e.preventDefault();
         if (file) {
+            setLoading(true)
             // studentData.forEach(function (data) {
             //     students.push({
             //         name: data['Name'],
@@ -285,7 +287,7 @@ function StudentForm() {
             doAddBulkStudentDetails(myForm)
                 .then((res) => {
                     // console.log(res);
-                    
+                    setLoading(false)
                     swal({
                         title: "Added Successfully",
                         text: "",
@@ -295,6 +297,7 @@ function StudentForm() {
 
                 }).catch((e) => {
                     console.log(e);
+                    setLoading(false)
                     if (e.status == 403) {
                         localStorage.clear();
                         navigate("/")
