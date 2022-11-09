@@ -415,14 +415,14 @@ function StudentForm() {
                                 <Col xs={4} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                         <Form.Label>Section</Form.Label>
-                                        <Form.Control type="text" name="section" {...register("section", { required: "section is required", pattern: { value: /[a-zA-Z0-9]{1,}/i, message: "invalid section" } })} />
+                                        <Form.Control type="text" name="section" {...register("section", { required: "section is required", pattern: { value: /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{1,}/i, message: "invalid section" } })} />
                                         <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.section?.message}</p>
                                     </Form.Group>
                                 </Col>
                                 <Col xs={6} md={4}>
                                     <Form.Group className="mb-3" controlId="formBasicNumber">
                                         <Form.Label>Mobile Number</Form.Label>
-                                        <Form.Control type="number" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /[6789]{1}[0-9]{9}/i, message: "invalid phone number" } })} />
+                                        <Form.Control type="number" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /^[6-9]\d{9}$/i, message: "invalid phone number" } })} />
                                         <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.mobile?.message}</p>
                                     </Form.Group>
                                 </Col>

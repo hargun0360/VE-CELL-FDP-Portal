@@ -354,7 +354,7 @@ function CollegeForm() {
         myForm.set("number_of_days", Number(days));
         { offline == "Select the Face to Face FDP" ? myForm.set("face_to_face_fdp", null) : myForm.set("face_to_face_fdp", offline) }
         { online == "Select the Online FDP type" ? myForm.set("online_fdp", null) : myForm.set("online_fdp", online) }
-        myForm.set("venue", data.venue);
+        myForm.set("venue", offline == "" || offline == null ? null :  data.venue);
         myForm.set("certificate_number", data.certificatenumber);
 
         doUpdateDetails(myForm, id)
@@ -411,6 +411,8 @@ function CollegeForm() {
             setOnline("");
           }
 
+          
+
 
           myForm.set("name", data.name);
           myForm.set("department", data.department);
@@ -427,7 +429,7 @@ function CollegeForm() {
           myForm.set("end_date", convert(end));
           myForm.set("number_of_days", Number(days));
           myForm.set("certificate", certificate);
-          myForm.set("venue", data.venue);
+          myForm.set("venue", offline == "" || offline == null ? null :  data.venue);
           myForm.set("certificate_number", data.certificatenumber);
 
           doAddDetails(myForm)
@@ -538,14 +540,14 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                     <Form.Label>College mail id</Form.Label>
-                    <Form.Control type="email" placeholder="example@akgec.ac.in" name="email" {...register("email", { required: "email is required", pattern: { value: /[a-zA-Z0-9]@akgec[/.]ac[/.]in/i, message: "invalid email" } })} />
+                    <Form.Control type="email" placeholder="example@akgec.ac.in" name="email" {...register("email", { required: "email is required", pattern: { value: /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]@akgec[/.]ac[/.]in/i, message: "invalid email" } })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.email?.message}</p>
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="formBasicNumber">
                     <Form.Label>Mobile Number</Form.Label>
-                    <Form.Control type="number" placeholder="9956118026" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /[6789]{1}[0-9]{9}/i, message: "invalid phone number" } })} />
+                    <Form.Control type="number" placeholder="9956118026" name="mobile" {...register("mobile", { required: "phone number is required", pattern: { value: /^[6-9]\d{9}$/i, message: "invalid phone number" } })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.mobile?.message}</p>
                   </Form.Group>
 
