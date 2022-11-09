@@ -1,4 +1,4 @@
-export const BASE_URL = "https://college-form.azurewebsites.net/api/"
+export const BASE_URL = "http://117.55.241.58:8000/api/"
 
 // Authentication
 export const LOGIN_URL = BASE_URL + 'token/';
