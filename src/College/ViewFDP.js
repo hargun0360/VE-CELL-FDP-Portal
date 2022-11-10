@@ -313,6 +313,8 @@ const ViewFDP = () => {
                                                     <option value="AICTE UHV-III">AICTE UHV-III</option>
                                                     <option value="AICTE UHV-IV">AICTE UHV-IV</option>
                                                     <option value="AICTE 5 days UHV II Refresher">AICTE 5 days UHV II Refresher</option>
+                                                    <option value="AICTE 8 days UHV Refresher 1 (Part 1 & 2)">AICTE 8 days UHV Refresher 1 (Part 1 & 2)</option>
+                                                    <option value="AKTU 10 days Refresher 2">AKTU 10 days Refresher 2</option>
                                                 </Form.Select>
                                             </Form.Group>
                                         </Col>
