@@ -68,7 +68,7 @@ const FacultyParticipation = () => {
             const date1 = new Date(from);
             const date2 = new Date(to);
             const diffTime = (date2.getTime() - date1.getTime());
-            const diffDays = parseInt(diffTime / (1000 * 3600 * 24));
+            const diffDays = moment(to).diff(moment(from), 'days');
             setDuration(diffDays + 1);
         }
     }, [from, to])

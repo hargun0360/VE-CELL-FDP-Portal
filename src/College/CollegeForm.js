@@ -158,6 +158,20 @@ function CollegeForm() {
       })
   }
 
+  // // Here bool is any boolean state
+
+  // useEffect(() => {
+  //   if (updatelistvalue) {
+  //     setBool(false);
+  //   }
+
+  // }, [updatelistvalue,bool])
+
+  // function handleUpdateListValue(e){
+  //   setUdatelistvalue(e.target.value);
+  //   setBool(true);   
+  // }
+
   useEffect(() => {
     if (certificate) {
       let file_size = certificate.size;
@@ -309,7 +323,7 @@ function CollegeForm() {
       const date1 = new Date(start);
       const date2 = new Date(end);
       const diffTime = (date2.getTime() - date1.getTime());
-      const diffDays = parseInt(diffTime / (1000 * 3600 * 24));
+      const diffDays = moment(end).diff(moment(start), 'days');
       setDays(diffDays + 1);
     }
   }, [start, end])

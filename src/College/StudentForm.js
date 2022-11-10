@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../Components/Spinner'
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
+import moment from 'moment';
 import Navbar from "./Navbar"
 import DatePicker from "react-datepicker"
 import 'react-datepicker/dist/react-datepicker.css'
@@ -134,7 +135,7 @@ function StudentForm() {
             const date1 = new Date(from);
             const date2 = new Date(to);
             const diffTime = (date2.getTime() - date1.getTime());
-            const diffDays = parseInt(diffTime / (1000 * 3600 * 24));
+            const diffDays = moment(to).diff(moment(from), 'days');
             setDuration(diffDays + 1);
         }
     }, [from, to])
