@@ -388,7 +388,7 @@ export function doDeleteFacultyById(id) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(
-      DELETE_FACULTY_PARTICIPATION_URL + `/${id}/`,
+      DELETE_FACULTY_PARTICIPATION_URL + `${id}/`,
       "DELETE",
       false,
       headers
@@ -428,7 +428,7 @@ export function doUpdateFacultyDetail(details,id) {
     Authorization: "Bearer " + getAuthToken(),
   }
   return new Promise((resolve, reject) => {
-    return RestAxiosService(UPDATE_FACULTY_PARTICIPATION_URL + `/${id}/`, "PATCH", details, headers).then(
+    return RestAxiosService(UPDATE_FACULTY_PARTICIPATION_URL + `${id}/`, "PATCH", details, headers).then(
       res => {
         resolve(res)
       },

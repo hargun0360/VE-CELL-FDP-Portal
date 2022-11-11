@@ -21,7 +21,7 @@ const FacultyParticipation = () => {
     const [department, setDepartment] = useState(null);
     const [event, setEvent] = useState("");
     const [venue, setVenue] = useState("");
-    const [duration, setDuration] = useState(null);
+    const [duration, setDuration] = useState("");
     const [from, setFrom] = useState(null)
     const [to, setTo] = useState(null)
     const [role, setRole] = useState(null)
@@ -115,7 +115,7 @@ const FacultyParticipation = () => {
                     role: data.role,
                     starting_date: convert(from),
                     end_date: convert(to),
-                    duration: Number(duration),
+                    duration:duration,
                     remarks,
                 }
 
@@ -162,7 +162,7 @@ const FacultyParticipation = () => {
                     role: data.role,
                     starting_date: convert(from),
                     end_date: convert(to),
-                    duration: Number(duration),
+                    duration: duration,
                     remarks
                 }
 
@@ -299,7 +299,7 @@ const FacultyParticipation = () => {
                                 <Col xs={12} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>Duration</Form.Label>
-                                        <Form.Control type="number" value={duration} placeholder="Duration" disabled />
+                                        <Form.Control type="text" value={duration} placeholder="Duration" onChange={(e) => setDuration(e.target.value)} />
                                     </Form.Group>
                                 </Col>
                             </Row>
