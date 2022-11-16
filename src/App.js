@@ -94,9 +94,9 @@ function App() {
             <Logout />
           </PrivateRoute>} />
         <Route exact path="/recoverpass" element={
-          <PrivateRoute>
+          <AuthenticatedRoutes>
             <RecoverPass />
-          </PrivateRoute>} />
+          </AuthenticatedRoutes>} />
         <Route exact path="/viewall" element={
           <PrivateRoute>
             <ViewFDP />
