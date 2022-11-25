@@ -710,7 +710,11 @@ function CollegeForm() {
                     {inc === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> incentive details are required </p> : null}
                   </Form.Group>
                 </Col>
-              </Row></> : null}
+              </Row></> : <>
+                  <div className='mb-3 py-5'>
+                      <h1>Not Available Please Contact With Admin</h1>
+                  </div>
+              </>}
               { admin ? <Form.Group className="mb-5" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
                 <Form.Label>Remarks</Form.Label>
                 <Form.Control value={(remarks == "null" || remarks == "undefined") ? "" : remarks} as="textarea" rows={2} />
