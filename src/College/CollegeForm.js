@@ -3,7 +3,7 @@ import { Form, Button, Card, Alert, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'reactstrap';
 import "../App.css";
-import { doAddDetails, doUpdateDetails, doGetFacultyData } from '../Services/ApiServices';
+import { doAddDetails, doUpdateDetails, doGetFacultyData, doCheckFDP,doCheckGetFDP } from '../Services/ApiServices';
 import { getAuthToken } from '../Services/RestApiService'
 import { Navigate, useParams } from 'react-router-dom';
 import { doGetDetailById } from '../Services/ApiServices';
@@ -257,6 +257,8 @@ function CollegeForm() {
 
   }, [end])
 
+  
+
 
   useEffect(() => {
     const regex = /^[https://]/i;
@@ -272,6 +274,17 @@ function CollegeForm() {
     }
   }, [call])
 
+  useEffect(()=>{
+
+    getCheck();
+    
+  },[isCheck])
+
+  const getCheck = () => {
+      doCheckGetFDP().then((res)=>{
+        setIsCheck(res.data.check);
+      })
+  }
 
   const getDetailByID = () => {
     doGetDetailById(Number(id)).then((res) => {
@@ -514,7 +527,22 @@ function CollegeForm() {
             </p><p style={{ margin: "0", padding: "0", fontWeight: "500" }}>* After submission, you can add another FDP as well!</p> </div>
         </div>
        { admin ? <div className="py-2 mb-3">
-          <input type={"checkbox"} onChange={(e)=>{setIsCheck(e.target.checked)}} />
+          <input type={"checkbox"} onChange={(e)=>{setIsCheck(e.target.checked)
+              let obj={
+                check : e.target.checked,
+              }
+              doCheckFDP(obj).then((res)=>{
+                console.log(res);
+                swal({
+                  title: "Close the FDP Form for Faculty Successfully",
+                  text: "",
+                  icon: "success",
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'OK'
+                });
+              }).catch((e)=>console.log(e))
+          
+          }} />
           <span className='px-2'>Close the FDP Form for Faculty</span>
         </div> : null}
         <Card.Title>
