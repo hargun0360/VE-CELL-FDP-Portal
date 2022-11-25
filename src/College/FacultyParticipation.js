@@ -69,7 +69,7 @@ const FacultyParticipation = () => {
             const date2 = new Date(to);
             const diffTime = (date2.getTime() - date1.getTime());
             const diffDays = moment(to).diff(moment(from), 'days');
-            setDuration(diffDays + 1);
+            // setDuration(diffDays + 1);
         }
     }, [from, to])
 

@@ -581,7 +581,7 @@ function CollegeForm() {
                   </Form.Group>
                 </Col>
               </Row>
-              <Row className='mb-3 mt-3'>
+              {(admin || isCheck==false) ? <><Row className='mb-3 mt-3'>
                 <Card.Title>
                   FDP Type
                 </Card.Title>
@@ -647,7 +647,7 @@ function CollegeForm() {
                 <Col xs={12} md={3} className="mb-3">
                   <Form.Group  controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>
-                    <DatePicker dateFormat={'dd-MM-yyyy'} disabled={(isCheck == true && admin == false)} adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown required onChange={(date) => setStart(date)} />
+                    <DatePicker dateFormat={'dd-MM-yyyy'}  adjustDateOnChange dropdownMode="select" showMonthDropdown selected={start} showYearDropdown required onChange={(date) => setStart(date)} />
                     {startmess === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> starting date is required </p> : null}
                   </Form.Group>
                 </Col>
@@ -676,14 +676,14 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label>AICTE/AKTU Certificate Number</Form.Label>
-                    <Form.Control type="text" disabled={(isCheck == true && admin == false)} placeholder="Certificate Number" name="certificatenumber" {...register("certificatenumber", { required: "certificate number is required", })} />
+                    <Form.Control type="text" placeholder="Certificate Number" name="certificatenumber" {...register("certificatenumber", { required: "certificate number is required", })} />
                     <p style={{ color: "red", padding: "0px", margin: "0px" }}>{errors.certificatenumber?.message}</p>
                   </Form.Group>
                 </Col>
                 <Col xs={12} md={4}>
                   <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                     <Form.Label >Upload Certificate copy</Form.Label>
-                    <Form.Control disabled={(isCheck == true && admin == false)} type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
+                    <Form.Control type="file" name='certificate' accept='image/*,application/pdf' onChange={handleFile} />
                     {size == false  ? <p style={{ color: "red", padding: "0px", margin: "0px" }}>file size must be less than 2MB </p> : null}
                     {(id && certificate) ? <a href={certificate} target="_blank" style={{ textDecoration: "none" }} download="My_File.pdf"> Preview Previous Certificate </a> : null}
                   </Form.Group>
@@ -698,7 +698,7 @@ function CollegeForm() {
                 <Col xs={12} md={6}>
                   <Form.Group className="mb-3">
                     <Form.Label>Incentive Detail</Form.Label>
-                    <Form.Select value={incentive} disabled={(isCheck == true && admin == false)} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
+                    <Form.Select value={incentive} aria-label="Default select example" onChange={(e) => setIncentive(e.target.value)}>
                       <option>Select the Incentive Detail</option>
                       <option value="AKTU Level-2 (10,000)">AKTU Level-2 (10,000)</option>
                       <option value="AKTU Level-3 (15,000)">AKTU Level-3 (15,000)</option>
@@ -710,14 +710,14 @@ function CollegeForm() {
                     {inc === true ? <p style={{ color: "red", padding: "0px", margin: "0px" }}> incentive details are required </p> : null}
                   </Form.Group>
                 </Col>
-              </Row>
+              </Row></> : null}
               { admin ? <Form.Group className="mb-5" controlId="exampleForm.ControlTextarea1" onChange={(e) => setRemarks(e.target.value)}>
                 <Form.Label>Remarks</Form.Label>
-                <Form.Control disabled={(isCheck == true && admin == false)} value={(remarks == "null" || remarks == "undefined") ? "" : remarks} as="textarea" rows={2} />
+                <Form.Control value={(remarks == "null" || remarks == "undefined") ? "" : remarks} as="textarea" rows={2} />
               </Form.Group> : null}
-              <Button variant="primary" disabled={(isCheck == true && admin == false)} style={{ float: "right" }} type="submit" className='w-sm-100'>
+              {(admin || isCheck == false) ? <Button variant="primary" style={{ float: "right" }} type="submit" className='w-sm-100'>
                 {id ? "Update" : "Submit"}
-              </Button>
+              </Button> : null}
             </Form>
           </Card.Body>
         </Card>
