@@ -671,7 +671,7 @@ function CollegeForm() {
                   FDP Detail
                 </Card.Title>
               </Row>
-              <Row>
+              <Row> 
                 <Col xs={12} md={3} className="mb-3">
                   <Form.Group  controlId="exampleForm.ControlInput2">
                     <Form.Label>Starting Date</Form.Label>

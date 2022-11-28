@@ -129,7 +129,7 @@ const FacultyParticipation = () => {
                         setTo(null)
                         reset()
                         swal({
-                            title: "Added Successfully",
+                            title: "Update Successfully",
                             text: "",
                             icon: "success",
                             confirmButtonColor: '#3085d6',
@@ -295,7 +295,7 @@ const FacultyParticipation = () => {
                                         <Form.Label>To</Form.Label>
                                         <DatePicker dateFormat={'dd-MM-yyyy'} adjustDateOnChange showMonthDropdown showYearDropdown minDate={from} disabled={from ? false : true} selected={to} onChange={(date) => setTo(date)} />
                                     </Form.Group>
-                                </Col>
+                                </Col> 
                                 <Col xs={12} md={2}>
                                     <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
                                         <Form.Label>Duration</Form.Label>
