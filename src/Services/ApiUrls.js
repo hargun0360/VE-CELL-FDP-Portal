@@ -14,7 +14,6 @@ export const VERIFY_RESET_OTP = BASE_URL + 'reset/verify/'
 export const ADD_FDP_URL = BASE_URL + 'form/'
 export const GET_ALL_FDP = BASE_URL + 'form/list/'
 export const ADD_CHECK_URL = BASE_URL + 'check/'
-export const GET_CHECK_URL = BASE_URL + 'checkget/'
 
 // ---------------- STUDENTS --------------------------------------------------
 

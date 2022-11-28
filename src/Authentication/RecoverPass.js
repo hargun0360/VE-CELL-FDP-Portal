@@ -32,6 +32,8 @@ const RecoverPass = props => {
       doResetPassword({new_password:values.Npassword})
       .then((res)=>{
         // console.log(res);
+        localStorage.setItem("token", res.data.access);
+        localStorage.setItem("rtoken", res.data.refresh);
         navigate("/")
         swal({
           title: "Password Reset Successfully",

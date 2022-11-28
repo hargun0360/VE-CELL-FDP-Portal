@@ -67,6 +67,8 @@ const OTP = () => {
                 doVerifyResetOtp(obj)
                     .then((res) => {
                         // console.log(res);
+                        localStorage.setItem("token", res.data.access);
+                        localStorage.setItem("rtoken", res.data.refresh);
                         setLoading(false);
                         swal({
                             title: "OTP is Verified",
