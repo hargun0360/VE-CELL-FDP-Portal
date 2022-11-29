@@ -278,11 +278,14 @@ function CollegeForm() {
 
     getCheck();
     
+      console.log(isCheck);
+    
+    
   },[isCheck])
 
   const getCheck = () => {
       doCheckGetFDP().then((res)=>{
-        setIsCheck(res.data.check);
+        setIsCheck(res.data.checkbox);
       })
   }
 
@@ -510,6 +513,7 @@ function CollegeForm() {
       }
     }
   }
+  // console.log(admin);
   return (<>
     {/* <h3 style={{ textAlign: "center", marginTop: "1%" }}>Add FDP</h3> */}
     <Navbar />
@@ -526,8 +530,8 @@ function CollegeForm() {
           > <p style={{ margin: "0", padding: "0", fontWeight: "500" }}>* FDP's can be added by this form
             </p><p style={{ margin: "0", padding: "0", fontWeight: "500" }}>* After submission, you can add another FDP as well!</p> </div>
         </div>
-       { admin ? <div className="py-2 mb-3">
-          <input type={"checkbox"} onChange={(e)=>{setIsCheck(e.target.checked)
+       { admin ? <div  className="py-2 mb-3">
+          <input type={"checkbox"} style={{cursor:"pointer"}} onChange={(e)=>{setIsCheck(e.target.checked)
               let obj={
                 check : e.target.checked,
               }

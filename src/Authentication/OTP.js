@@ -25,16 +25,17 @@ const OTP = () => {
     const [otp, setOtp] = useState(null);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false)
-    const location = useLocation();
-
+    const {state} = useLocation();
+    const { email, forgot } = state;
+    console.log(email,forgot);
     const handleClick = () => {
         setMinutes(1);
-        if (location.state.otp == "forgot") {
+        if (forgot) {
 
         } else {
-            doSignupUser({ email: location.state.email, })
+            doSignupUser({ email: email })
                 .then((res) => {
-                    // console.log(res);
+                    console.log(res);
                     swal({
                         title: "OTP resent successfully",
                         text: "",
@@ -52,23 +53,22 @@ const OTP = () => {
                 })
         }
     }
-
+    // console.log(location.state);
     const handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(location.state.otp);
+        // console.log(location.state);
         if (otp) {
             setLoading(true);
             let obj = {
-                email: location.state.email,
+                email: email,
                 otp: otp
             }
             console.log(obj);
-            if (location.state.otp == "forgot") {
+            if (forgot) {
                 doVerifyResetOtp(obj)
                     .then((res) => {
-                        // console.log(res);
-                        localStorage.setItem("token", res.data.access);
-                        localStorage.setItem("rtoken", res.data.refresh);
+                        console.log(res);
+                        localStorage.setItem("token", res.data.access_token);
                         setLoading(false);
                         swal({
                             title: "OTP is Verified",
@@ -165,9 +165,10 @@ const OTP = () => {
                                                 <p className="mb-5">
                                                     Please enter the code sent to{" "}
                                                     <span className="fw-bolder">
-                                                        {location.state.email}
+                                                        {email}
                                                     </span>
                                                 </p>
+                                                
 
                                                 <Form onSubmit={handleSubmit} >
                                                     <Row>

@@ -51,9 +51,9 @@ const Forgot = () => {
             title: "OTP will be Sent Successfully",
             text: "",
             icon: "success",
-            button: "OK",
+            button: "OK", 
           });
-          navigate("/otp", { state: { email: values.email, otp: "forgot" } });
+          navigate("/otp", { state: { email: values.email, forgot: true } });
         }).catch((e) => {
           console.log(e);
           swal({
