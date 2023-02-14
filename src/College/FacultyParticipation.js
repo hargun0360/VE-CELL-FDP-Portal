@@ -108,7 +108,7 @@ const FacultyParticipation = () => {
             if (duration && from && to) {
                 let obj = {
                     name: data.facultyname,
-                    email: data.email,
+                    email: data.email.toLowerCase(),
                     department: data.department,
                     name_of_event: data.event,
                     venue_of_activity: data.venue,
@@ -155,7 +155,7 @@ const FacultyParticipation = () => {
             if (duration && from && to) {
                 let obj = {
                     name: data.facultyname,
-                    email: data.email,
+                    email: data.email.toLowerCase(),
                     department: data.department,
                     name_of_event: data.event,
                     venue_of_activity: data.venue,

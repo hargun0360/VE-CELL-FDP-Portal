@@ -6,7 +6,7 @@ import { LOGIN_URL,REFRESH_TOKEN,SIGNUP_URL,ADD_FDP_URL, GET_ALL_FDP, VERIFY_OTP
   GET_ALL_FACULTY_PARTICIPATION,DELETE_FACULTY_PARTICIPATION_URL,
   STUDENT_FILTER_URL,FDP_FILTER_URL,
   FACULTY_PARTICIPATION_FILTER_URL,
-  FACULTY_DATA_URL,
+  FACULTY_DATA_URL,RESIGN_URL,
   ADD_CHECK_URL} from "./ApiUrls"
 import { getAuthToken,RestAxiosService } from "./RestApiService"
 
@@ -530,6 +530,25 @@ export function  doCheckFDP(details) {
   }
   return new Promise((resolve, reject) => {
     return RestAxiosService(ADD_CHECK_URL, "POST", details, headers).then(
+      res => {
+        resolve(res)
+      },
+      err => {
+        reject(err)
+      }
+    )
+  })
+}
+
+// Update Resign Faculty Details
+export function doResignFDPById(details) {
+  console.log(details);
+  let headers = {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + getAuthToken(),
+  }
+  return new Promise((resolve, reject) => {
+    return RestAxiosService(RESIGN_URL , "PATCH", details, headers).then(
       res => {
         resolve(res)
       },

@@ -370,7 +370,7 @@ function CollegeForm() {
 
         myForm.set("name", data.name);
         myForm.set("department", data.department);
-        myForm.set("college_email", data.email);
+        myForm.set("college_email", data.email.toLowerCase());
         myForm.set("mobile", data.mobile);
         myForm.set("designation", data.designation);
         myForm.set("fdp_type", ftype);
@@ -447,7 +447,7 @@ function CollegeForm() {
 
           myForm.set("name", data.name);
           myForm.set("department", data.department);
-          myForm.set("college_email", data.email);
+          myForm.set("college_email", data.email.toLowerCase());
           myForm.set("mobile", data.mobile);
           myForm.set("designation", data.designation);
           myForm.set("fdp_type", ftype);

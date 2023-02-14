@@ -42,7 +42,12 @@ const Login = props => {
     onSubmit: (values) => {
       setLoading(true);
       // console.log(values);
-      doLoginUser(values)
+      let obj = {
+        email : values.email.toLowerCase(),
+        password : values.password
+      }
+      // console.log(obj);
+      doLoginUser(obj)
         .then((res) => {
           // console.log(res);
           setLoading(false)

@@ -89,7 +89,7 @@ const ViewStudent = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         let obj = {
-            college_email : email ? email : null,
+            college_email : email ? email.toLowerCase() : null,
             branch : branch == "Select the Branch" || branch == "" ? null : branch,
             starting_date: start ? convert(start) : null,
             end_date:end ? convert(end) : null,
@@ -173,7 +173,7 @@ const ViewStudent = () => {
             })
         }else{
             let obj = {
-                email: email ? email : null,
+                email: email ? email.toLowerCase() : null,
                 branch:branch == "Select the Branch" || branch == "" ? null : branch,
                 starting_date: start ? convert(start) : null,
                 end_date: end ? convert(end) : null,

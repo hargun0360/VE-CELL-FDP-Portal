@@ -79,7 +79,7 @@ const ViewFacultyParticipation = () => {
 
         e.preventDefault()
         let obj = {
-            email: email ? email : null,
+            email: email ? email.toLowerCase() : null,
             department : department == "Select the Department" || department == "" ? null : department,
             start_date: start ? convert(start) : null  ,
             end_date: end  ? convert(end) : null
@@ -127,7 +127,7 @@ const ViewFacultyParticipation = () => {
     // preet lagayi isk uttam panth sunyo gur sangat teh milant jam traas mitayi ik ardaas bhaat keerat ki gur ramdas rakho sharnayi
     const getAllFaculty = () => {
         let obj = {
-            email : email ? email : null,
+            email : email ? email.toLowerCase() : null,
             department:department == "Select the Department" || department == "" ? null : department,
             starting_date: start ? convert(start) : null,
             end_date:end ? convert(end) : null,

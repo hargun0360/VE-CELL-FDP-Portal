@@ -161,7 +161,7 @@ function StudentForm() {
                     end_date: convert(to),
                     phone_number: data.mobile,
                     remarks,
-                    email: data.email,
+                    email: data.email.toLowerCase(),
                     roll_no: data.roll,
                     course
                 }
@@ -213,7 +213,7 @@ function StudentForm() {
                     end_date: convert(to),
                     phone_number: data.mobile,
                     remarks,
-                    email: data.email,
+                    email: data.email.toLowerCase(),
                     roll_no: data.roll,
                     course
                 }

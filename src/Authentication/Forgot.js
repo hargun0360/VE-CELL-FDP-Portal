@@ -43,8 +43,12 @@ const Forgot = () => {
     }),
     onSubmit: (values) => {
       // console.log(values);
+
+      let obj = {
+        email : values.email.toLowerCase()
+      }
     
-      doVerifyOtp(values)
+      doVerifyOtp(obj)
         .then((res) => {
           // console.log(res);
           swal({

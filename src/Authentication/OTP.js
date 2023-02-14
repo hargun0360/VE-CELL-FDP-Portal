@@ -33,7 +33,7 @@ const OTP = () => {
         if (forgot) {
 
         } else {
-            doSignupUser({ email: email })
+            doSignupUser({ email: email.toLowerCase() })
                 .then((res) => {
                     console.log(res);
                     swal({
@@ -60,7 +60,7 @@ const OTP = () => {
         if (otp) {
             setLoading(true);
             let obj = {
-                email: email,
+                email: email.toLowerCase(),
                 otp: otp
             }
             console.log(obj);
