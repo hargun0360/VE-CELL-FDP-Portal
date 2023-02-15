@@ -53,6 +53,8 @@ const ViewFDP = () => {
     const [call, setcall] = useState(false);
     const [idResign, setIdResign] = useState(null)
     const [emailResign, setEmailResign] = useState(null);
+    const [coming, setComing] = useState(false);
+    const [allDetails, setAllDetails] = useState([]);
     const componentRef = useRef();
 
     const [menu, setMenu] = useState({
@@ -103,7 +105,7 @@ const ViewFDP = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         let obj = {
-            college_email: email.toLowerCase(),
+            college_email: email,
             department: department == "Select the Department" || department == "" ? null : department,
             fdp_type: fdp == "Select the FDP type" || fdp == "" ? null : fdp,
             face_to_face_fdp: offline == "Select the Face to Face FDP" || offline == "" ? null : offline,
@@ -113,7 +115,7 @@ const ViewFDP = () => {
             end_date: end ? convert(end) : null,
             venue,
         }
-        console.log(obj);
+        // console.log(obj);
         doAddFDPFilter(obj)
             .then((res) => {
                 // console.log(res);
@@ -161,6 +163,72 @@ const ViewFDP = () => {
     }
 
 
+    useEffect(() => {
+        if (details.length) {
+            const result = details.reduce((acc, item) => {
+                const matchItem = acc.find(i => i.name === item.name)
+
+                if (!matchItem) {
+                    acc.push({
+                        name: item.name,
+                        resigned: item.resigned,
+                        department: item.department,
+                        fdp: [
+                            {
+                                certificate_number: item.certificate_number,
+                                venue: item.venue,
+                                certificate: item.certificate,
+                                college_email: item.college_email,
+                                designation: item.designation,
+                                end_date: item.end_date,
+                                face_to_face_fdp: item.face_to_face_fdp,
+                                fdp_type: item.fdp_type,
+                                id: item.id,
+                                incentive_detail: item.incentive_detail,
+                                is_admin: item.is_admin,
+                                number_of_days: item.number_of_days,
+                                online_fdp: item.online_fdp,
+                                phone_number: item.phone_number,
+                                remarks: item.remarks,
+                                starting_date: item.starting_date,
+                                user: item.user,
+                                venue: item.venue,
+                            }
+                        ]
+                    })
+                } else {
+                    matchItem.fdp.push({
+                        certificate_number: item.certificate_number,
+                        venue: item.venue,
+                        certificate: item.certificate,
+                        college_email: item.college_email,
+                        designation: item.designation,
+                        end_date: item.end_date,
+                        face_to_face_fdp: item.face_to_face_fdp,
+                        fdp_type: item.fdp_type,
+                        id: item.id,
+                        incentive_detail: item.incentive_detail,
+                        is_admin: item.is_admin,
+                        number_of_days: item.number_of_days,
+                        online_fdp: item.online_fdp,
+                        phone_number: item.phone_number,
+                        remarks: item.remarks,
+                        starting_date: item.starting_date,
+                        user: item.user,
+                        venue: item.venue,
+                    })
+                }
+
+                return acc
+            }, [])
+
+            setAllDetails(result);
+            setComing(false);
+        }
+        setComing(false);
+        console.log(allDetails);
+    }, [coming, loading])
+
 
     // Get All FDP
 
@@ -178,7 +246,9 @@ const ViewFDP = () => {
         }
         setLoading(true)
         doGetAllFDP(obj).then((res) => {
+            console.log(res.data);
             setDetails(res.data);
+            setComing(true);
             setLoading(false)
         }).catch((e) => {
             console.log(e);
@@ -377,72 +447,88 @@ const ViewFDP = () => {
                                             <th className="text-center">#</th>
                                             <th className="text-center">Name</th>
                                             <th className="text-center">Department</th>
-                                            <th className="text-center">FDP Type</th>
-                                            <th className="text-center">FDP Name</th>
-                                            <th className="text-center">Start Date</th>
-                                            <th className="text-center">End Date</th>
-                                            <th className="text-center">Certificate Number</th>
-                                            <th className="text-center">Incentive Detail</th>
-                                            {state ? <th className="text-center">Actions</th> : null}
+                                            <Table className="table" style={{ margin: "0" }}>
+                                                <thead className="table-light">
+                                                    <tr>
+                                                        <th className="text-center">FDP Type</th>
+                                                        <th className="text-center">FDP Name</th>
+                                                        <th className="text-center">Start Date</th>
+                                                        <th className="text-center">End Date</th>
+                                                        <th className="text-center">Certificate Number</th>
+                                                        <th className="text-center">Incentive Detail</th>
+                                                        {state ? <th className="text-center">Actions</th> : null}
+                                                    </tr>
+                                                </thead>
+                                            </Table>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
-                                            details.length > 0 ? details.map((item) => (
+                                            allDetails.length > 0 && details.length > 0 ? allDetails.map((item) => (
                                                 <>{
-                                                   admin == false || item.resigned == false ?
+                                                    admin == false || item.resigned == false ?
 
                                                         <tr>
                                                             <td className="text-center">{++cnt}</td>
                                                             <td className="text-center"> {item.name === null ? "" : item.name} </td>
                                                             <td className="text-center"> {item.department === null ? "" : item.department} </td>
-                                                            <td className="text-center"> {item.fdp_type === null ? "" : item.fdp_type} </td>
-                                                            <td className="text-center"> {item.face_to_face_fdp === "" ? item.online_fdp : item.face_to_face_fdp} </td>
-                                                            <td className="text-center"> {item.starting_date === null ? "" : item.starting_date} </td>
-                                                            <td className="text-center"> {item.end_date === null ? "" : item.end_date} </td>
-                                                            <td className="text-center"> {item.certificate_number === null ? "" : item.certificate_number} </td>
-                                                            <td className="text-center"> {item.incentive_detail === null ? "" : item.incentive_detail} </td>
-                                                            {state ? <td className="text-center">
-                                                                <UncontrolledDropdown>
-                                                                    <DropdownToggle href="#" className="card-drop" tag="i">
-                                                                        <div className="align-middle me-1">
-                                                                            <MoreVertIcon />
-                                                                        </div>
-                                                                    </DropdownToggle>
-                                                                    <DropdownMenu className="dropdown-menu-end">
-                                                                        <Link to={`/view/${item.id}`} style={{ textDecoration: "none" }} >
-                                                                            <DropdownItem>
-                                                                                {" "}
-                                                                                <ModeSharpIcon sx={{ color: "blue" }} />{" "}&ensp;
-                                                                                {("Edit")}{" "}
-                                                                            </DropdownItem>
-                                                                        </Link>
-                                                                        <DropdownItem divider />
-                                                                        <DropdownItem tag="button" onClick={() => {
-                                                                            setDeleteModal(true);
-                                                                            setId(item.id)
-                                                                            dispatch(action.flag(false))
-                                                                        }}>
-                                                                            {" "}
-                                                                            <DeleteIcon sx={{ color: "red" }} />{" "}&ensp;
-                                                                            {("Delete")}{" "}
-                                                                        </DropdownItem>
-                                                                        {admin ? <> <DropdownItem divider />
-                                                                        <DropdownItem tag="button" onClick={() => {
-                                                                            setResignModal(true);
-                                                                            setIdResign(item.id)
-                                                                            setEmailResign(item.college_email);
-                                                                            dispatch(action.flag(false))
-                                                                        }}>
-                                                                            {" "}
-                                                                            <PersonRemove sx={{ color: "black" }} />{" "}&ensp;
-                                                                            {("Resign")}{" "}
-                                                                        </DropdownItem> </> : null}
-                                                                    </DropdownMenu>
-                                                                </UncontrolledDropdown>
-                                                            </td> : null}
-                                                        </tr>
-                                                        : null}</>
+                                                            <Table className="table" style={{ margin: "0" }}>
+                                                                <tbody>
+                                                                    {
+                                                                        item.fdp.map((val) => (
+                                                                            <tr className="text-center">
+
+                                                                                <td className="text-center" style={{ width: "11.8%" }}> {val.fdp_type === null ? "" : val.fdp_type} </td>
+                                                                                <td className="text-center" style={{ width: "11.8%" }}> {val.face_to_face_fdp === "" ? val.online_fdp : val.face_to_face_fdp} </td>
+                                                                                <td className="text-center" style={{ width: "13.5%" }}> {val.starting_date === null ? "" : val.starting_date} </td>
+                                                                                <td className="text-center" style={{ width: "13.8%" }}> {val.end_date === null ? "" : val.end_date} </td>
+                                                                                <td className="text-center" style={{ width: "23%" }}> {val.certificate_number === null ? "" : val.certificate_number} </td>
+                                                                                <td className="text-center" style={{ width: "15%" }}> {val.incentive_detail === null ? "" : val.incentive_detail} </td>
+                                                                                {state ? <td className="text-center" style={{ width: "10%" }}>
+                                                                                    <UncontrolledDropdown>
+                                                                                        <DropdownToggle href="#" className="card-drop" tag="i">
+                                                                                            <div className="align-middle me-1">
+                                                                                                <MoreVertIcon />
+                                                                                            </div>
+                                                                                        </DropdownToggle>
+                                                                                        <DropdownMenu className="dropdown-menu-end">
+                                                                                            <Link to={`/view/${val.id}`} style={{ textDecoration: "none" }} >
+                                                                                                <DropdownItem>
+                                                                                                    {" "}
+                                                                                                    <ModeSharpIcon sx={{ color: "blue" }} />{" "}&ensp;
+                                                                                                    {("Edit")}{" "}
+                                                                                                </DropdownItem>
+                                                                                            </Link>
+                                                                                            <DropdownItem divider />
+                                                                                            <DropdownItem tag="button" onClick={() => {
+                                                                                                setDeleteModal(true);
+                                                                                                setId(val.id)
+                                                                                                dispatch(action.flag(false))
+                                                                                            }}>
+                                                                                                {" "}
+                                                                                                <DeleteIcon sx={{ color: "red" }} />{" "}&ensp;
+                                                                                                {("Delete")}{" "}
+                                                                                            </DropdownItem>
+                                                                                            <DropdownItem divider />
+                                                                                            <DropdownItem tag="button" onClick={() => {
+                                                                                                setResignModal(true);
+                                                                                                setIdResign(val.id)
+                                                                                                setEmailResign(val.college_email);
+                                                                                                dispatch(action.flag(false))
+                                                                                            }}>
+                                                                                                {" "}
+                                                                                                <PersonRemove sx={{ color: "black" }} />{" "}&ensp;
+                                                                                                {("Resign")}{" "}
+                                                                                            </DropdownItem>
+                                                                                        </DropdownMenu>
+                                                                                    </UncontrolledDropdown>
+                                                                                </td> : null}
+                                                                            </tr>
+                                                                        ))
+                                                                    }
+                                                                </tbody>
+                                                            </Table>
+                                                        </tr> : null}</>
                                             ))
                                                 : null}
                                     </tbody>
