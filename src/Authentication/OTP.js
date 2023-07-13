@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-
+import swal from 'sweetalert'
 import Spinner from '../Components/Spinner'
 //Verification code package
 import AuthCode from "react-auth-code-input"

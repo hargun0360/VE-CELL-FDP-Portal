@@ -34,6 +34,8 @@ export function doGetRefreshToken() {
           // console.log("response in Refresh Token :- ", res)
         },
         err => {
+          window.location.href = "/"
+          localStorage.clear();
           reject(err)
         }
       )
